@@ -2,18 +2,18 @@
 
 namespace App\Models;
 
-use App\Helpers\UuidHelper;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Ramsey\Uuid\Uuid;
+
 
 class Wishlist extends Model
 {
     use HasFactory;
 
+    protected $table = 'wishlist';
     protected $fillable = [
         'id',
-        'product_id',
         'user_id',
         'name',
     ];
@@ -21,7 +21,7 @@ class Wishlist extends Model
 
     public function product()
     {
-        return $this->belongsTo(Product::class, 'product_id', 'id');
+        return $this->belongsToMany(Product::class, 'wishlist_item');
     }
 
     public function user()

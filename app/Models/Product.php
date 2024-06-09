@@ -20,7 +20,7 @@ class Product extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'name', 'description', 'price', 'image', 'category_id',
+        'id', 'name', 'description', 'price', 'image'
     ];
 
     /**
@@ -38,6 +38,7 @@ class Product extends Model
     protected $casts = [
         'price' => 'integer',
     ];
+    protected $dates = ['created_at', 'updated_at','deleted_at'];
 
     /**
      * Boot method for the model.
@@ -46,8 +47,29 @@ class Product extends Model
     /**
      * Get the category that owns the product.
      */
-    public function category()
+    public function subcategories()
     {
-        return $this->belongsTo(Category::class, 'category_id', 'id');
+        return $this->belongsToMany(SubCategory::class, 'product_category');
+    }
+
+
+    public function styles()
+    {
+        return $this->belongsToMany(Style::class,'product_style');
+    }
+
+    public function genre()
+    {
+        return $this->belongsToMany(Genre::class, 'product_genre');
+    }
+
+    public function promotions()
+    {
+        return $this->belongsToMany(Promotion::class, 'product_promotion');
+    }
+
+    public function size()
+    {
+        return $this->belongsToMany(Size::class, 'product_size');
     }
 }

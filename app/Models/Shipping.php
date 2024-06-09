@@ -10,19 +10,45 @@ class Shipping extends Model
 {
     use HasFactory;
 
+    protected $table ='shipping';
     protected $fillable = [
-        'id', 'order_id', 'address', 'city', 'state', 'postal_code', 'country',
-        'shipping_method', 'shipping_cost', 'status'
+        'checkout_id',
+        'shipping_address',
+        'courier_name',
+        'tracking_number',
+        'shipped_date',
+        'shipping_method',
+        'shipping_cost',
+        'shipping_status',
+        'payment_status',
+        'estimated_delivery_date',
     ];
 
-    protected $primaryKey = 'id';
-    public $incrementing = false;
-    protected $keyType = 'string';
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'shipped_date',
+        'estimated_delivery_date',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
 
-    public function order()
+    /**
+     * Get the checkout associated with the shipping.
+     */
+    public function checkout()
     {
-        return $this->belongsTo(Order::class, 'order_id', 'id');
+        return $this->belongsTo(Checkout::class);
     }
+
+    /**
+     * Get the courier associated with the shipping.
+     */
+
 
     
 }

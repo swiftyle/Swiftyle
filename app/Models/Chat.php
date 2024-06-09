@@ -10,8 +10,7 @@ class Chat extends Model
 {
     use HasFactory;
 
-    protected $keyType = 'uuid';
-    public $incrementing = false;
+    protected $table = 'chats';
 
     protected $fillable = [
         'id',
@@ -28,5 +27,8 @@ class Chat extends Model
     {
         return $this->belongsTo(User::class, 'user2_id', 'id');
     }
-
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'chat_id', 'id');
+    }
 }

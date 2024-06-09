@@ -80,7 +80,7 @@ class AuthenticationController extends Controller
             'email' => 'sometimes|string|email|max:255|unique:users',
             'phone' => 'sometimes|string',
             'role' => 'required|enum|default:Admin',
-            'gender' => 'required|enum|default:Male',
+            'gender' => 'required|enum|default:Other',
             'password' => 'required|string|min:8',
         ]);
 

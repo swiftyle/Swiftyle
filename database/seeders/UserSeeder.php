@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -22,6 +23,7 @@ class UserSeeder extends Seeder
             'phone_number' => '(+62)85217861296',
             'gender' => 'Male',
             'role' => 'Admin',
+            'remember_token' => Str::random(10),
             'updated_at' => null
         ]);
         
@@ -33,6 +35,7 @@ class UserSeeder extends Seeder
             'phone_number' => '(+62)85781509636',
             'gender' => 'Male',
             'role' => 'Admin',
+            'remember_token' => Str::random(10),
             'updated_at' => null
         ]);
         
@@ -44,9 +47,22 @@ class UserSeeder extends Seeder
             'phone_number' => '(+62)83814720164',
             'gender' => 'Female',
             'role' => 'Seller',
+            'remember_token' => Str::random(10),
             'updated_at' => null
         ]);
 
-        User::factory()->count(47)->create();
+        User::create([
+            'name' => 'Fathi',
+            'username' => 'JustTyy',
+            'email' => 'fathifatek@gmail.com',
+            'password' => bcrypt('12345678'),
+            'phone_number' => '(+62)81213570340',
+            'gender' => 'Male',
+            'role' => 'Admin',
+            'remember_token' => Str::random(10),
+            'updated_at' => null
+        ]);
+
+        User::factory()->count(46)->create();
     }
 }

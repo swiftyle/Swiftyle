@@ -7,16 +7,19 @@
     "require": {
         "php": "^8.2.0",
         "amranidev/laracombee": "^0.2.3",
+        "doctrine/dbal": "^3.0",
         "fruitcake/laravel-cors": "^3.0.12",
         "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/guzzle-services": "^1.4",
         "laravel/framework": "^9.52.16",
         "laravel/sanctum": "^3.2",
         "laravel/socialite": "^5.14",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^4.0",
+        "livewire/livewire": "^2.12",
         "predis/predis": "^2.2",
         "twilio/sdk": "^8.1",
-        "doctrine/dbal":"^3.0"
+        "tymon/jwt-auth": "^2.1"
     },
     "require-dev": {
         "spatie/laravel-ignition": "^1.0",

@@ -2,17 +2,20 @@
 
 namespace Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
+use App\Models\Category;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase; // Extend the correct TestCase
 
 class ExampleTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function test_example()
+    use RefreshDatabase;
+
+    /** @test */
+    public function it_can_create_categories()
     {
-        $this->assertTrue(true);
+        $categories = Category::factory()->count(5)->create();
+
+        $this->assertCount(5, $categories);
+        $this->assertDatabaseCount('categories', 5);
     }
 }

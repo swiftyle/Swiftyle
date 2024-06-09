@@ -2,35 +2,42 @@
 
 namespace App\Models;
 
-use App\Helpers\UuidHelper;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Checkout extends Model
 {
+    use HasFactory, SoftDeletes;
 
+    protected $table = 'checkouts';
     protected $fillable = [
-        'id','order_id', 'user_id', 'payment_method',
+        'cart_id',
+        'payment_id',
+        'address_id',
+        'courier_id',
+        'total_amount',
     ];
-    protected $primaryKey = 'id';
-    // Relationships
-    public function order()
+
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+
+    public function cart()
     {
-        return $this->belongsTo(Order::class, 'order_id', 'id');
+        return $this->belongsTo(Cart::class);
     }
 
-    public function user()
+    public function payment()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(Payment::class);
     }
 
-    protected static function boot()
+    public function address()
     {
-        parent::boot();
+        return $this->belongsTo(Address::class);
+    }
 
-        static::creating(function ($model) {
-            if (empty($model->id)) {
-                $model->id = UuidHelper::generateUuid();
-            }
-        });
+    public function courier()
+    {
+        return $this->belongsTo(Courier::class);
     }
 }

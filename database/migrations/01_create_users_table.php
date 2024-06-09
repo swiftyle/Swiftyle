@@ -31,7 +31,6 @@ return new class extends Migration
             $table->string('provider_id')->nullable();
             $table->string('provider_token')->nullable();
             $table->rememberToken();
-            // $table->timestamps();
             $table->softDeletes();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));

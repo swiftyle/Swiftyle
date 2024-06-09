@@ -31,13 +31,11 @@
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Gender</th>
-                                <th>Address</th>
-                                <th>Account Created</th>
-                                <th>Status</th>
+                                <th>Description</th>
+                                <th>Price</th>
+                                <th>Image</th>
+                                <th>Sell</th>
+                                <th>Rating</th>
                                 <th>
                                     <div class="setting-list">
                                         <ul class="list-unstyled setting-option">
@@ -55,37 +53,31 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($users as $user)
+                            @foreach ($products as $product)
                                 <tr>
                                     <td>
                                         <div class="media">
-                                            <img class="img-fluid rounded-circle" src="{{ $user->avatar }}"
+                                            <img class="img-fluid rounded-circle" src="{{ $product->image }}"
                                                 alt="" width="30px" height="30px">
                                             <div class="media-body">
-                                                <span>{{ $user->name }}</span>
+                                                <span>{{ $product->name }}</span>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
-                                        <p>{{ $user->username }}</p>
+                                        <p>{{ $product->description }}</p>
                                     </td>
                                     <td>
-                                        <p>{{ $user->email }}</p>
+                                        <p>{{ $product->price }}</p>
                                     </td>
                                     <td>
-                                        <p>{{ $user->role }}</p>
+                                        <p>{{ $product->image }}</p>
                                     </td>
                                     <td>
-                                        <p>{{ $user->gender }}</p>
+                                        <p>{{ $product->sell }}</p>
                                     </td>
                                     <td>
-                                        <p>{{ $user->address }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{{ $user->created_at->format('Y-m-d') }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{{ $user->status }}</p>
+                                        <p>{{ $product->rating }}</p>
                                     </td>
                                     
                                 </tr>
@@ -94,7 +86,7 @@
                     </table>
                 </div>
                 <div class="pagination">
-                    {{ $users->links() }}
+                    {{ $products->links() }}
                 </div>
             </div>
         </div>

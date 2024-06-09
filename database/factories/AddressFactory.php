@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Address;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Enums\Country;
+use App\Models\User;
 
 class AddressFactory extends Factory
 {
@@ -13,10 +14,17 @@ class AddressFactory extends Factory
     public function definition()
     {
         $this->faker->addProvider(new CustomPhoneProvider($this->faker));
+        $user = User::inRandomOrder()->first(); // Get a random user
+
+        // Split the user's name into first and last names
+        $nameParts = explode(' ', $user->name, 2);
+        $firstname = $nameParts[0];
+        $lastname = isset($nameParts[1]) ? $nameParts[1] : '';
+        
         return [
-            'user_id' => $this->faker->numberBetween(1, 50),
-            'firstname' => $this->faker->firstName,
-            'lastname' => $this->faker->lastName,
+            'user_id' => $user->id,
+            'firstname' => $firstname,
+            'lastname' => $lastname,
             'type' => $this->faker->randomElement(['Home', 'Work', 'Other']),
             'primary' => $this->faker->boolean,
             'country' => $this->faker->randomElement(Country::getValues()),

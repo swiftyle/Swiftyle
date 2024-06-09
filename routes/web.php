@@ -17,6 +17,7 @@ use App\Http\Controllers\Web\ProviderController;
 use App\Http\Controllers\Web\PasswordResetController;
 use App\Http\Controllers\Web\WishlistController;
 use App\Http\Controllers\Web\SegmentsController;
+use App\Http\Controllers\Web\ShippingController;
 use App\Http\Controllers\Web\StylesController;
 
 /*
@@ -73,7 +74,6 @@ Route::middleware('guest')->group(function () {
     Route::get('forget-password', [PasswordResetController::class, 'index'])->name('forget.password');
 });
 
-
 Route::middleware('web')->group(function () {
     Route::group(['prefix' => 'users'], function () {
         Route::get('/', [UsersController::class, 'index'])->name('users.index');
@@ -97,6 +97,14 @@ Route::middleware('web')->group(function () {
         Route::delete('/{id}', [ShopController::class, 'destroy'])->name('seller.destroy');
         Route::get('/{id}', [ShopController::class, 'showProfile'])->middleware('auth');
     });
+
+    Route::get('shippings', [ShippingController::class, 'index']);
+    Route::post('shippings', [ShippingController::class, 'store']);
+    Route::get('shippings/{uuid}', [ShippingController::class, 'show']);
+    Route::put('shippings/{uuid}', [ShippingController::class, 'update']);
+    Route::delete('shippings/{uuid}', [ShippingController::class, 'destroy']);
+    Route::post('shippings/calculate', [ShippingController::class, 'calculateShippingCost'
+    ]);
 
     Route::post('logout', [AuthenticationController::class, 'logout'])->name('logout');
 

@@ -9,15 +9,18 @@ use Illuminate\Database\Eloquent\Model;
 class ProductSize extends Model
 {
     use HasFactory;
-
-    protected $fillable = ['uuid','product_uuid', 'size', 'stock'];
+    protected $table = 'product_size';
+    protected $primaryKey = 'id';
+    protected $fillable = ['id','product_id', 'size_id'];
 
     public function product()
     {
-        return $this->belongsTo(Product::class, 'product_uuid', 'uuid');
+        return $this->hasMany(Product::class, 'product_id');
     }
-    /**
-     * Boot method for the model.
-     */
+    public function size()
+    {
+        return $this->hasMany(Size::class,'size_id');
+    }
+
 
 }

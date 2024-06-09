@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
-use App\Helpers\UuidHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Ramsey\Uuid\Uuid;
+
 
 class Order extends Model
 {
@@ -38,8 +37,8 @@ class Order extends Model
         return $this->belongsTo(Address::class, 'address_id', 'id');
     }
 
-    public function userPayment()
+    public function payment()
     {
-        return $this->belongsTo(UserPayment::class, 'user_payment_id', 'id');
+        return $this->belongsTo(Payment::class, 'payment_id', 'id');
     }
 }

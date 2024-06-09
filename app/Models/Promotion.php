@@ -8,9 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Promotion extends Model
 {
     use HasFactory;
-
-    protected $keyType = 'id';
-    public $incrementing = false;
+    protected $table = 'promotions';
+    protected $primary = 'id';
 
     protected $fillable = [
         'id',

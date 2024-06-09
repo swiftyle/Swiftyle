@@ -31,13 +31,8 @@
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Gender</th>
-                                <th>Address</th>
-                                <th>Account Created</th>
-                                <th>Status</th>
+                                <th>Rating</th>
+                                <th>User ID</th>
                                 <th>
                                     <div class="setting-list">
                                         <ul class="list-unstyled setting-option">
@@ -55,37 +50,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($users as $user)
+                            @foreach ($shops as $shop)
                                 <tr>
                                     <td>
                                         <div class="media">
-                                            <img class="img-fluid rounded-circle" src="{{ $user->avatar }}"
+                                            <img class="img-fluid rounded-circle" src="{{ $shop->image }}"
                                                 alt="" width="30px" height="30px">
                                             <div class="media-body">
-                                                <span>{{ $user->name }}</span>
+                                                <span>{{ $shop->name }}</span>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
-                                        <p>{{ $user->username }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{{ $user->email }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{{ $user->role }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{{ $user->gender }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{{ $user->address }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{{ $user->created_at->format('Y-m-d') }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{{ $user->status }}</p>
+                                        <p>{{ $shop->rating }}</p>
                                     </td>
                                     
                                 </tr>
@@ -94,7 +71,7 @@
                     </table>
                 </div>
                 <div class="pagination">
-                    {{ $users->links() }}
+                    {{ $shops->links() }}
                 </div>
             </div>
         </div>

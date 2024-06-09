@@ -17,7 +17,7 @@ class Cart extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'product_id', 'quantity', 'price', 'discount', 'total_discount', 'subtotal', 'total_price',
+        'id', 'quantity', 'price', 'discount', 'total_discount', 'subtotal', 'total_price',
     ];
 
     /**
@@ -27,8 +27,8 @@ class Cart extends Model
     /**
      * Get the product that owns the cart item.
      */
-    public function product()
+    public function cartItem()
     {
-        return $this->belongsTo(Product::class, 'product_id', 'id');
+        return $this->belongsToMany(Product::class, 'cart_item');
     }
 }

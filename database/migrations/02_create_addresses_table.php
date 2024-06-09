@@ -32,7 +32,6 @@ return new class extends Migration
             $table->string('apartment_number', 255)->nullable();
             $table->string('postal_code', 10);
             $table->string('phone_number', 20);
-            // $table->timestamps();
             $table->softDeletes();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
