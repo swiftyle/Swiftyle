@@ -13,6 +13,7 @@ class Order extends Model
     protected $fillable = [
         'id',
         'user_id',
+        'transaction_id',
         'shipping_id',
         'total',
         'status',
@@ -47,4 +48,10 @@ class Order extends Model
     {
         return $this->hasOne(RefundRequest::class, 'order_id', 'id');
     }
+
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class, 'transaction_id', 'transaction_id');
+    }
+    
 }

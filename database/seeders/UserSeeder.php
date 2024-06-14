@@ -23,6 +23,7 @@ class UserSeeder extends Seeder
             'phone_number' => '(+62)85217861296',
             'gender' => 'Male',
             'role' => 'Admin',
+            'pin_code' => 140622,
             'remember_token' => Str::random(10),
             'updated_at' => null
         ]);
@@ -35,6 +36,7 @@ class UserSeeder extends Seeder
             'phone_number' => '(+62)85781509636',
             'gender' => 'Male',
             'role' => 'Admin',
+            'pin_code' => 170304,
             'remember_token' => Str::random(10),
             'updated_at' => null
         ]);
@@ -47,6 +49,7 @@ class UserSeeder extends Seeder
             'phone_number' => '(+62)83814720164',
             'gender' => 'Female',
             'role' => 'Seller',
+            'pin_code' => 113004,
             'remember_token' => Str::random(10),
             'updated_at' => null
         ]);
@@ -59,6 +62,7 @@ class UserSeeder extends Seeder
             'phone_number' => '(+62)81213570340',
             'gender' => 'Male',
             'role' => 'Admin',
+            'pin_code' => 107103,
             'remember_token' => Str::random(10),
             'updated_at' => null
         ]);
@@ -71,6 +75,7 @@ class UserSeeder extends Seeder
             'phone_number' => '(+62)88212691489',
             'gender' => 'Female',
             'role' => 'Customer',
+            'pin_code' => '120004',
             'remember_token' => Str::random(10),
             'updated_at' => null
         ]);

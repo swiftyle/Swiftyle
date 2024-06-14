@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Order;
 use App\Models\OrderHistory;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -15,14 +14,6 @@ class OrderHistoryController extends Controller
 {
     public function create(Request $request)
     {
-        try {
-            // Decode JWT token to get user data
-            $data = JWT::decode($request->bearerToken(), new Key(env('JWT_SECRET_KEY'), 'HS256'));
-            $user = User::find($data->id);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
-
         // Validate incoming request
         $validator = Validator::make($request->all(), [
             'order_id' => 'required|exists:orders,id',
@@ -49,13 +40,6 @@ class OrderHistoryController extends Controller
 
     public function read(Request $request, $orderId)
     {
-        try {
-            // Decode JWT token to get user data
-            $data = JWT::decode($request->bearerToken(), new Key(env('JWT_SECRET_KEY'), 'HS256'));
-            $user = User::find($data->id);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
 
         // Fetch order histories associated with the given order ID
         $orderHistories = OrderHistory::where('order_id', $orderId)->get();

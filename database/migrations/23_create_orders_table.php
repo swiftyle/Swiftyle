@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('transaction_id')->unique();
             $table->unsignedBigInteger('shipping_id');
             $table->foreign('shipping_id')->references('id')->on('shipping')->onDelete('cascade')->onUpdate('cascade');
             $table->enum('status', ['delivered', 'recieved', 'reviewed']);

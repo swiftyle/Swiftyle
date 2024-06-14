@@ -82,7 +82,8 @@ class JWTAuth
                 'api/app-coupons*', 
                 'api/carts*', 
                 'api/cart-item*', 
-                'api/refunds*'
+                'api/refunds*',
+                'api/payments*'
             ],
             'Customer' => [
                 'api/main-categories*', 

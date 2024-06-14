@@ -6,10 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Checkout;
 use App\Models\User;
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Midtrans\Config;
+use Midtrans\Snap;
 
 class CheckoutController extends Controller
 {
@@ -31,13 +31,23 @@ class CheckoutController extends Controller
                 },
             ],
             'payment_id' => 'required|exists:payments,id',
-            'address_id' => 'required|exists:addresses,id',
+            'address_id' => [
+                'required',
+                'exists:addresses,id',
+                function ($attribute, $value, $fail) use ($user) {
+                    // Check if the address belongs to the authenticated user
+                    $address = $user->addresses()->find($value);
+                    if (!$address) {
+                        return $fail('Invalid address_id');
+                    }
+                },
+            ],
             'courier_id' => 'required|exists:couriers,id',
             'total_amount' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->messages())->setStatusCode(422);
+            return response()->json($validator->messages(), 422);
         }
 
         $validated = $validator->validated();
@@ -51,12 +61,36 @@ class CheckoutController extends Controller
             'total_amount' => $validated['total_amount'],
         ]);
 
-        return response()->json([
-            'message' => 'Checkout created successfully',
-            'data' => $checkout
-        ], 201);
-    }
+        // Process payment using Midtrans
+        try {
+            // Set Midtrans configuration
+            Config::$serverKey = env('MIDTRANS_SERVER_KEY');
+            Config::$isProduction = env('MIDTRANS_IS_PRODUCTION', false);
+            Config::$is3ds = true;
 
+            // Prepare transaction details
+            $transactionDetails = [
+                'order_id' => 'ORDER-' . $checkout->id,
+                'gross_amount' => $checkout->total_amount,
+            ];
+
+            // Get Snap payment URL
+            $snapToken = Snap::getSnapToken($transactionDetails);
+
+            // Construct redirect URL manually
+            $redirectUrl = 'https://app.sandbox.midtrans.com/snap/v1/vtweb/' . $snapToken;
+
+            // Return Snap token and redirect URL to client
+            return response()->json([
+                'message' => 'Checkout created successfully',
+                'snap_token' => $snapToken,
+                'redirect_url' => $redirectUrl,
+                'data' => $checkout
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to process payment: ' . $e->getMessage()], 500);
+        }
+    }
 
     public function read()
     {

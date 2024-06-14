@@ -5,9 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Events\ComplaintSubmitted;
 use App\Http\Controllers\Controller;
 use App\Models\Complaint;
-use App\Models\User;
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -48,7 +45,6 @@ class ComplaintController extends Controller
         ], 201);
     }
 
-
     public function readAll(Request $request)
     {
         $user = $request->user();
@@ -66,7 +62,6 @@ class ComplaintController extends Controller
             'data' => $complaints
         ], 200);
     }
-
 
     public function read(Request $request, $id)
     {

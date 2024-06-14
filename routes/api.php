@@ -43,8 +43,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Public routes
-Route::post('login', [AuthenticationController::class, 'login']);
+Route::post('login', [AuthenticationController::class, 'login'])->middleware('throttle:login');
 Route::post('register', [AuthenticationController::class, 'register']);
+Route::post('otp', [AuthenticationController::class, 'sendOTPMail']);
 
 Route::prefix('auth/google')->group(function () {
     Route::get('', [ProviderController::class, 'redirect']);

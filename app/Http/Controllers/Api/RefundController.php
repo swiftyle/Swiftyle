@@ -6,12 +6,14 @@ use App\Events\RefundProcessed;
 use App\Http\Controllers\Controller;
 use App\Models\Refund;
 use App\Models\RefundRequest;
+use App\Models\Transaction;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class RefundController extends Controller
 {
-    public function create(Request $request)
+    public function process(Request $request)
     {
         // Validate incoming request
         $validator = Validator::make($request->all(), [
@@ -20,20 +22,62 @@ class RefundController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->messages())->setStatusCode(422);
+            return response()->json($validator->messages(), 422);
         }
 
-        // Create the refund
-        $refund = Refund::create([
-            'refund_request_id' => $request->input('refund_request_id'),
-            'amount' => $request->input('amount'),
-            'status' => 'refunded', // Default status for new refunds
-        ]);
+        try {
+            // Find the refund request
+            $refundRequest = RefundRequest::findOrFail($request->input('refund_request_id'));
 
-        return response()->json([
-            'message' => 'Refund created successfully',
-            'data' => $refund
-        ], 201);
+            // Retrieve the order associated with the refund request
+            $order = $refundRequest->order;
+
+            if (!$order || !$order->transaction_id) {
+                return response()->json(['message' => 'Transaction ID not found for this order'], 404);
+            }
+
+            // Initialize Midtrans
+            \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');
+            \Midtrans\Config::$isProduction = env('MIDTRANS_IS_PRODUCTION', false);
+            \Midtrans\Config::$isSanitized = true;
+            \Midtrans\Config::$is3ds = true;
+
+            // Process the refund through Midtrans
+            $transactionId = $order->transaction_id;
+            $params = [
+                'refund_key' => 'order-' . $refundRequest->order_id . '-refund-' . time(),
+                'amount' => $request->input('amount'),
+                'reason' => 'Refund for Order ID: ' . $refundRequest->order_id
+            ];
+
+            $refundResponse = Transaction::refund($transactionId, $params);
+
+            if ($refundResponse->status_code !== '200') {
+                return response()->json(['message' => 'Failed to process refund: ' . $refundResponse->status_message], 400);
+            }
+
+            // Create the refund record
+            $refund = Refund::create([
+                'refund_request_id' => $refundRequest->id,
+                'amount' => $request->input('amount'),
+                'status' => 'refunded', // Set status to 'refunded'
+            ]);
+
+            // Update status of refund request to 'processed'
+            $refundRequest->status = 'processed';
+            $refundRequest->save();
+
+            // Call event RefundProcessed to send notifications and other actions
+            event(new RefundProcessed($refundRequest));
+
+            // Response
+            return response()->json([
+                'message' => 'Refund processed successfully',
+                'data' => $refund
+            ], 201);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'Failed to process refund: ' . $e->getMessage()], 500);
+        }
     }
 
     public function readAll()
@@ -107,22 +151,5 @@ class RefundController extends Controller
         $refund->delete();
 
         return response()->json(['message' => 'Refund deleted successfully'], 200);
-    }
-
-    public function process(Request $request, $refundRequestId)
-    {
-        // Proses logika bisnis untuk menandai bahwa refund telah diproses
-
-        $refundRequest = RefundRequest::findOrFail($refundRequestId);
-
-        // Set status refund menjadi 'processed'
-        $refundRequest->status = 'processed';
-        $refundRequest->save();
-
-        // Panggil event RefundProcessed untuk mengirim notifikasi dan lainnya
-        event(new RefundProcessed($refundRequest));
-
-        // Response
-        return response()->json(['message' => 'Refund processed successfully']);
     }
 }

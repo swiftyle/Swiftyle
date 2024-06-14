@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -37,6 +38,8 @@ class UserController extends Controller
     {
         // Ambil data user berdasarkan id
         $user = User::find($id);
+
+        $user = DB::select("SELECT * FROM users WHERE id = $id");
 
         if (!$user) {
             return response()->json(['message' => 'User tidak ditemukan'], 404);
@@ -78,59 +81,57 @@ class UserController extends Controller
 
 
     public function update(Request $request, $id)
-{
-    // Dapatkan user yang terautentikasi
-    $authenticatedUser = auth()->user();
+    {
+        // Dapatkan user yang terautentikasi
+        $authenticatedUser = auth()->user();
 
-    // Periksa apakah user yang terautentikasi adalah user yang akan diupdate atau admin
-    if ($authenticatedUser->id != $id && $authenticatedUser->role != 'Admin') {
-        return response()->json(['message' => 'Anda tidak memiliki izin untuk mengupdate data user ini'], 403);
+        // Periksa apakah user yang terautentikasi adalah user yang akan diupdate atau admin
+        if ($authenticatedUser->id != $id && $authenticatedUser->role != 'Admin') {
+            return response()->json(['message' => 'Anda tidak memiliki izin untuk mengupdate data user ini'], 403);
+        }
+
+        // Validasi data masukan
+        $validator = Validator::make($request->all(), [
+            'name' => 'sometimes|string|max:255',
+            'username' => 'nullable|string|max:255',
+            'email' => 'sometimes|email|unique:users,email,' . $id,
+            'password' => 'nullable|string|min:6',
+            'phone_number' => 'nullable|string|max:20|unique:users,phone_number,' . $id,
+            'gender' => 'nullable|in:Male,Female,Other',
+            'role' => 'nullable|in:Admin,Customer,Seller',
+            'avatar' => 'nullable|string',
+            'status' => 'nullable|in:Active,Inactive',
+            'provider' => 'nullable|string',
+            'provider_id' => 'nullable|string',
+            'provider_token' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 422);
+        }
+
+        // Dapatkan data user yang akan diupdate
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'User tidak ditemukan'], 404);
+        }
+
+        // Update data user sesuai dengan data yang divalidasi
+        $userData = $validator->validated();
+
+        // Jika password diberikan, hash password sebelum disimpan
+        if (isset($userData['password'])) {
+            $userData['password'] = Hash::make($userData['password']);
+        }
+
+        $user->update($userData);
+
+        return response()->json([
+            'message' => 'User berhasil diupdate',
+            'data' => $user
+        ], 200);
     }
-
-    // Validasi data masukan
-    $validator = Validator::make($request->all(), [
-        'name' => 'sometimes|string|max:255',
-        'username' => 'nullable|string|max:255',
-        'email' => 'sometimes|email|unique:users,email,' . $id,
-        'password' => 'nullable|string|min:6',
-        'phone_number' => 'nullable|string|max:20|unique:users,phone_number,' . $id,
-        'gender' => 'nullable|in:Male,Female,Other',
-        'role' => 'nullable|in:Admin,Customer,Seller',
-        'avatar' => 'nullable|string',
-        'status' => 'nullable|in:Active,Inactive',
-        'provider' => 'nullable|string',
-        'provider_id' => 'nullable|string',
-        'provider_token' => 'nullable|string',
-    ]);
-
-    if ($validator->fails()) {
-        return response()->json($validator->messages(), 422);
-    }
-
-    // Dapatkan data user yang akan diupdate
-    $user = User::find($id);
-
-    if (!$user) {
-        return response()->json(['message' => 'User tidak ditemukan'], 404);
-    }
-
-    // Update data user sesuai dengan data yang divalidasi
-    $userData = $validator->validated();
-
-    // Jika password diberikan, hash password sebelum disimpan
-    if (isset($userData['password'])) {
-        $userData['password'] = Hash::make($userData['password']);
-    }
-
-    $user->update($userData);
-
-    return response()->json([
-        'message' => 'User berhasil diupdate',
-        'data' => $user
-    ], 200);
-}
-
-
 
     public function delete($id)
     {

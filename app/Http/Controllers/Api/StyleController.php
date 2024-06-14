@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Style;
-use App\Models\User;
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -14,9 +11,7 @@ class StyleController extends Controller
 {
     public function create(Request $request)
     {
-        // Decode JWT token to get user data
-        $data = JWT::decode($request->bearerToken(), new Key(env('JWT_SECRET_KEY'), 'HS256'));
-        $user = User::find($data->id);
+        $user = $request->user();
 
         // User is authenticated, proceed with validation and data creation
         $validator = Validator::make($request->all(), [
@@ -53,8 +48,7 @@ class StyleController extends Controller
     public function update(Request $request, $id)
     {
         // Decode JWT token to get user data
-        $data = JWT::decode($request->bearerToken(), new Key(env('JWT_SECRET_KEY'), 'HS256'));
-        $user = User::find($data->id);
+        $user = $request->user();
 
         // Validasi input
         $validator = Validator::make($request->all(), [
@@ -83,11 +77,10 @@ class StyleController extends Controller
         ], 200);
     }
 
-    public function delete($id)
+    public function delete(Request $request, $id)
     {
         // Decode JWT token to get user data
-        $data = JWT::decode(request()->bearerToken(), new Key(env('JWT_SECRET_KEY'), 'HS256'));
-        $user = User::find($data->id);
+        $user = $request->user();
 
         // Cari style yang akan dihapus
         $style = $user->styles()->find($id);

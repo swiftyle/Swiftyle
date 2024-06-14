@@ -11,9 +11,11 @@ class RefundRequestController extends Controller
 {
     public function create(Request $request)
     {
+        // Get the currently authenticated user
+        $user = $request->user();
+
         // Validate incoming request
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
             'order_id' => 'required|exists:orders,id',
             'reason' => 'required|string',
         ]);
@@ -24,7 +26,7 @@ class RefundRequestController extends Controller
 
         // Create the refund request
         $refundRequest = RefundRequest::create([
-            'user_id' => $request->input('user_id'),
+            'user_id' => $user->id,  // Automatically set the user_id from the authenticated user
             'order_id' => $request->input('order_id'),
             'reason' => $request->input('reason'),
         ]);
@@ -35,10 +37,25 @@ class RefundRequestController extends Controller
         ], 201);
     }
 
-    public function readAll()
+
+    public function read(Request $request)
     {
-        // Fetch all refund requests
-        $refundRequests = RefundRequest::all();
+        // Get the currently authenticated user
+        $user = $request->user();
+
+        if ($user->role === 'Admin') {
+            // Admin can view all refund requests
+            $refundRequests = RefundRequest::all();
+        } elseif ($user->role === 'Seller') {
+            // Sellers can only see refund requests for their products
+            $refundRequests = RefundRequest::whereHas('order.shipping.checkout.cart.cartItems.product', function ($query) use ($user) {
+                $query->where('shop_id', $user->shop->id); // Assuming the seller has one shop associated
+            })->get();
+        } else {
+            return response()->json([
+                'message' => 'Unauthorized'
+            ], 403);
+        }
 
         return response()->json([
             'message' => 'Refund requests fetched successfully',
@@ -46,7 +63,8 @@ class RefundRequestController extends Controller
         ], 200);
     }
 
-    public function read($id)
+
+    public function readById($id)
     {
         // Fetch refund request by ID
         $refundRequest = RefundRequest::find($id);
@@ -63,12 +81,17 @@ class RefundRequestController extends Controller
 
     public function update(Request $request, $id)
     {
+        // Get the currently authenticated user
+        $user = $request->user();
+
+        // Check if the user is an Admin
+        if ($user->role !== 'Admin') {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
         // Validate incoming request
         $validator = Validator::make($request->all(), [
-            'user_id' => 'exists:users,id',
-            'order_id' => 'exists:orders,id',
-            'reason' => 'string',
-            'status' => 'in:pending,approved,rejected',
+            'status' => 'required|in:pending,approved,rejected',
         ]);
 
         if ($validator->fails()) {
@@ -82,31 +105,13 @@ class RefundRequestController extends Controller
             return response()->json(['message' => 'Refund request not found'])->setStatusCode(404);
         }
 
-        // Update the refund request
-        $refundRequest->user_id = $request->input('user_id', $refundRequest->user_id);
-        $refundRequest->order_id = $request->input('order_id', $refundRequest->order_id);
-        $refundRequest->reason = $request->input('reason', $refundRequest->reason);
-        $refundRequest->status = $request->input('status', $refundRequest->status);
+        // Update the refund request status
+        $refundRequest->status = $request->input('status');
         $refundRequest->save();
 
         return response()->json([
-            'message' => 'Refund request updated successfully',
+            'message' => 'Refund request status updated successfully',
             'data' => $refundRequest
         ], 200);
-    }
-
-    public function delete($id)
-    {
-        // Find the refund request
-        $refundRequest = RefundRequest::find($id);
-
-        if (!$refundRequest) {
-            return response()->json(['message' => 'Refund request not found'])->setStatusCode(404);
-        }
-
-        // Delete the refund request
-        $refundRequest->delete();
-
-        return response()->json(['message' => 'Refund request deleted successfully'], 200);
     }
 }

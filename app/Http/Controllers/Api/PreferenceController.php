@@ -15,9 +15,7 @@ class PreferenceController extends Controller
 {
     public function create(Request $request)
     {
-        // Decode JWT token to get user data
-        $data = JWT::decode($request->bearerToken(), new Key(env('JWT_SECRET_KEY'), 'HS256'));
-        $user = User::find($data->id);
+        $user = $request->user();
 
         // User is authenticated, proceed with validation and data creation
         $validator = Validator::make($request->all(), [
@@ -40,8 +38,9 @@ class PreferenceController extends Controller
         ], 201);
     }
 
-    public function read()
+    public function read(Request $request)
     {
+        $user = $request->user();
         // Ambil semua data preference
         $preferences = Preference::all();
 
@@ -53,9 +52,7 @@ class PreferenceController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Decode JWT token to get user data
-        $data = JWT::decode($request->bearerToken(), new Key(env('JWT_SECRET_KEY'), 'HS256'));
-        $user = User::find($data->id);
+        $user = $request->user();
 
         // Validasi input
         $validator = Validator::make($request->all(), [
@@ -84,11 +81,9 @@ class PreferenceController extends Controller
         ], 200);
     }
 
-    public function delete($id)
+    public function delete(Request $request, $id)
     {
-        // Decode JWT token to get user data
-        $data = JWT::decode(request()->bearerToken(), new Key(env('JWT_SECRET_KEY'), 'HS256'));
-        $user = User::find($data->id);
+        $user = $request->user();
 
         // Cari preference yang akan dihapus
         $preference = $user->preferences()->find($id);

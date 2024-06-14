@@ -15,13 +15,7 @@ class TransactionController extends Controller
 {
     public function create(Request $request)
     {
-        try {
-            // Decode JWT token to get user data
-            $data = JWT::decode($request->bearerToken(), new Key(env('JWT_SECRET_KEY'), 'HS256'));
-            $user = User::find($data->id);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
+        $user = $request->user();
 
         // Validate incoming request
         $validator = Validator::make($request->all(), [
@@ -53,13 +47,7 @@ class TransactionController extends Controller
 
     public function read(Request $request, $userId)
     {
-        try {
-            // Decode JWT token to get user data
-            $data = JWT::decode($request->bearerToken(), new Key(env('JWT_SECRET_KEY'), 'HS256'));
-            $user = User::find($data->id);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
+        $user = $request->user();
 
         // Fetch transactions associated with the given user ID
         $transactions = Transaction::where('user_id', $userId)->get();

@@ -14,8 +14,7 @@ class SubCategoryController extends Controller
 {
     public function create(Request $request)
     {
-        $data = JWT::decode($request->bearerToken(), new Key(env('JWT_SECRET_KEY'), 'HS256'));
-        $user = User::find($data->id);
+        $user = $request->user();
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -48,8 +47,9 @@ class SubCategoryController extends Controller
         ], 201);
     }
 
-    public function read()
+    public function read(Request $request)
     {
+        $user = $request->user();
         $subCategories = SubCategory::with('mainCategory')->get();
         return response()->json([
             'message' => 'List of all subcategories',
@@ -59,8 +59,7 @@ class SubCategoryController extends Controller
 
     public function update(Request $request, $id)
     {
-        $data = JWT::decode($request->bearerToken(), new Key(env('JWT_SECRET_KEY'), 'HS256'));
-        $user = User::find($data->id);
+        $user = $request->user();
 
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|string|max:255',
@@ -99,8 +98,9 @@ class SubCategoryController extends Controller
         ], 200);
     }
 
-    public function delete($id)
+    public function delete(Request $request, $id)
     {
+        $user = $request->user();
         $subCategory = SubCategory::find($id);
 
         if (!$subCategory) {

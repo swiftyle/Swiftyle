@@ -6,7 +6,7 @@ use App\Models\Product;
 use App\Observers\ProductObserver;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
-use App\Http\ViewComposers\ViewComposer;
+use Midtrans\Config;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,5 +32,9 @@ class AppServiceProvider extends ServiceProvider
         
         Product::observe(ProductObserver::class);
         // View::composer('*',ViewComposer::class);
+        Config::$serverKey = config('midtrans.server_key');
+        Config::$isProduction = config('midtrans.is_production');
+        Config::$isSanitized = config('midtrans.is_sanitized');
+        Config::$is3ds = config('midtrans.is_3ds');
     }
 }

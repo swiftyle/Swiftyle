@@ -14,13 +14,7 @@ class WishlistController extends Controller
 {
     public function create(Request $request)
     {
-        try {
-            // Decode JWT token to get user data
-            $data = JWT::decode($request->bearerToken(), new Key(env('JWT_SECRET_KEY'), 'HS256'));
-            $user = User::find($data->id);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
+        $user = $request->user();
 
         // Validate incoming request
         $validator = Validator::make($request->all(), [
@@ -45,13 +39,7 @@ class WishlistController extends Controller
 
     public function read($request)
     {
-        try {
-            // Decode JWT token to get user data
-            $data = JWT::decode($request->bearerToken(), new Key(env('JWT_SECRET_KEY'), 'HS256'));
-            $user = User::find($data->id);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
+        $user = $request->user();
 
         // Fetch wishlists belonging to the authenticated user
         $wishlists = Wishlist::where('user_id', $user->id)->get();
@@ -64,13 +52,7 @@ class WishlistController extends Controller
 
     public function update(Request $request, $id)
     {
-        try {
-            // Decode JWT token to get user data
-            $data = JWT::decode($request->bearerToken(), new Key(env('JWT_SECRET_KEY'), 'HS256'));
-            $user = User::find($data->id);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
+        $user = $request->user();
 
         // Validate incoming request
         $validator = Validator::make($request->all(), [
@@ -103,13 +85,7 @@ class WishlistController extends Controller
 
     public function delete(Request $request, $id)
     {
-        try {
-            // Decode JWT token to get user data
-            $data = JWT::decode($request->bearerToken(), new Key(env('JWT_SECRET_KEY'), 'HS256'));
-            $user = User::find($data->id);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
+        $user = $request->user();
 
         // Find the wishlist
         $wishlist = Wishlist::where('user_id', $user->id)->find($id);

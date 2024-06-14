@@ -12,6 +12,7 @@ class ReviewController extends Controller
 {
     public function create(Request $request)
     {
+        $user = $request->user();
         // Validate incoming request
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|exists:users,id',
@@ -41,8 +42,9 @@ class ReviewController extends Controller
         ], 201);
     }
 
-    public function readAll()
+    public function readAll(Request $request)
     {
+        $user = $request->user();
         // Fetch all reviews
         $reviews = Review::all();
 
@@ -52,8 +54,9 @@ class ReviewController extends Controller
         ], 200);
     }
 
-    public function read($id)
+    public function read(Request $request, $id)
     {
+        $user = $request->user();
         // Fetch review by ID
         $review = Review::find($id);
 
@@ -69,6 +72,7 @@ class ReviewController extends Controller
 
     public function update(Request $request, $id)
     {
+        $user = $request->user();
         // Validate incoming request
         $validator = Validator::make($request->all(), [
             'user_id' => 'exists:users,id',

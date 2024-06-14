@@ -14,8 +14,7 @@ class PromotionController extends Controller
 {
     public function create(Request $request)
     {
-        $data = JWT::decode($request->bearerToken(), new Key(env('JWT_SECRET_KEY'), 'HS256'));
-        $user = User::find($data->id);
+        $user = $request->user();
 
         // User is authenticated, proceed with validation and data creation
         $validator = Validator::make($request->all(), [
@@ -55,8 +54,9 @@ class PromotionController extends Controller
         ], 200);
     }
 
-    public function read()
+    public function read(Request $request)
     {
+        $user = $request->user();
         $promotions = Promotion::all();
         return response()->json([
             'msg' => 'Data Promosi Keseluruhan',
@@ -66,8 +66,7 @@ class PromotionController extends Controller
 
     public function update(Request $request, $id)
     {
-        $data = JWT::decode($request->bearerToken(), new Key(env('JWT_SECRET_KEY'), 'HS256'));
-        $user = User::find($data->id);
+        $user = $request->user();
 
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|string|max:255',
@@ -113,8 +112,9 @@ class PromotionController extends Controller
         ], 404);
     }
 
-    public function delete($id)
+    public function delete(Request $request, $id)
     {
+        $user = $request->user();
         $promotion = Promotion::find($id);
 
         if ($promotion) {

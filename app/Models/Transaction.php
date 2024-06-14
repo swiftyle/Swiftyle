@@ -25,8 +25,8 @@ class Transaction extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function product()
+    public function order()
     {
-        return $this->belongsTo(Product::class, 'product_id', 'id');
+        return $this->hasOne(Order::class, 'transaction_id', 'transaction_id');
     }
 }
