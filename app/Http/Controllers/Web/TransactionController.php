@@ -15,9 +15,9 @@ class TransactionController extends Controller
         return view('transactions.index', compact('transactions'));
     }
 
-    public function show($uuid)
+    public function show($id)
     {
-        $transaction = Transaction::findOrFail($uuid);
+        $transaction = Transaction::findOrFail($id);
         return view('transactions.show', compact('transaction'));
     }
 
@@ -29,8 +29,8 @@ class TransactionController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_uuid' => 'required|uuid',
-            'product_uuid' => 'required|uuid',
+            'user_id' => 'required|id',
+            'product_id' => 'required|id',
             'amount' => 'required|numeric',
             'type' => 'required|in:purchase,refund,payment,withdrawal',
             'status' => 'required|string',
@@ -42,22 +42,22 @@ class TransactionController extends Controller
 
         $transaction = Transaction::create($validator->validated());
 
-        return redirect()->route('transactions.show', $transaction->uuid)->with('success', 'Transaction created successfully');
+        return redirect()->route('transactions.show', $transaction->id)->with('success', 'Transaction created successfully');
     }
 
-    public function edit($uuid)
+    public function edit($id)
     {
-        $transaction = Transaction::findOrFail($uuid);
+        $transaction = Transaction::findOrFail($id);
         return view('transactions.edit', compact('transaction'));
     }
 
-    public function update(Request $request, $uuid)
+    public function update(Request $request, $id)
     {
-        $transaction = Transaction::findOrFail($uuid);
+        $transaction = Transaction::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
-            'user_uuid' => 'uuid',
-            'product_uuid' => 'uuid',
+            'user_id' => 'id',
+            'product_id' => 'id',
             'amount' => 'numeric',
             'type' => 'in:purchase,refund,payment,withdrawal',
             'status' => 'string',
@@ -69,12 +69,12 @@ class TransactionController extends Controller
 
         $transaction->update($validator->validated());
 
-        return redirect()->route('transactions.show', $transaction->uuid)->with('success', 'Transaction updated successfully');
+        return redirect()->route('transactions.show', $transaction->id)->with('success', 'Transaction updated successfully');
     }
 
-    public function destroy($uuid)
+    public function destroy($id)
     {
-        $transaction = Transaction::findOrFail($uuid);
+        $transaction = Transaction::findOrFail($id);
         $transaction->delete();
 
         return redirect()->route('transactions.index')->with('success', 'Transaction deleted successfully');

@@ -11,13 +11,19 @@ class Style extends Model
     use HasFactory, SoftDeletes;
     protected $fillable = [
         'name',
-        'description'];
-        protected $hidden = [
-            'created_at',
-            'updated_at'
-        ];
-        public function products()
-        {
-            return $this->belongsToMany(Product::class, 'product_style');
-        }
+        'description'
+    ];
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'product_style');
+    }
+
+    public function users()
+    { 
+        return $this->belongsToMany(User::class, 'preferences');
+    }
 }

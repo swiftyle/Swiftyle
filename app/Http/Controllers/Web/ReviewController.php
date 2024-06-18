@@ -15,9 +15,9 @@ class ReviewController extends Controller
         return view('reviews.index', compact('reviews'));
     }
 
-    public function show($uuid)
+    public function show($id)
     {
-        $review = Review::findOrFail($uuid);
+        $review = Review::findOrFail($id);
         return view('reviews.show', compact('review'));
     }
 
@@ -29,8 +29,8 @@ class ReviewController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_uuid' => 'required|uuid',
-            'product_uuid' => 'required|uuid',
+            'user_id' => 'required|id',
+            'product_id' => 'required|id',
             'content' => 'required|string',
             'rating' => 'required|integer|min:1|max:5',
         ]);
@@ -41,22 +41,22 @@ class ReviewController extends Controller
 
         $review = Review::create($validator->validated());
 
-        return redirect()->route('reviews.show', $review->uuid)->with('success', 'Review created successfully');
+        return redirect()->route('reviews.show', $review->id)->with('success', 'Review created successfully');
     }
 
-    public function edit($uuid)
+    public function edit($id)
     {
-        $review = Review::findOrFail($uuid);
+        $review = Review::findOrFail($id);
         return view('reviews.edit', compact('review'));
     }
 
-    public function update(Request $request, $uuid)
+    public function update(Request $request, $id)
     {
-        $review = Review::findOrFail($uuid);
+        $review = Review::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
-            'user_uuid' => 'uuid',
-            'product_uuid' => 'uuid',
+            'user_id' => 'id',
+            'product_id' => 'id',
             'content' => 'string',
             'rating' => 'integer|min:1|max:5',
         ]);
@@ -67,12 +67,12 @@ class ReviewController extends Controller
 
         $review->update($validator->validated());
 
-        return redirect()->route('reviews.show', $review->uuid)->with('success', 'Review updated successfully');
+        return redirect()->route('reviews.show', $review->id)->with('success', 'Review updated successfully');
     }
 
-    public function destroy($uuid)
+    public function destroy($id)
     {
-        $review = Review::findOrFail($uuid);
+        $review = Review::findOrFail($id);
         $review->delete();
 
         return redirect()->route('reviews.index')->with('success', 'Review deleted successfully');

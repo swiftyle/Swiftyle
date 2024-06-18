@@ -1,29 +1,28 @@
 @extends('layouts.admin.master')
 
 @section('title')
-    Data Genre Table
+    Data Main Category Table
     {{ $title }}
 @endsection
 
 @push('css')
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/animate.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/chartist.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/date-picker.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/prism.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vector-map.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/animate.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/chartist.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/date-picker.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/prism.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vector-map.css') }}">
 @endpush
 
 @section('content')
     @component('components.breadcrumb')
         @slot('breadcrumb_title')
-            <h3>Data Genre</h3>
+            <h3>Data Main Category</h3>
         @endslot
         <li class="breadcrumb-item">Data</li>
-        <li class="breadcrumb-item active">Genre</li>
+        <li class="breadcrumb-item active">Main Category</li>
     @endcomponent
 
     <div class="container-fluid">
-
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
@@ -49,29 +48,27 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($genres as $genre)
+                            @foreach ($mainCategories as $mainCategory)
                                 <tr>
                                     <td>
-                                        <p>{{ $genre->name }}</p>
+                                        <p>{{ $mainCategory->name }}</p>
                                     </td>
                                     <td>
-                                        <p>{{ $genre->description }}</p>
+                                        <p>{{ $mainCategory->description }}</p>
                                     </td>
-                                    
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
                 <div class="pagination">
-                    {{ $genres->links() }}
+                    {{ $mainCategories->links() }}
                 </div>
             </div>
         </div>
     </div>
 
-
-        @push('scripts')
+    @push('scripts')
         <script>
             if (window.history && window.history.pushState) {
                 window.history.pushState(null, null, window.location.href);
@@ -91,5 +88,5 @@
         <script src="{{ asset('assets/js/custom-card/custom-card.js') }}"></script>
         <script src="{{ asset('assets/js/notify/bootstrap-notify.min.js') }}"></script>
         <script src="{{ asset('assets/js/dashboard/default.js') }}"></script>
-        @endpush
-    @endsection
+    @endpush
+@endsection

@@ -1,7 +1,7 @@
 @extends('layouts.admin.master')
 
 @section('title')
-    Data Category Table
+    Data Order Table
     {{ $title }}
 @endsection
 
@@ -10,16 +10,16 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/chartist.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/date-picker.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/prism.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vector-map.css') }}">
+<link rel="stylesheet" type="text/css' href="{{ asset('assets/css/vector-map.css') }}">
 @endpush
 
 @section('content')
     @component('components.breadcrumb')
         @slot('breadcrumb_title')
-            <h3>Data Category</h3>
+            <h3>Data Order</h3>
         @endslot
-        <li class="breadcrumb-item">Data</li>
-        <li class="breadcrumb-item active">Category</li>
+        <li class="breadcrumb-item">Order</li>
+        <li class="breadcrumb-item active">Data</li>
     @endcomponent
 
     <div class="container-fluid">
@@ -30,10 +30,11 @@
                     <table class="table table-bordernone">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Create By</th>
+                                <th>Transaction ID</th>
+                                <th>User</th>
+                                <th>Shipping</th>
+                                <th>Status</th>
                                 <th>
-                                    
                                     <div class="setting-list">
                                         <ul class="list-unstyled setting-option">
                                             <li>
@@ -50,47 +51,57 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($categorys as $category)
+                            @foreach ($orders as $order)
                                 <tr>
                                     <td>
-                                        <p>{{ $category->name }}</p>
+                                        <p>{{ $order->transaction_id }}</p>
                                     </td>
                                     <td>
-                                        <p>{{ $category->create_by }}</p>
+                                        <div class="media">
+                                            <img class="img-fluid rounded-circle" src="{{ $order->user->avatar }}"
+                                                alt="" width="30px" height="30px">
+                                            <div class="media-body">
+                                                <span>{{ $order->user->name }}</span>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td>
+                                        <p>{{ $order->shipping->address }}</p>
+                                    </td>
+                                    <td>
+                                        <p>{{ ucfirst($order->status) }}</p>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
                 <div class="pagination">
-                    {{ $categorys->links() }}
+                    {{ $orders->links() }}
                 </div>
             </div>
         </div>
     </div>
 
-
-        @push('scripts')
-        <script>
-            if (window.history && window.history.pushState) {
+@push('scripts')
+    <script>
+        if (window.history && window.history.pushState) {
+            window.history.pushState(null, null, window.location.href);
+            window.onpopstate = function() {
                 window.history.pushState(null, null, window.location.href);
-                window.onpopstate = function() {
-                    window.history.pushState(null, null, window.location.href);
-                };
-            }
-        </script>
+            };
+        }
+    </script>
 
-        <script src="{{ asset('assets/js/chart/knob/knob.min.js') }}"></script>
-        <script src="{{ asset('assets/js/chart/knob/knob-chart.js') }}"></script>
-        <script src="{{ asset('assets/js/prism/prism.min.js') }}"></script>
-        <script src="{{ asset('assets/js/clipboard/clipboard.min.js') }}"></script>
-        <script src="{{ asset('assets/js/counter/jquery.waypoints.min.js') }}"></script>
-        <script src="{{ asset('assets/js/counter/jquery.counterup.min.js') }}"></script>
-        <script src="{{ asset('assets/js/counter/counter-custom.js') }}"></script>
-        <script src="{{ asset('assets/js/custom-card/custom-card.js') }}"></script>
-        <script src="{{ asset('assets/js/notify/bootstrap-notify.min.js') }}"></script>
-        <script src="{{ asset('assets/js/dashboard/default.js') }}"></script>
-        @endpush
-    @endsection
+    <script src="{{ asset('assets/js/chart/knob/knob.min.js') }}"></script>
+    <script src="{{ asset('assets/js/chart/knob/knob-chart.js') }}"></script>
+    <script src="{{ asset('assets/js/prism/prism.min.js') }}"></script>
+    <script src="{{ asset('assets/js/clipboard/clipboard.min.js') }}"></script>
+    <script src="{{ asset('assets/js/counter/jquery.waypoints.min.js') }}"></script>
+    <script src="{{ asset('assets/js/counter/jquery.counterup.min.js') }}"></script>
+    <script src="{{ asset('assets/js/counter/counter-custom.js') }}"></script>
+    <script src="{{ asset('assets/js/custom-card/custom-card.js') }}"></script>
+    <script src="{{ asset('assets/js/notify/bootstrap-notify.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/default.js') }}"></script>
+@endpush
+@endsection

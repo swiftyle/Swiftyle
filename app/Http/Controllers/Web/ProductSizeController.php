@@ -29,7 +29,7 @@ class ProductSizeController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'product_uuid' => 'required|uuid',
+            'product_id' => 'required|id',
             'size' => 'required|string',
             'stock' => 'required|integer',
         ]);
@@ -48,7 +48,7 @@ class ProductSizeController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'product_uuid' => 'uuid',
+            'product_id' => 'id',
             'size' => 'string',
             'stock' => 'integer',
         ]);

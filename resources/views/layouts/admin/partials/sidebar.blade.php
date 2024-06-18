@@ -64,7 +64,7 @@
                     </li>
 
                     <li>
-                        <a class="nav-link menu-title link-nav {{ prefixActive('/seller') }} {{ routeActive('data-order') }}"
+                        <a class="nav-link menu-title link-nav {{ prefixActive('/orders') }} {{ routeActive('data-order') }}"
                             href="{{ route('orders.index') }}"><i data-feather="shopping-cart"></i><span>Data Order</span></a>
                     </li>
 
@@ -79,14 +79,14 @@
                             href="{{ route('products.index') }}"><i data-feather="grid"></i><span>Data Product</span></a>
                     </li>
 
-                    <li>
+                    {{-- <li>
                         <a class="nav-link menu-title link-nav {{ prefixActive('/specification') }} {{ routeActive('data-segment') }}"
                             href="{{ route('segments.index') }}"><i data-feather="grid"></i><span>Data Segment</span></a>
-                    </li>
+                    </li> --}}
                     
                     <li>
-                        <a class="nav-link menu-title link-nav {{ prefixActive('/specification') }} {{ routeActive('data-category') }}"
-                            href="{{ route('categories.index') }}"><i data-feather="grid"></i><span>Data Category</span></a>
+                        <a class="nav-link menu-title link-nav {{ prefixActive('/specification') }} {{ routeActive('data-main-category') }}"
+                            href="{{ route('mainCategories.index') }}"><i data-feather="grid"></i><span>Data Main Category</span></a>
                     </li>
 
 
@@ -95,10 +95,10 @@
                             href="{{ route('preferences.index') }}"><i data-feather="grid"></i><span>Data Preference</span></a>
                     </li>
                     
-                    <li>
+                    {{-- <li>
                         <a class="nav-link menu-title link-nav {{ prefixActive('/specification') }} {{ routeActive('data-genre') }}"
                             href="{{ route('genres.index') }}"><i data-feather="grid"></i><span>Data Genre</span></a>
-                    </li>
+                    </li> --}}
 
                     <li>
                         <a class="nav-link menu-title link-nav {{ prefixActive('/specification') }} {{ routeActive('data-style') }}"

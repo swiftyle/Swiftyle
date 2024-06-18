@@ -11,10 +11,8 @@ use App\Http\Controllers\Web\ProductsController;
 use App\Http\Controllers\Web\UsersController;
 use App\Http\Controllers\Web\Auth\AuthenticationController;
 use App\Http\Controllers\Web\ComplaintsController;
-use App\Http\Controllers\Web\GenresController;
 use App\Http\Controllers\Web\ProviderController;
 use App\Http\Controllers\Web\PasswordResetController;
-use App\Http\Controllers\Web\SegmentsController;
 use App\Http\Controllers\Web\ShippingController;
 use App\Http\Controllers\Web\StylesController;
 
@@ -96,6 +94,17 @@ Route::middleware('web')->group(function () {
         Route::get('/{id}', [ShopController::class, 'showProfile'])->middleware('auth');
     });
 
+    //Order
+    Route::group(['prefix' => 'order'], function () {
+        Route::get('/', [OrdersController::class, 'index'])->name('orders.index');
+        Route::get('/create', [OrdersController::class, 'create'])->name('orders.create');
+        Route::post('/', [OrdersController::class,'store'])->name('orders.store');
+        Route::get('/{id}', [OrdersController::class,'show'])->name('orders.show');
+        Route::get('/{id}/edit', [OrdersController::class, 'edit'])->name('orders.edit');
+        Route::put('/{id}', [OrdersController::class, 'update'])->name('orders.update');
+        Route::delete('/{id}', [OrdersController::class, 'destroy'])->name('orders.destroy');
+    });
+
     Route::get('shippings', [ShippingController::class, 'index']);
     Route::post('shippings', [ShippingController::class, 'store']);
     Route::get('shippings/{uuid}', [ShippingController::class, 'show']);
@@ -117,34 +126,17 @@ Route::middleware('web')->group(function () {
             Route::put('/{id}', [ProductsController::class, 'update'])->name('products.update');
             Route::delete('/{id}', [ProductsController::class, 'destroy'])->name('products.destroy');
         });
-        Route::group(['prefix' => 'categories'], function () {
-            Route::get('/', [MainCategoriesController::class, 'index'])->name('categories.index');
-            Route::get('/create', [MainCategoriesController::class, 'create'])->name('categories.create');
-            Route::post('/', [MainCategoriesController::class, 'store'])->name('categories.store');
-            Route::get('/{id}', [MainCategoriesController::class, 'show'])->name('categories.show');
-            Route::get('/{id}/edit', [MainCategoriesController::class, 'edit'])->name('categories.edit');
-            Route::put('/{id}', [MainCategoriesController::class, 'update'])->name('categories.update');
-            Route::delete('/{id}', [MainCategoriesController::class, 'destroy'])->name('categories.destroy');
+        Route::group(['prefix' => 'mainCategories'], function () {
+            Route::get('/', [MainCategoriesController::class, 'index'])->name('mainCategories.index');
+            Route::get('/create', [MainCategoriesController::class, 'create'])->name('mainCategories.create');
+            Route::post('/', [MainCategoriesController::class, 'store'])->name('mainCategories.store');
+            Route::get('/{id}', [MainCategoriesController::class, 'show'])->name('mainCategories.show');
+            Route::get('/{id}/edit', [MainCategoriesController::class, 'edit'])->name('mainCategories.edit');
+            Route::put('/{id}', [MainCategoriesController::class, 'update'])->name('mainCategories.update');
+            Route::delete('/{id}', [MainCategoriesController::class, 'destroy'])->name('mainCategories.destroy');
         });
 
-        Route::group(['prefix' => 'segments'], function () {
-            Route::get('/', [SegmentsController::class, 'index'])->name('segments.index');
-            Route::get('/create', [SegmentsController::class, 'create'])->name('segments.create');
-            Route::post('/', [SegmentsController::class, 'store'])->name('segments.store');
-            Route::get('/{id}', [SegmentsController::class, 'show'])->name('segments.show');
-            Route::get('/{id}/edit', [SegmentsController::class, 'edit'])->name('segments.edit');
-            Route::put('/{id}', [SegmentsController::class, 'update'])->name('segments.update');
-            Route::delete('/{id}', [SegmentsController::class, 'destroy'])->name('segments.destroy');
-        });
-        Route::group(['prefix' => 'genres'], function () {
-            Route::get('/', [GenresController::class, 'index'])->name('genres.index');
-            Route::get('/create', [GenresController::class, 'create'])->name('genres.create');
-            Route::post('/', [GenresController::class, 'store'])->name('genres.store');
-            Route::get('/{id}', [GenresController::class, 'show'])->name('genre.show');
-            Route::get('/{id}/edit', [GenresController::class, 'edit'])->name('genres.edit');
-            Route::put('/{id}', [GenresController::class, 'update'])->name('genres.update');
-            Route::delete('/{id}', [GenresController::class, 'destroy'])->name('genres.destroy');
-        });
+        
         Route::group(['prefix' => 'styles'], function () {
             Route::get('/', [StylesController::class, 'index'])->name('styles.index');
             Route::get('/create', [StylesController::class, 'create'])->name('styles.create');
@@ -165,7 +157,7 @@ Route::middleware('web')->group(function () {
         });
     });
 
-    Route::group(['prefix' => 'transactios'], function () {
+    Route::group(['prefix' => 'transactions'], function () {
         Route::group(['prefix' => 'orders'], function () {
             Route::get('/', [OrdersController::class, 'index'])->name('orders.index');
             Route::get('/create', [OrdersController::class, 'create'])->name('orders.create');

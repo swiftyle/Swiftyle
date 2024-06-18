@@ -5,9 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Preference;
-use App\Models\User;
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -15,12 +12,12 @@ class PreferenceController extends Controller
 {
     public function create(Request $request)
     {
+        // Decode JWT token to get user data
         $user = $request->user();
 
-        // User is authenticated, proceed with validation and data creation
+        // Validate the request data
         $validator = Validator::make($request->all(), [
             'style_id' => 'required|exists:styles,id',
-            'genre_id' => 'required|exists:genres,id',
         ]);
 
         if ($validator->fails()) {
@@ -29,14 +26,18 @@ class PreferenceController extends Controller
 
         $validated = $validator->validated();
 
-        // Create the preference with user relationship
-        $preference = $user->preferences()->create($validated);
+        // Save the preference
+        $preference = Preference::create([
+            'user_id' => $user->id,
+            'style_id' => $validated['style_id'],
+        ]);
 
         return response()->json([
-            'message' => 'Preference berhasil dibuat',
+            'message' => 'Preference berhasil disimpan',
             'data' => $preference
         ], 201);
     }
+
 
     public function read(Request $request)
     {
@@ -103,7 +104,7 @@ class PreferenceController extends Controller
     public function saveUserPreferences(Request $request, $orderId)
     {
         $user = $request->user();
-        
+
         // Find the order by orderId
         $order = Order::findOrFail($orderId);
 

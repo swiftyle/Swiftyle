@@ -15,9 +15,9 @@ class RefundRequestController extends Controller
         return view('refundRequests.index', compact('refundRequests'));
     }
 
-    public function show($uuid)
+    public function show($id)
     {
-        $refundRequest = RefundRequest::findOrFail($uuid);
+        $refundRequest = RefundRequest::findOrFail($id);
         return view('refundRequests.show', compact('refundRequest'));
     }
 
@@ -29,8 +29,8 @@ class RefundRequestController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_uuid' => 'required|uuid',
-            'order_uuid' => 'required|uuid',
+            'user_id' => 'required|id',
+            'order_id' => 'required|id',
             'reason' => 'required|string',
             'status' => 'required|string'
         ]);
@@ -41,22 +41,22 @@ class RefundRequestController extends Controller
 
         $refundRequest = RefundRequest::create($validator->validated());
 
-        return redirect()->route('refundRequests.show', $refundRequest->uuid)->with('success', 'Refund request created successfully');
+        return redirect()->route('refundRequests.show', $refundRequest->id)->with('success', 'Refund request created successfully');
     }
 
-    public function edit($uuid)
+    public function edit($id)
     {
-        $refundRequest = RefundRequest::findOrFail($uuid);
+        $refundRequest = RefundRequest::findOrFail($id);
         return view('refundRequests.edit', compact('refundRequest'));
     }
 
-    public function update(Request $request, $uuid)
+    public function update(Request $request, $id)
     {
-        $refundRequest = RefundRequest::findOrFail($uuid);
+        $refundRequest = RefundRequest::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
-            'user_uuid' => 'uuid',
-            'order_uuid' => 'uuid',
+            'user_id' => 'id',
+            'order_id' => 'id',
             'reason' => 'string',
             'status' => 'string'
         ]);
@@ -67,12 +67,12 @@ class RefundRequestController extends Controller
 
         $refundRequest->update($validator->validated());
 
-        return redirect()->route('refundRequests.show', $refundRequest->uuid)->with('success', 'Refund request updated successfully');
+        return redirect()->route('refundRequests.show', $refundRequest->id)->with('success', 'Refund request updated successfully');
     }
 
-    public function destroy($uuid)
+    public function destroy($id)
     {
-        $refundRequest = RefundRequest::findOrFail($uuid);
+        $refundRequest = RefundRequest::findOrFail($id);
         $refundRequest->delete();
 
         return redirect()->route('refundRequests.index')->with('success', 'Refund request deleted successfully');

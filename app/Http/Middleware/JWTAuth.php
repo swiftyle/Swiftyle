@@ -88,6 +88,7 @@ class JWTAuth
             'Customer' => [
                 'api/main-categories*', 
                 'api/sub-categories*', 
+                'api/styles*', 
                 'api/sizes*',
                 'api/colors*',
                 'api/shop-coupons*', 

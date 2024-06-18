@@ -29,8 +29,8 @@ class CheckoutController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'order_uuid' => 'required|uuid',
-            'user_uuid' => 'required|uuid',
+            'order_id' => 'required|id',
+            'user_id' => 'required|id',
             'payment_method' => 'required|string',
         ]);
 
@@ -48,8 +48,8 @@ class CheckoutController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'order_uuid' => 'uuid',
-            'user_uuid' => 'uuid',
+            'order_id' => 'id',
+            'user_id' => 'id',
             'payment_method' => 'string',
         ]);
 

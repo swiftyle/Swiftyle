@@ -13,12 +13,12 @@ class WishlistController extends Controller
     /**
      * Show the form for editing the specified wishlist item.
      *
-     * @param  string  $uuid
+     * @param  string  $id
      * @return \Illuminate\View\View
      */
-    public function edit($uuid)
+    public function edit($id)
     {
-        $wishlist = Wishlist::where('uuid', $uuid)->firstOrFail();
+        $wishlist = Wishlist::where('id', $id)->firstOrFail();
         return view('wishlist.edit', compact('wishlist'));
     }
 
@@ -26,16 +26,16 @@ class WishlistController extends Controller
      * Update the specified wishlist item in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  string  $uuid
+     * @param  string  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $uuid)
+    public function update(Request $request, $id)
     {
-        $wishlist = Wishlist::where('uuid', $uuid)->firstOrFail();
+        $wishlist = Wishlist::where('id', $id)->firstOrFail();
 
         $request->validate([
-            'product_uuid' => 'required|exists:products,uuid',
-            'user_uuid' => 'required|exists:users,uuid',
+            'product_id' => 'required|exists:products,id',
+            'user_id' => 'required|exists:users,id',
             'name' => 'required|string|max:255',
         ]);
 
@@ -46,12 +46,12 @@ class WishlistController extends Controller
     /**
      * Remove the specified wishlist item from storage.
      *
-     * @param  string  $uuid
+     * @param  string  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($uuid)
+    public function destroy($id)
     {
-        $wishlist = Wishlist::where('uuid', $uuid)->firstOrFail();
+        $wishlist = Wishlist::where('id', $id)->firstOrFail();
         $wishlist->delete();
 
         return redirect()->route('wishlist.index')->with('success', 'Wishlist item deleted successfully.');

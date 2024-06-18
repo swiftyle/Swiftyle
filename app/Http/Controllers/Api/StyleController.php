@@ -11,9 +11,15 @@ class StyleController extends Controller
 {
     public function create(Request $request)
     {
+        // Decode JWT token to get user data
         $user = $request->user();
 
-        // User is authenticated, proceed with validation and data creation
+        // Check if the authenticated user is an admin
+        if (!$user->isAdmin()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        // Validate the request data
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'description' => 'required|string',
@@ -25,8 +31,8 @@ class StyleController extends Controller
 
         $validated = $validator->validated();
 
-        // Create the style with user relationship
-        $style = $user->styles()->create($validated);
+        // Create the style without associating it with the user
+        $style = Style::create($validated);
 
         return response()->json([
             'message' => 'Style berhasil dibuat',
@@ -50,6 +56,11 @@ class StyleController extends Controller
         // Decode JWT token to get user data
         $user = $request->user();
 
+        // Check if the authenticated user is an admin
+        if (!$user->isAdmin()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
         // Validasi input
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|string|max:255',
@@ -61,7 +72,7 @@ class StyleController extends Controller
         }
 
         // Dapatkan data style yang akan diupdate
-        $style = $user->styles()->find($id);
+        $style = Style::find($id);
 
         if (!$style) {
             return response()->json(['message' => 'Style tidak ditemukan'], 404);
@@ -77,13 +88,19 @@ class StyleController extends Controller
         ], 200);
     }
 
+
     public function delete(Request $request, $id)
     {
         // Decode JWT token to get user data
         $user = $request->user();
 
+        // Check if the authenticated user is an admin
+        if (!$user->isAdmin()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
         // Cari style yang akan dihapus
-        $style = $user->styles()->find($id);
+        $style = Style::find($id);
 
         if (!$style) {
             return response()->json(['message' => 'Style tidak ditemukan'], 404);
@@ -96,5 +113,6 @@ class StyleController extends Controller
             'message' => 'Style berhasil dihapus'
         ], 200);
     }
+
 }
 

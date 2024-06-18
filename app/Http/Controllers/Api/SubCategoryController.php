@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\SubCategory;
-use App\Models\User;
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -29,7 +26,6 @@ class SubCategoryController extends Controller
         $validated = $validator->validated();
 
         $userId = $user->id;
-        $userEmail = $user->email;
 
         // Ensure user ID is not null before proceeding
         if (!$userId) {
@@ -37,8 +33,7 @@ class SubCategoryController extends Controller
         }
 
         // Add user email as modified_by
-        $validated['modified_by'] = $userEmail;
-
+        
         $subCategory = SubCategory::create($validated);
 
         return response()->json([

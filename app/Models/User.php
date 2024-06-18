@@ -125,4 +125,19 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    public function styles()
+    {
+        return $this->belongsToMany(Style::class, 'preferences');
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 'Admin';
+    }
+
+    public function isSeller()
+    {
+        return $this->role === 'Seller';
+    }
 }

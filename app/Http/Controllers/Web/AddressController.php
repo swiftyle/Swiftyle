@@ -25,17 +25,17 @@ class AddressController extends Controller
             'address' => 'required|string|max:255',
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
-            'user_uuid' => 'required|uuid|exists:users,uuid',
+            'user_id' => 'required|id|exists:users,id',
             'country' => 'required|enum_value:' . \App\Enums\Country::class,
             'postal_code' => 'required|integer',
         ]);
 
         Address::create([
-            'uuid' => (string) \Illuminate\Support\Str::uuid(),
+            'id' => (string) \Illuminate\Support\Str::id(),
             'address' => $request->address,
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
-            'user_uuid' => $request->user_uuid,
+            'user_id' => $request->user_id,
             'country' => $request->country,
             'postal_code' => $request->postal_code,
         ]);
@@ -59,7 +59,7 @@ class AddressController extends Controller
             'address' => 'required|string|max:255',
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
-            'user_uuid' => 'required|uuid|exists:users,uuid',
+            'user_id' => 'required|id|exists:users,id',
             'country' => 'required|enum_value:' . \App\Enums\Country::class,
             'postal_code' => 'required|integer',
         ]);

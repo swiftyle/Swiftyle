@@ -1,7 +1,7 @@
 @extends('layouts.admin.master')
 
 @section('title')
-    Data Shop Table
+    Data Sub Category Table
     {{ $title }}
 @endsection
 
@@ -16,10 +16,10 @@
 @section('content')
     @component('components.breadcrumb')
         @slot('breadcrumb_title')
-            <h3>Data Shop</h3>
+            <h3>Data Sub Category</h3>
         @endslot
-        <li class="breadcrumb-item">Shop</li>
-        <li class="breadcrumb-item active">Data</li>
+        <li class="breadcrumb-item">Data</li>
+        <li class="breadcrumb-item active">Sub Category</li>
     @endcomponent
 
     <div class="container-fluid">
@@ -31,11 +31,7 @@
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Seller</th>
-                                <th>Rating</th>
-                                <th>Email</th>
-                                <th>Addres</th>
-                                <th>Phone</th>
+                                <th>Description</th>
                                 <th>
                                     <div class="setting-list">
                                         <ul class="list-unstyled setting-option">
@@ -53,39 +49,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($shops as $shop)
+                            @foreach ($subCategories as $subCaategory)
                                 <tr>
                                     <td>
-                                        <div class="media">
-                                            <img class="img-fluid rounded-circle" src="{{ $shop->logo }}"
-                                                alt="" width="30px" height="30px">
-                                            <div class="media-body">
-                                                <span>{{ $shop->name }}</span>
-                                            </div>
-                                        </div>
+                                        <p>{{ $subCaategory->name }}</p>
                                     </td>
                                     <td>
-                                        <p>{{ $shop->user_id->$user->name }}</p>
+                                        <p>{{ $subCaategory->description }}</p>
                                     </td>
-                                    <td>
-                                        <p>{{ $shop->rating }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{{ $shop->email }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{{ $shop->address }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{{ $shop->phone }}</p>
-                                    </td>
+                                    
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
                 <div class="pagination">
-                    {{ $shops->links() }}
+                    {{ $genres->links() }}
                 </div>
             </div>
         </div>

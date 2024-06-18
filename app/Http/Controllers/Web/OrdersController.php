@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class OrdersController extends Controller
 {
@@ -15,8 +16,19 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        $orders = Order::all();
-        return view('admin.transaction.data-order', compact('orders'));
+        $orders = Order::paginate(10);
+        $totalOrders = Order::count();
+        $deliveredOrders = Order::where('status', 'delivered')->count();
+        $receivedOrders = Order::where('status', 'received')->count();
+        $reviewedOrders = Order::where('status', 'reviewed')->count();
+
+        return view('admin.seller.data-order', [
+            'orders' => $orders,
+            'totalOrders' => $totalOrders,
+            'deliveredOrders' => $deliveredOrders,
+            'receivedOrders' => $receivedOrders,
+            'reviewedOrders' => $reviewedOrders,
+        ]);
     }
 
     /**
@@ -37,41 +49,43 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'user_uuid' => 'required|exists:users,uuid',
-            'product_uuid' => 'required|exists:products,uuid',
-            'quantity' => 'required|integer|min:1',
-            'total' => 'required|integer|min:0',
-            'address_id' => 'nullable|exists:addresses,id',
-            'user_payment_uuid' => 'nullable|exists:user_payments,uuid',
-            'status' => 'required|string|max:255',
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id',
+            'transaction_id' => 'required|string|max:255|unique:orders',
+            'shipping_id' => 'required|exists:shipping,id',
+            'status' => 'required|in:delivered,received,reviewed',
         ]);
 
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         $order = Order::create($request->all());
+
         return redirect()->route('orders.index')->with('success', 'Order created successfully.');
     }
 
     /**
      * Display the specified order.
      *
-     * @param  string  $uuid
+     * @param  string  $id
      * @return \Illuminate\View\View
      */
-    public function show($uuid)
+    public function show($id)
     {
-        $order = Order::where('uuid', $uuid)->firstOrFail();
-        return view('orders.show', compact('order'));
+        $order = Order::where('id', $id)->firstOrFail();
+        return view('admin.orders.edit-order', compact('order'));
     }
 
     /**
      * Show the form for editing the specified order.
      *
-     * @param  string  $uuid
+     * @param  string  $id
      * @return \Illuminate\View\View
      */
-    public function edit($uuid)
+    public function edit($id)
     {
-        $order = Order::where('uuid', $uuid)->firstOrFail();
+        $order = Order::where('id', $id)->firstOrFail();
         return view('orders.edit', compact('order'));
     }
 
@@ -79,36 +93,37 @@ class OrdersController extends Controller
      * Update the specified order in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  string  $uuid
+     * @param  string  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $uuid)
+    public function update(Request $request, $id)
     {
-        $order = Order::where('uuid', $uuid)->firstOrFail();
+        $order = Order::where('id', $id)->firstOrFail();
 
-        $request->validate([
-            'user_uuid' => 'required|exists:users,uuid',
-            'product_uuid' => 'required|exists:products,uuid',
-            'quantity' => 'required|integer|min:1',
-            'total' => 'required|integer|min:0',
-            'address_id' => 'nullable|exists:addresses,id',
-            'user_payment_uuid' => 'nullable|exists:user_payments,uuid',
-            'status' => 'required|string|max:255',
+        $validator = Validator::make($request->all(), [
+            'transaction_id' => 'sometimes|required|string|max:255|unique:orders,transaction_id,' . $order->id,
+            'shipping_id' => 'sometimes|required|exists:shipping,id',
+            'status' => 'sometimes|required|in:delivered,received,reviewed',
         ]);
 
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         $order->update($request->all());
+
         return redirect()->route('orders.index')->with('success', 'Order updated successfully.');
     }
 
     /**
      * Remove the specified order from storage.
      *
-     * @param  string  $uuid
+     * @param  string  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($uuid)
+    public function destroy($id)
     {
-        $order = Order::where('uuid', $uuid)->firstOrFail();
+        $order = Order::where('id', $id)->firstOrFail();
         $order->delete();
 
         return redirect()->route('orders.index')->with('success', 'Order deleted successfully.');

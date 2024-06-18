@@ -42,7 +42,7 @@ class CartController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'product_uuid' => 'required|exists:products,uuid',
+            'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
             'discount' => 'nullable|numeric|min:0',
@@ -63,24 +63,24 @@ class CartController extends Controller
     /**
      * Display the specified cart item.
      *
-     * @param  string  $uuid
+     * @param  string  $id
      * @return \Illuminate\View\View
      */
-    public function show($uuid)
+    public function show($id)
     {
-        $cartItem = Cart::where('uuid', $uuid)->firstOrFail();
+        $cartItem = Cart::where('id', $id)->firstOrFail();
         return view('cart.show', compact('cartItem'));
     }
 
     /**
      * Show the form for editing the specified cart item.
      *
-     * @param  string  $uuid
+     * @param  string  $id
      * @return \Illuminate\View\View
      */
-    public function edit($uuid)
+    public function edit($id)
     {
-        $cartItem = Cart::where('uuid', $uuid)->firstOrFail();
+        $cartItem = Cart::where('id', $id)->firstOrFail();
         $products = Product::all();
         return view('cart.edit', compact('cartItem', 'products'));
     }
@@ -89,15 +89,15 @@ class CartController extends Controller
      * Update the specified cart item in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  string  $uuid
+     * @param  string  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $uuid)
+    public function update(Request $request, $id)
     {
-        $cartItem = Cart::where('uuid', $uuid)->firstOrFail();
+        $cartItem = Cart::where('id', $id)->firstOrFail();
 
         $validator = Validator::make($request->all(), [
-            'product_uuid' => 'sometimes|required|exists:products,uuid',
+            'product_id' => 'sometimes|required|exists:products,id',
             'quantity' => 'sometimes|required|integer|min:1',
             'price' => 'sometimes|required|numeric|min:0',
             'discount' => 'nullable|numeric|min:0',
@@ -118,12 +118,12 @@ class CartController extends Controller
     /**
      * Remove the specified cart item from storage.
      *
-     * @param  string  $uuid
+     * @param  string  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($uuid)
+    public function destroy($id)
     {
-        $cartItem = Cart::where('uuid', $uuid)->firstOrFail();
+        $cartItem = Cart::where('id', $id)->firstOrFail();
         $cartItem->delete();
 
         return redirect()->route('cart.index')->with('success', 'Cart item deleted successfully.');

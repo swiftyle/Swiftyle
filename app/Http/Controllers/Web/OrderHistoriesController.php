@@ -22,14 +22,14 @@ class OrderHistoriesController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'order_uuid' => 'required|uuid|exists:orders,uuid',
+            'order_id' => 'required|id|exists:orders,id',
             'status' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
 
         OrderHistory::create([
-            'uuid' => (string) \Illuminate\Support\Str::uuid(),
-            'order_uuid' => $request->order_uuid,
+            'id' => (string) \Illuminate\Support\Str::id(),
+            'order_id' => $request->order_id,
             'status' => $request->status,
             'description' => $request->description,
         ]);
@@ -50,7 +50,7 @@ class OrderHistoriesController extends Controller
     public function update(Request $request, OrderHistory $orderHistory)
     {
         $request->validate([
-            'order_uuid' => 'required|uuid|exists:orders,uuid',
+            'order_id' => 'required|id|exists:orders,id',
             'status' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);

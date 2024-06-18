@@ -32,13 +32,13 @@ class PromotionController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'products' => 'nullable|array',
-            'products.*.uuid' => 'required|exists:products,uuid',
+            'products.*.id' => 'required|exists:products,id',
             'products.*.discount_amount' => 'nullable|numeric|min:0',
             'products.*.discount_percentage' => 'nullable|numeric|min:0|max:100',
         ]);
 
         $promotion = Promotion::create([
-            'uuid' => (string) \Illuminate\Support\Str::uuid(),
+            'id' => (string) \Illuminate\Support\Str::id(),
             'name' => $request->name,
             'description' => $request->description,
             'type' => $request->type,
@@ -50,7 +50,7 @@ class PromotionController extends Controller
 
         if ($request->has('products')) {
             foreach ($request->products as $product) {
-                $promotion->products()->attach($product['uuid'], [
+                $promotion->products()->attach($product['id'], [
                     'discount_amount' => $product['discount_amount'] ?? null,
                     'discount_percentage' => $product['discount_percentage'] ?? null,
                 ]);
@@ -82,7 +82,7 @@ class PromotionController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'products' => 'nullable|array',
-            'products.*.uuid' => 'required|exists:products,uuid',
+            'products.*.id' => 'required|exists:products,id',
             'products.*.discount_amount' => 'nullable|numeric|min:0',
             'products.*.discount_percentage' => 'nullable|numeric|min:0|max:100',
         ]);
@@ -101,7 +101,7 @@ class PromotionController extends Controller
             $promotion->products()->detach();
     
             foreach ($request->products as $product) {
-                $promotion->products()->attach($product['uuid'], [
+                $promotion->products()->attach($product['id'], [
                     'discount_amount' => $product['discount_amount'] ?? null,
                     'discount_percentage' => $product['discount_percentage'] ?? null,
                 ]);

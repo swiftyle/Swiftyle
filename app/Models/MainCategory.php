@@ -19,8 +19,7 @@ class MainCategory extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'name', 'description', 'main_categories_id'
-    ];
+        'id', 'name', 'description'];
 
     /**
      * Boot method for the model.

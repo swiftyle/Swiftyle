@@ -30,10 +30,13 @@
                     <table class="table table-bordernone">
                         <thead>
                             <tr>
+                                <th>Number</th>
                                 <th>Name</th>
                                 <th>Description</th>
                                 <th>Price</th>
-                                <th>Image</th>
+                                <th>Style</th>
+                                <th>Category</th>
+                                
                                 <th>Sell</th>
                                 <th>Rating</th>
                                 <th>

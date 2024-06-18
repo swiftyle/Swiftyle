@@ -3,26 +3,26 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Models\Voucher;
+use App\Models\AppCoupon;
 use Illuminate\Http\Request;
 
-class VoucherController extends Controller
+class AppCouponController extends Controller
 {
     public function index()
     {
-        $vouchers = Voucher::all();
-        return view('vouchers.index', compact('vouchers'));
+        $AppCoupons = AppCoupon::all();
+        return view('AppCoupons.index', compact('AppCoupons'));
     }
 
     public function create()
     {
-        return view('vouchers.create');
+        return view('AppCoupons.create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'code' => 'required|unique:vouchers',
+            'code' => 'required|unique:AppCoupons',
             'type' => 'required|in:percentage_discount,fixed_discount',
             'discount_amount' => 'required|numeric',
             'max_uses' => 'nullable|integer',
@@ -31,25 +31,25 @@ class VoucherController extends Controller
             'end_date' => 'nullable|date',
         ]);
 
-        Voucher::create($request->all());
+        AppCoupon::create($request->all());
 
-        return redirect()->route('vouchers.index');
+        return redirect()->route('AppCoupons.index');
     }
 
-    public function show(Voucher $voucher)
+    public function show(AppCoupon $AppCoupon)
     {
-        return view('vouchers.show', compact('voucher'));
+        return view('AppCoupons.show', compact('AppCoupon'));
     }
 
-    public function edit(Voucher $voucher)
+    public function edit(AppCoupon $AppCoupon)
     {
-        return view('vouchers.edit', compact('voucher'));
+        return view('AppCoupons.edit', compact('AppCoupon'));
     }
 
-    public function update(Request $request, Voucher $voucher)
+    public function update(Request $request, AppCoupon $AppCoupon)
     {
         $request->validate([
-            'code' => 'required|unique:vouchers,code,' . $voucher->uuid,
+            'code' => 'required|unique:AppCoupons,code,' . $AppCoupon->id,
             'type' => 'required|in:percentage_discount,fixed_discount',
             'discount_amount' => 'required|numeric',
             'max_uses' => 'nullable|integer',
@@ -58,14 +58,14 @@ class VoucherController extends Controller
             'end_date' => 'nullable|date',
         ]);
 
-        $voucher->update($request->all());
+        $AppCoupon->update($request->all());
 
-        return redirect()->route('vouchers.index');
+        return redirect()->route('AppCoupons.index');
     }
 
-    public function destroy(Voucher $voucher)
+    public function destroy(AppCoupon $AppCoupon)
     {
-        $voucher->delete();
-        return redirect()->route('vouchers.index');
+        $AppCoupon->delete();
+        return redirect()->route('AppCoupons.index');
     }
 }

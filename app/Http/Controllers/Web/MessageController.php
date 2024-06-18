@@ -29,8 +29,8 @@ class MessageController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'chat_uuid' => 'required|uuid',
-            'sender_uuid' => 'required|uuid',
+            'chat_id' => 'required|id',
+            'sender_id' => 'required|id',
             'message' => 'required|string',
             'status' => 'required|in:sent,delivered,read',
         ]);
@@ -49,8 +49,8 @@ class MessageController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'chat_uuid' => 'uuid',
-            'sender_uuid' => 'uuid',
+            'chat_id' => 'id',
+            'sender_id' => 'id',
             'message' => 'string',
             'status' => 'in:sent,delivered,read',
         ]);

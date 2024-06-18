@@ -22,14 +22,14 @@ class ChatController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user1_uuid' => 'required|uuid|exists:users,uuid',
-            'user2_uuid' => 'required|uuid|exists:users,uuid',
+            'user1_id' => 'required|id|exists:users,id',
+            'user2_id' => 'required|id|exists:users,id',
         ]);
 
         Chat::create([
-            'uuid' => (string) \Illuminate\Support\Str::uuid(),
-            'user1_uuid' => $request->user1_uuid,
-            'user2_uuid' => $request->user2_uuid,
+            'id' => (string) \Illuminate\Support\Str::id(),
+            'user1_id' => $request->user1_id,
+            'user2_id' => $request->user2_id,
         ]);
 
         return redirect()->route('chats.index');
@@ -48,8 +48,8 @@ class ChatController extends Controller
     public function update(Request $request, Chat $chat)
     {
         $request->validate([
-            'user1_uuid' => 'required|uuid|exists:users,uuid',
-            'user2_uuid' => 'required|uuid|exists:users,uuid',
+            'user1_id' => 'required|id|exists:users,id',
+            'user2_id' => 'required|id|exists:users,id',
         ]);
 
         $chat->update($request->all());

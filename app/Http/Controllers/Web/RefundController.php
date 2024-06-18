@@ -28,9 +28,9 @@ class RefundController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'refund_request_uuid' => 'required|uuid',
-            'user_uuid' => 'required|uuid',
-            'transaction_uuid' => 'required|uuid',
+            'refund_request_id' => 'required|id',
+            'user_id' => 'required|id',
+            'transaction_id' => 'required|id',
             'amount' => 'required|numeric',
             'status' => 'required|string',
             'reason' => 'string|nullable',
@@ -38,7 +38,7 @@ class RefundController extends Controller
 
         $refund = Refund::create($validatedData);
 
-        return redirect()->route('refunds.show', $refund->uuid)->with('success', 'Refund created successfully');
+        return redirect()->route('refunds.show', $refund->id)->with('success', 'Refund created successfully');
     }
 
     public function edit($id)
@@ -50,9 +50,9 @@ class RefundController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'refund_request_uuid' => 'uuid',
-            'user_uuid' => 'uuid',
-            'transaction_uuid' => 'uuid',
+            'refund_request_id' => 'id',
+            'user_id' => 'id',
+            'transaction_id' => 'id',
             'amount' => 'numeric',
             'status' => 'string',
             'reason' => 'string|nullable',
@@ -61,7 +61,7 @@ class RefundController extends Controller
         $refund = Refund::findOrFail($id);
         $refund->update($validatedData);
 
-        return redirect()->route('refunds.show', $refund->uuid)->with('success', 'Refund updated successfully');
+        return redirect()->route('refunds.show', $refund->id)->with('success', 'Refund updated successfully');
     }
 
     public function destroy($id)
