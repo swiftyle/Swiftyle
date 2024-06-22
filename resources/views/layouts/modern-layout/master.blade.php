@@ -17,6 +17,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
     <!-- Font Awesome-->
     @includeIf('layouts.modern-layout.partials.css')
+    <style>
+      .logo-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    
+      .logo-wrapper img, .dark-logo-wrapper img {
+        width: 30%;
+        height: auto;
+      }
+    </style>
   </head>
   <body>
     <!-- Loader starts-->
@@ -32,7 +44,7 @@
       <!-- Page Body Start-->
       <div class="page-body-wrapper modern-sidebar">
         <!-- Page Sidebar Start-->
-        @includeIf('layouts.modern-layout.partials.sidebar')
+        @includeIf('layouts.admin.partials.sidebar')
         <!-- Page Sidebar Ends-->
         <div class="page-body">
           <!-- Container-fluid starts-->

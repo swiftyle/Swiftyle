@@ -33,6 +33,17 @@ class StyleController extends Controller
 
         $validated = $validator->validated();
 
+        $userId = $user->id;
+        $userEmail = $user->email;
+
+        // Ensure user ID is not null before proceeding
+        if (!$userId) {
+            return response()->json(['message' => 'User ID not found'], 401);
+        }
+
+        // Add user email as modified_by
+        $validated['modified_by'] = $userEmail;
+        
         if ($request->hasFile('image')) {
             $filePath = $request->file('image')->store('images', 'public');
             $validated['image'] = $filePath;

@@ -14,9 +14,7 @@ class MainCategoryController extends Controller
 {
     public function create(Request $request)
     {
-        $data = JWT::decode($request->bearerToken(), new Key(env('JWT_SECRET_KEY'), 'HS256'));
-        $user = User::find($data->id);
-
+        $user = $request->user();
         // User is authenticated, proceed with validation and data creation
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -61,8 +59,7 @@ class MainCategoryController extends Controller
 
     public function update(Request $request, $id)
     {
-        $data = JWT::decode($request->bearerToken(), new Key(env('JWT_SECRET_KEY'), 'HS256'));
-        $user = User::find($data->id);
+        $user = $request->user();
 
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|string|max:255',

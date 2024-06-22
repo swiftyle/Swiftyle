@@ -1,4 +1,4 @@
-@extends('layouts.admin.master')
+@extends('layouts.modern-layout.master')
 
 @section('title')Line Tabs
  {{ $title }}

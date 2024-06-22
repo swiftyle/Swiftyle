@@ -88,8 +88,8 @@
                     </li> --}}
 
                     <li>
-                        <a class="nav-link menu-title link-nav {{ prefixActive('/specification') }} {{ routeActive('mainCategories.index') }}"
-                            href="{{ route('mainCategories.index') }}">
+                        <a class="nav-link menu-title link-nav {{ prefixActive('/specification') }} {{ routeActive('data-main-category') }}"
+                            href="{{ route('main-categories.index') }}">
                             <i data-feather="grid"></i><span>Data Main Category</span>
                         </a>
                     </li>

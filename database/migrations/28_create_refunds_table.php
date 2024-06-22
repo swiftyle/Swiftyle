@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreign('refund_request_id')->references('id')->on('refund_requests')->onDelete('cascade')->onUpdate('cascade');
             $table->decimal('amount', 10, 2); 
             $table->enum('status',['refunded']); 
+            $table->string('accepted_by')->comment('email_admin');
             $table->softDeletes();            
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));

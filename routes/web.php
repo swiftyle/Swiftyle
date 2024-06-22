@@ -126,16 +126,14 @@ Route::middleware('web')->group(function () {
             Route::put('/{id}', [ProductsController::class, 'update'])->name('products.update');
             Route::delete('/{id}', [ProductsController::class, 'destroy'])->name('products.destroy');
         });
-        Route::prefix('mainCategories')->group(function () {
-            Route::get('/', function() {
-                return 'Route is working!';
-            })->name('mainCategories.index');
-            Route::get('/create', [MainCategoriesController::class, 'create'])->name('mainCategories.create');
-            Route::post('/', [MainCategoriesController::class, 'store'])->name('mainCategories.store');
-            Route::get('/{id}', [MainCategoriesController::class, 'show'])->name('mainCategories.show');
-            Route::get('/{id}/edit', [MainCategoriesController::class, 'edit'])->name('mainCategories.edit');
-            Route::put('/{id}', [MainCategoriesController::class, 'update'])->name('mainCategories.update');
-            Route::delete('/{id}', [MainCategoriesController::class, 'destroy'])->name('mainCategories.destroy');
+        Route::group(['prefix' => 'main-categories'], function () {
+            Route::get('/', [MainCategoriesController::class, 'index'])->name('main-categories.index');
+            Route::get('/create', [MainCategoriesController::class, 'create'])->name('main-categories.create');
+            Route::post('/', [MainCategoriesController::class, 'store'])->name('main-categories.store');
+            Route::get('/{id}', [MainCategoriesController::class, 'show'])->name('main-categories.show');
+            Route::get('/{id}/edit', [MainCategoriesController::class, 'edit'])->name('main-categories.edit');
+            Route::put('/{id}', [MainCategoriesController::class, 'update'])->name('main-categories.update');
+            Route::delete('/{id}', [MainCategoriesController::class, 'destroy'])->name('main-categories.destroy');
         });
 
         

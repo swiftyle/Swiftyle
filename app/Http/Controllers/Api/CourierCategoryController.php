@@ -12,6 +12,7 @@ class CourierCategoryController extends Controller
     public function create(Request $request)
     {
 
+        $user= $request->user();
         // Validate incoming request
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -24,6 +25,16 @@ class CourierCategoryController extends Controller
 
         $validated = $validator->validated();
 
+        $userId = $user->id;
+        $userEmail = $user->email;
+
+        // Ensure user ID is not null before proceeding
+        if (!$userId) {
+            return response()->json(['message' => 'User ID not found'], 401);
+        }
+
+        // Add user email as modified_by
+        $validated['modified_by'] = $userEmail;
         // Create the courier category
         $courierCategory = CourierCategory::create([
             'name' => $validated['name'],
@@ -48,6 +59,7 @@ class CourierCategoryController extends Controller
 
     public function update(Request $request, $id)
     {
+        $user= $request->user();
         // Validate incoming request
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|string|max:255',
@@ -60,6 +72,17 @@ class CourierCategoryController extends Controller
 
         $validated = $validator->validated();
 
+        $userId = $user->id;
+        $userEmail = $user->email;
+
+        // Ensure user ID is not null before proceeding
+        if (!$userId) {
+            return response()->json(['message' => 'User ID not found'], 401);
+        }
+
+        // Add user email as modified_by
+        $validated['modified_by'] = $userEmail;
+        
         // Find the courier category
         $courierCategory = CourierCategory::find($id);
 

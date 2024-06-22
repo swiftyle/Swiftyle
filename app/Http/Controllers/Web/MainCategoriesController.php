@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\MainCategory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class MainCategoriesController extends Controller
@@ -17,7 +16,6 @@ class MainCategoriesController extends Controller
      */
     public function index()
     {
-        Log::info('MainCategoriesController@index diakses');
         $mainCategories = MainCategory::all();
         return view('admin.specification.data-main-category', compact('mainCategories'));
     }
