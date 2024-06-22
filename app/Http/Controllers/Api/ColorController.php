@@ -40,12 +40,14 @@ class ColorController extends Controller
         ], 201);
     }
 
-    public function read(Request $request)
+    public function read()
     {
-        $color = Color::all();
+        // Ambil semua data style
+        $colors = color::all();
+
         return response()->json([
-            'message' => 'Detail warna',
-            'data' => $color
+            'message' => 'Data semua color',
+            'data' => $colors
         ], 200);
     }
 
