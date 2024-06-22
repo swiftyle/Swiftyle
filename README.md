@@ -16,6 +16,7 @@ https://swiftyleshop.com
 
 ## Account
 
+Admin
 - email: admin@mail.com
 - password: admin123
 
