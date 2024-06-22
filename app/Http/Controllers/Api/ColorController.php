@@ -40,21 +40,9 @@ class ColorController extends Controller
         ], 201);
     }
 
-    public function read(Request $request, $id)
+    public function read(Request $request)
     {
-        $user = $request->user();
-
-        $color = Color::find($id);
-
-        if (!$color) {
-            return response()->json(['message' => 'Warna tidak ditemukan'], 404);
-        }
-
-        // Check if the color is associated with the seller's shop
-        if (!$this->isColorOwnedBySeller($user, $color)) {
-            return response()->json(['message' => 'Anda tidak memiliki izin untuk melihat warna ini'], 403);
-        }
-
+        $color = Color::all();
         return response()->json([
             'message' => 'Detail warna',
             'data' => $color
