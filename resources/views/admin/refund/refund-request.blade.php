@@ -1,7 +1,7 @@
 @extends('layouts.modern-layout.master')
 
 @section('title')
-    Order History Table
+    Refund Request Table
     {{ $title }}
 @endsection
 
@@ -16,10 +16,10 @@
 @section('content')
     @component('components.breadcrumb')
         @slot('breadcrumb_title')
-            <h3>Order History</h3>
+            <h3>Refund Request</h3>
         @endslot
-        <li class="breadcrumb-item">Data</li>
-        <li class="breadcrumb-item active">History</li>
+        <li class="breadcrumb-item">Refund</li>
+        <li class="breadcrumb-item active">Request</li>
     @endcomponent
 
     <div class="container-fluid">
@@ -30,8 +30,9 @@
                     <table class="table table-bordernone">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Desrciption</th>
+                                <th>User</th>
+                                <th>Order ID</th>
+                                <th>Description</th>
                                 <th>Status</th>
                                 <th>
                                     <div class="setting-list">
@@ -50,22 +51,31 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($users as $user)
+                            @foreach ($refundRequest as $request)
                                 <tr>
                                     <td>
-                                        <p>{{ $user->description }}</p>
+                                        <div class="media">
+                                            <img class="img-fluid rounded-circle" src="{{ $request->user>avatar }}"
+                                                alt="" width="30px" height="30px">
+                                            <div class="media-body">
+                                                <span>{{ $request->user>name }}</span>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td>
-                                        <p>{{ $user->status }}</p>
+                                        <p>{{ $request->order_id }}</p>
+                                    </td>
+                                    <td>
+                                        <p>{{ $request->reason }}</p>
+                                    </td>
+                                    <td>
+                                        <p>{{ $request->status }}</p>
                                     </td>
                                     
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
-                </div>
-                <div class="pagination">
-                    {{ $users->links() }}
                 </div>
             </div>
         </div>

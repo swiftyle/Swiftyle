@@ -36,8 +36,7 @@ class SubCategoryController extends Controller
         // Add user email as modified_by
         $validated['modified_by'] = $userEmail;
 
-        // Add user email as modified_by
-        
+        // Create the subcategory record
         $subCategory = SubCategory::create($validated);
 
         return response()->json([
@@ -45,6 +44,7 @@ class SubCategoryController extends Controller
             'data' => $subCategory
         ], 201);
     }
+
 
     public function read(Request $request)
     {
@@ -63,7 +63,7 @@ class SubCategoryController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|string|max:255',
             'description' => 'nullable|string',
-            'main_category_id' => 'sometimes|exists:main_categories,id',
+            'main_category_id' => 'sometimes|exists:main_category,id',
         ]);
 
         if ($validator->fails()) {

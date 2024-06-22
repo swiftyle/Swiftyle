@@ -13,6 +13,7 @@ class Style extends Model
         'name',
         'description',
         'image',
+        'modified_by'
     ];
     protected $hidden = [
         'created_at',

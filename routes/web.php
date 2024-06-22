@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Web\RefundRequestController;
 use App\Http\Controllers\Web\OrderHistoriesController;
 use App\Http\Controllers\Web\OrdersController;
 use App\Http\Controllers\Web\PreferencesController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\Web\ProviderController;
 use App\Http\Controllers\Web\PasswordResetController;
 use App\Http\Controllers\Web\ShippingController;
 use App\Http\Controllers\Web\StylesController;
+use App\Http\Controllers\Web\RefundRequestControllerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,7 +81,6 @@ Route::middleware('web')->group(function () {
         Route::get('/{id}/edit', [UsersController::class, 'edit'])->name('users.edit');
         Route::put('/{id}', [UsersController::class, 'update'])->name('users.update');
         Route::delete('/{id}', [UsersController::class, 'destroy'])->name('users.destroy');
-        Route::get('/profile', [UsersController::class, 'showProfile'])->name('profile.show');
 
     });
 
@@ -104,6 +105,7 @@ Route::middleware('web')->group(function () {
         Route::put('/{id}', [OrdersController::class, 'update'])->name('orders.update');
         Route::delete('/{id}', [OrdersController::class, 'destroy'])->name('orders.destroy');
     });
+    
 
     Route::get('shippings', [ShippingController::class, 'index']);
     Route::post('shippings', [ShippingController::class, 'store']);
@@ -116,8 +118,7 @@ Route::middleware('web')->group(function () {
     Route::post('logout', [AuthenticationController::class, 'logout'])->name('logout');
 
 
-    Route::group(['prefix' => 'specification'], function () {
-        Route::group(['prefix', 'products'], function () {
+        Route::group(['prefix'=> 'products'], function () {
             Route::get('/', [ProductsController::class, 'index'])->name('products.index');
             Route::get('/create', [ProductsController::class, 'create'])->name('products.create');
             Route::post('/', [ProductsController::class, 'store'])->name('products.store');
@@ -126,14 +127,14 @@ Route::middleware('web')->group(function () {
             Route::put('/{id}', [ProductsController::class, 'update'])->name('products.update');
             Route::delete('/{id}', [ProductsController::class, 'destroy'])->name('products.destroy');
         });
-        Route::group(['prefix' => 'main-categories'], function () {
-            Route::get('/', [MainCategoriesController::class, 'index'])->name('main-categories.index');
-            Route::get('/create', [MainCategoriesController::class, 'create'])->name('main-categories.create');
-            Route::post('/', [MainCategoriesController::class, 'store'])->name('main-categories.store');
-            Route::get('/{id}', [MainCategoriesController::class, 'show'])->name('main-categories.show');
-            Route::get('/{id}/edit', [MainCategoriesController::class, 'edit'])->name('main-categories.edit');
-            Route::put('/{id}', [MainCategoriesController::class, 'update'])->name('main-categories.update');
-            Route::delete('/{id}', [MainCategoriesController::class, 'destroy'])->name('main-categories.destroy');
+        Route::group(['prefix' => 'categories'], function () {
+            Route::get('/', [MainCategoriesController::class, 'index'])->name('categories.index');
+            Route::get('/create', [MainCategoriesController::class, 'create'])->name('categories.create');
+            Route::post('/', [MainCategoriesController::class, 'store'])->name('categories.store');
+            Route::get('/{id}', [MainCategoriesController::class, 'show'])->name('categories.show');
+            Route::get('/{id}/edit', [MainCategoriesController::class, 'edit'])->name('categories.edit');
+            Route::put('/{id}', [MainCategoriesController::class, 'update'])->name('categories.update');
+            Route::delete('/{id}', [MainCategoriesController::class, 'destroy'])->name('categories.destroy');
         });
 
         
@@ -146,6 +147,10 @@ Route::middleware('web')->group(function () {
             Route::put('/{id}', [StylesController::class, 'update'])->name('styles.update');
             Route::delete('/{id}', [StylesController::class, 'destroy'])->name('styles.destroy');
         });
+
+        Route::group(['prefix' => 'profile'], function () {
+            Route::get('/', [UsersController::class, 'showProfile'])->name('profile.show');
+        });
         Route::group(['prefix' => 'preferences'], function () {
             Route::get('/', [PreferencesController::class, 'index'])->name('preferences.index');
             Route::get('/create', [PreferencesController::class, 'create'])->name('preferences.create');
@@ -155,9 +160,8 @@ Route::middleware('web')->group(function () {
             Route::put('/{id}', [PreferencesController::class, 'update'])->name('preferences.update');
             Route::delete('/{id}', [PreferencesController::class, 'destroy'])->name('preferences.destroy');
         });
-    });
 
-    Route::group(['prefix' => 'transactions'], function () {
+
         Route::group(['prefix' => 'orders'], function () {
             Route::get('/', [OrdersController::class, 'index'])->name('orders.index');
             Route::get('/create', [OrdersController::class, 'create'])->name('orders.create');
@@ -185,16 +189,20 @@ Route::middleware('web')->group(function () {
             Route::put('/{id}', [ComplaintsController::class, 'update'])->name('complaints.update');
             Route::delete('/{id}', [ComplaintsController::class, 'destroy'])->name('complaints.destroy');
         });
-    });
+        Route::group(['prefix' => 'refund-request'], function () {
+            Route::get('/', [RefundRequestController::class, 'index'])->name('refund-request.index');
+            Route::get('/create', [RefundRequestController::class, 'create'])->name('refund-request.create');
+            Route::post('/', [RefundRequestController::class, 'store'])->name('refund-request.store');
+            Route::get('/{id}', [RefundRequestController::class, 'show'])->name('refund-request.show');
+            Route::get('/{id}/edit', [RefundRequestController::class, 'edit'])->name('refund-request.edit');
+            Route::put('/{id}', [RefundRequestController::class, 'update'])->name('refund-request.update');
+            Route::delete('/{id}', [RefundRequestController::class, 'destroy'])->name('refund-request.destroy');
+        });
 
-    Route::group(['prefix' => 'developer-team'], function () {
-        Route::group(['prefix' => 'developer'], function () {
+    
+        Route::group(['prefix' => 'developers'], function () {
             Route::get('/', [UsersController::class, 'developer'])->name('developers.index');
         });
-        Route::group(['prefix' => 'support'], function () {
-            Route::view('supports','admin.developer-team.support')->name('supports');
-        });
-    });
     
 });
 

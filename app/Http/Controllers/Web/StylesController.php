@@ -11,6 +11,6 @@ class StylesController extends Controller
     public function index()
     {
         $styles = Style::all();
-        return view('admin.specification.data-style', compact('styles'));
+        return view('admin.product.data-style', compact('styles'));
     }
 }

@@ -11,19 +11,19 @@ class RefundRequestController extends Controller
 {
     public function index()
     {
-        $refundRequests = RefundRequest::all();
-        return view('refundRequests.index', compact('refundRequests'));
+        $refundRequest = RefundRequest::all();
+        return view('admin.refund.refund-request', compact('refundRequest'));
     }
 
     public function show($id)
     {
         $refundRequest = RefundRequest::findOrFail($id);
-        return view('refundRequests.show', compact('refundRequest'));
+        return view('admin.refund.refundRequests.show', compact('refundRequest'));
     }
 
     public function create()
     {
-        return view('refundRequests.create');
+        return view('admin.refund.refundRequests.create');
     }
 
     public function store(Request $request)
@@ -41,13 +41,13 @@ class RefundRequestController extends Controller
 
         $refundRequest = RefundRequest::create($validator->validated());
 
-        return redirect()->route('refundRequests.show', $refundRequest->id)->with('success', 'Refund request created successfully');
+        return redirect()->route('admin.refund.refundRequests.show', $refundRequest->id)->with('success', 'Refund request created successfully');
     }
 
     public function edit($id)
     {
         $refundRequest = RefundRequest::findOrFail($id);
-        return view('refundRequests.edit', compact('refundRequest'));
+        return view('admin.refund.refundRequests.edit', compact('refundRequest'));
     }
 
     public function update(Request $request, $id)
@@ -67,7 +67,7 @@ class RefundRequestController extends Controller
 
         $refundRequest->update($validator->validated());
 
-        return redirect()->route('refundRequests.show', $refundRequest->id)->with('success', 'Refund request updated successfully');
+        return redirect()->route('admin.refund.refundRequests.show', $refundRequest->id)->with('success', 'Refund request updated successfully');
     }
 
     public function destroy($id)

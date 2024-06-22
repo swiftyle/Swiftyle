@@ -10,7 +10,7 @@ class ComplaintsController extends Controller
 {
     public function index()
     {
-        $compplaints = Complaint::all();
+        $complaints = Complaint::all();  // Corrected variable name
         return view('admin.transaction.data-complaint', compact('complaints'));
     }
 }

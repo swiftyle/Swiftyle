@@ -27,7 +27,7 @@ class AddressController extends Controller
             'lastname' => 'required|string|max:255',
             'type' => 'required|in:Home,Work,Other',
             'primary' => 'required|boolean',
-            'country' => 'required|in:' . implode(',', \App\Enums\Country::getValues()),
+            'country' => 'required|string',
             'province' => 'required|string|max:255',
             'city' => 'required|string|max:255',
             'district' => 'required|string|max:255',

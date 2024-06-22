@@ -11,6 +11,6 @@ class PreferencesController extends Controller
     public function index(){
 
         $preferences = Preference::all();
-        return view('admin.specification.data-preference', compact('preferences'));
+        return view('admin.product.data-preference', compact('preferences'));
     }
 }

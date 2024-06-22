@@ -1,7 +1,7 @@
 @extends('layouts.modern-layout.master')
 
 @section('title')
-    Data Style Table
+    Data Preference Table
     {{ $title }}
 @endsection
 
@@ -16,10 +16,10 @@
 @section('content')
     @component('components.breadcrumb')
         @slot('breadcrumb_title')
-            <h3>Data Style</h3>
+            <h3>Data Preference</h3>
         @endslot
         <li class="breadcrumb-item">Data</li>
-        <li class="breadcrumb-item active">Style</li>
+        <li class="breadcrumb-item active">Preference</li>
     @endcomponent
 
     <div class="container-fluid">
@@ -30,8 +30,8 @@
                     <table class="table table-bordernone">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Description</th>
+                                <th>User</th>
+                                <th>Style</th>
                                 <th>
                                     <div class="setting-list">
                                         <ul class="list-unstyled setting-option">
@@ -49,21 +49,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($styles as $style)
+                            @foreach ($preferences as $preference)
                                 <tr>
                                     <td>
-                                        <p>{{ $style->name }}</p>
+                                        <p>{{ $preference->user_id }}</p>
                                     </td>
                                     <td>
-                                        <p>{{ $style->description }}</p>
+                                        <p>{{ $preference->style_id }}</p>
                                     </td>                                    
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
-                </div>
-                <div class="pagination">
-                    {{ $styles->links() }}
                 </div>
             </div>
         </div>

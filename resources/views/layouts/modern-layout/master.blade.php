@@ -44,7 +44,7 @@
       <!-- Page Body Start-->
       <div class="page-body-wrapper modern-sidebar">
         <!-- Page Sidebar Start-->
-        @includeIf('layouts.admin.partials.sidebar')
+        @includeIf('layouts.modern-layout.partials.sidebar')
         <!-- Page Sidebar Ends-->
         <div class="page-body">
           <!-- Container-fluid starts-->

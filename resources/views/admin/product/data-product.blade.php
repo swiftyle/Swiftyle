@@ -1,7 +1,7 @@
 @extends('layouts.modern-layout.master')
 
 @section('title')
-    Data Shop Table
+    Data Product Table
     {{ $title }}
 @endsection
 
@@ -16,10 +16,10 @@
 @section('content')
     @component('components.breadcrumb')
         @slot('breadcrumb_title')
-            <h3>Data Shop</h3>
+            <h3>Data Product</h3>
         @endslot
-        <li class="breadcrumb-item">Shop</li>
-        <li class="breadcrumb-item active">Data</li>
+        <li class="breadcrumb-item">Data</li>
+        <li class="breadcrumb-item active">Product</li>
     @endcomponent
 
     <div class="container-fluid">
@@ -30,12 +30,15 @@
                     <table class="table table-bordernone">
                         <thead>
                             <tr>
+                                <th>Number</th>
                                 <th>Name</th>
-                                <th>Seller</th>
+                                <th>Description</th>
+                                <th>Price</th>
+                                <th>Style</th>
+                                <th>Category</th>
+                                
+                                <th>Sell</th>
                                 <th>Rating</th>
-                                <th>Email</th>
-                                <th>Addres</th>
-                                <th>Phone</th>
                                 <th>
                                     <div class="setting-list">
                                         <ul class="list-unstyled setting-option">
@@ -53,40 +56,39 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($shops as $shop)
+                            @foreach ($products as $product)
                                 <tr>
                                     <td>
                                         <div class="media">
-                                            <img class="img-fluid rounded-circle" src="{{ $shop->logo }}"
+                                            <img class="img-fluid rounded-circle" src="{{ $product->image }}"
                                                 alt="" width="30px" height="30px">
                                             <div class="media-body">
-                                                <span>{{ $shop->name }}</span>
+                                                <span>{{ $product->name }}</span>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
-                                        <p>{{ $shop->user->name }}</p>
+                                        <p>{{ $product->description }}</p>
                                     </td>
                                     <td>
-                                        <p>{{ $shop->rating }}</p>
+                                        <p>{{ $product->price }}</p>
                                     </td>
                                     <td>
-                                        <p>{{ $shop->email }}</p>
+                                        <p>{{ $product->image }}</p>
                                     </td>
                                     <td>
-                                        <p>{{ $shop->address }}</p>
+                                        <p>{{ $product->sell }}</p>
                                     </td>
                                     <td>
-                                        <p>{{ $shop->phone }}</p>
+                                        <p>{{ $product->rating }}</p>
                                     </td>
+                                    
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
-                <div class="pagination">
-                    {{ $shops->links() }}
-                </div>
+            
             </div>
         </div>
     </div>

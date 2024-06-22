@@ -14,6 +14,7 @@ class ShopController extends Controller
      *
      * @return \Illuminate\View\View
      */
+    
     public function index()
     {
         $shops = Shop::paginate(10);

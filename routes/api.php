@@ -10,12 +10,15 @@ use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\CheckoutController;
 use App\Http\Controllers\Api\ColorController;
 use App\Http\Controllers\Api\ComplaintController;
+use App\Http\Controllers\Api\CourierCategoryController;
+use App\Http\Controllers\Api\CourierController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\MainCategoryController;
 use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\OrderHistoryController;
 use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\Api\PreferenceController;
 use App\Http\Controllers\Api\PromotionController;
 use App\Http\Controllers\Api\RefundController;
 use App\Http\Controllers\Api\RefundRequestController;
@@ -98,6 +101,15 @@ Route::middleware(['jwt.auth'])->group(function () {
         Route::get('{id}', [StyleController::class, 'readById']);
         Route::put('{id}', [StyleController::class, 'update']);
         Route::delete('{id}', [StyleController::class, 'delete']);
+    });
+
+    //Preferences
+    Route::prefix('preferences')->group(function () {
+        Route::post('', [PreferenceController::class, 'create']);
+        Route::get('', [PreferenceController::class, 'read']);
+        Route::get('{id}', [PreferenceController::class, 'readById']);
+        Route::put('{id}', [PreferenceController::class, 'update']);
+        Route::delete('{id}', [PreferenceController::class, 'delete']);
     });
 
     // Users
@@ -301,6 +313,24 @@ Route::middleware(['jwt.auth'])->group(function () {
         Route::get('{id}', [RefundController::class, 'readById']);
         Route::put('{id}', [RefundController::class, 'update']);
         Route::delete('{id}', [RefundController::class, 'delete']);
+    });
+
+    //Courier-Categories
+    Route::prefix('courier-categories')->group(function () {
+        Route::post('', [CourierCategoryController::class, 'create']);
+        Route::get('', [CourierCategoryController::class, 'read']);
+        Route::get('{id}', [CourierCategoryController::class, 'readById']);
+        Route::put('{id}', [CourierCategoryController::class, 'update']);
+        Route::delete('{id}', [CourierCategoryController::class, 'delete']);
+    });
+
+    //Couriers
+    Route::prefix('couriers')->group(function () {
+        Route::post('', [CourierController::class, 'create']);
+        Route::get('', [CourierController::class, 'read']);
+        Route::get('{id}', [CourierController::class, 'readById']);
+        Route::put('{id}', [CourierController::class, 'update']);
+        Route::delete('{id}', [CourierController::class, 'delete']);
     });
 
     // Logout

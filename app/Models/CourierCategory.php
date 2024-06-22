@@ -18,6 +18,7 @@ class CourierCategory extends Model
     protected $fillable = [
         'name',
         'courier_costs',
+        'mmodified_by',
     ];
     public function couriers()
     {

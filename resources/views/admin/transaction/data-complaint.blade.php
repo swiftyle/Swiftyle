@@ -1,7 +1,7 @@
 @extends('layouts.modern-layout.master')
 
 @section('title')
-    Data Shop Table
+    Complain User Table
     {{ $title }}
 @endsection
 
@@ -16,10 +16,10 @@
 @section('content')
     @component('components.breadcrumb')
         @slot('breadcrumb_title')
-            <h3>Data Shop</h3>
+            <h3>Complain User</h3>
         @endslot
-        <li class="breadcrumb-item">Shop</li>
-        <li class="breadcrumb-item active">Data</li>
+        <li class="breadcrumb-item">User</li>
+        <li class="breadcrumb-item active">Complain</li>
     @endcomponent
 
     <div class="container-fluid">
@@ -30,12 +30,10 @@
                     <table class="table table-bordernone">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Seller</th>
-                                <th>Rating</th>
-                                <th>Email</th>
-                                <th>Addres</th>
-                                <th>Phone</th>
+                                <th>User</th>
+                                <th>Order ID</th>
+                                <th>Description</th>
+                                <th>Status</th>
                                 <th>
                                     <div class="setting-list">
                                         <ul class="list-unstyled setting-option">
@@ -53,39 +51,31 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($shops as $shop)
+                            @foreach ($complaints as $complaint)
                                 <tr>
                                     <td>
                                         <div class="media">
-                                            <img class="img-fluid rounded-circle" src="{{ $shop->logo }}"
+                                            <img class="img-fluid rounded-circle" src="{{ $complaint->user>avatar }}"
                                                 alt="" width="30px" height="30px">
                                             <div class="media-body">
-                                                <span>{{ $shop->name }}</span>
+                                                <span>{{ $complaint->user>name }}</span>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
-                                        <p>{{ $shop->user->name }}</p>
+                                        <p>{{ $complaint->order_id }}</p>
                                     </td>
                                     <td>
-                                        <p>{{ $shop->rating }}</p>
+                                        <p>{{ $complaint->description }}</p>
                                     </td>
                                     <td>
-                                        <p>{{ $shop->email }}</p>
+                                        <p>{{ $complaint->status }}</p>
                                     </td>
-                                    <td>
-                                        <p>{{ $shop->address }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{{ $shop->phone }}</p>
-                                    </td>
+                                    
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
-                </div>
-                <div class="pagination">
-                    {{ $shops->links() }}
                 </div>
             </div>
         </div>

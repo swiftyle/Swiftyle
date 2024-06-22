@@ -26,9 +26,4 @@ class Preference extends Model
     {
         return $this->hasMany(Style::class);
     }
-
-    public function genre()
-    {
-        return $this->hasMany(Genre::class);
-    }
 }

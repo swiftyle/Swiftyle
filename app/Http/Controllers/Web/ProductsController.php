@@ -20,7 +20,7 @@ class ProductsController extends Controller
     public function index()
     {
         $products = Product::all();
-        return view('admin.specification.data-product', compact('products'));
+        return view('admin.product.data-product', compact('products'));
     }
 
     /**

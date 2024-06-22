@@ -1,7 +1,7 @@
 @extends('layouts.modern-layout.master')
 
 @section('title')
-    Complain User Table
+    Order History Table
     {{ $title }}
 @endsection
 
@@ -16,10 +16,10 @@
 @section('content')
     @component('components.breadcrumb')
         @slot('breadcrumb_title')
-            <h3>Complain User</h3>
+            <h3>Order History</h3>
         @endslot
-        <li class="breadcrumb-item">User</li>
-        <li class="breadcrumb-item active">Complain</li>
+        <li class="breadcrumb-item">Data</li>
+        <li class="breadcrumb-item active">History</li>
     @endcomponent
 
     <div class="container-fluid">
@@ -30,8 +30,8 @@
                     <table class="table table-bordernone">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Description</th>
+                                <th>Order ID</th>
+                                <th>Desrciption</th>
                                 <th>Status</th>
                                 <th>
                                     <div class="setting-list">
@@ -50,31 +50,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($complaints as $complaint)
+                            @foreach ($orderHistories as $orderHistory)
                                 <tr>
                                     <td>
-                                        <div class="media">
-                                            <img class="img-fluid rounded-circle" src="{{ $User>avatar }}"
-                                                alt="" width="30px" height="30px">
-                                            <div class="media-body">
-                                                <span>{{ $User>name }}</span>
-                                            </div>
-                                        </div>
+                                        <p>{{ $orderHistory->order_id }}</p>
                                     </td>
                                     <td>
-                                        <p>{{ $complaint->description }}</p>
+                                        <p>{{ $orderHistory->description }}</p>
                                     </td>
                                     <td>
-                                        <p>{{ $complaint->status }}</p>
+                                        <p>{{ $orderHistory->status }}</p>
                                     </td>
-                                    
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
-                </div>
-                <div class="pagination">
-                    {{ $complaints->links() }}
                 </div>
             </div>
         </div>

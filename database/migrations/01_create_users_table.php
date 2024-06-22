@@ -26,7 +26,7 @@ return new class extends Migration
             $table->enum('gender',['Male','Female','Other'])->default('Other');
             $table->enum('role', ['Admin','Customer','Seller'])->default('Customer');
             $table->string('avatar')->default('http://localhost:8000/assets/images/dashboard/1.png');
-            $table->string('pin_code');
+            $table->string('pin_code')->nullable();
             $table->enum('status',['Active','Inactive'])->default('Active');
             $table->string('provider')->nullable();
             $table->string('provider_id')->nullable();

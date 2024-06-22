@@ -53,6 +53,19 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10),
             'updated_at' => null
         ]);
+        
+        User::create([
+            'name' => 'Ludfi',
+            'username' => 'Ahmad Ludfi Ikhwana',
+            'email' => 'ahmadludfi@gmail.com',
+            'password' => bcrypt('12345678'),
+            'phone_number' => '(+62)895349066544',
+            'gender' => 'Male',
+            'role' => 'Seller',
+            'pin_code' => 123321,
+            'remember_token' => Str::random(10),
+            'updated_at' => null
+        ]);
 
         User::create([
             'name' => 'Fathi',

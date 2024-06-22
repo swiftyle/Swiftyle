@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('firstname', 255);
             $table->string('lastname', 255);
             $table->enum('type', ['Home', 'Work', 'Other']);
-            $table->boolean('primary')->default(false);
+            $table->boolean('primary')->default(true);
             $table->enum('country', Country::getValues());
             $table->string('province', 255);
             $table->string('city', 255);

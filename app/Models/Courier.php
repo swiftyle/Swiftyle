@@ -19,6 +19,7 @@ class Courier extends Model
         'name',
         'logo',
         'courier_categories_id',
+        'modified_by'
     ];
 
     /**

@@ -12,53 +12,58 @@ use Illuminate\Support\Facades\Validator;
 class ShopController extends Controller
 {
     public function create(Request $request)
-    {
-        // Decode JWT token to get user data
-        $user = $request->user();
+{
+    // Decode JWT token to get user data
+    $user = $request->user();
 
-        if ($user->role !== 'Seller') {
-            return response()->json(['message' => 'Hanya seller yang bisa membuat toko'], 403);
-        }
-
-        // Validate incoming request
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'address' => 'required|string|max:255',
-            'phone' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->messages())->setStatusCode(422);
-        }
-
-        $validated = $validator->validated();
-
-        $userId = $user->id;
-
-
-        // Ensure user ID is not null before proceeding
-        if (!$userId) {
-            return response()->json(['message' => 'User ID not found'], 401);
-        }
-
-        // Add user email as modified_by
-        $validated['user_id'] = $userId;
-
-        if ($request->hasFile('logo')) {
-            $filePath = $request->file('logo')->store('images', 'public');
-            $validated['logo'] = $filePath;
-        }
-
-        // Create the shop record
-        $shop = Shop::create($validated);
-
-        return response()->json([
-            'message' => 'Toko berhasil dibuat',
-            'data' => $shop
-        ], 201);
+    if ($user->role !== 'Seller') {
+        return response()->json(['message' => 'Hanya seller yang bisa membuat toko'], 403);
     }
+
+    // Check if the seller already has a non-deleted shop
+    $existingShop = Shop::where('user_id', $user->id)->withTrashed()->first();
+    if ($existingShop && !$existingShop->trashed()) {
+        return response()->json(['message' => 'Anda sudah memiliki toko'], 403);
+    }
+
+    // Validate incoming request
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|string|max:255',
+        'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        'address' => 'required|string|max:255',
+        'phone' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json($validator->messages())->setStatusCode(422);
+    }
+
+    $validated = $validator->validated();
+
+    $userId = $user->id;
+
+    // Ensure user ID is not null before proceeding
+    if (!$userId) {
+        return response()->json(['message' => 'User ID not found'], 401);
+    }
+
+    // Add user email as modified_by
+    $validated['user_id'] = $userId;
+
+    if ($request->hasFile('logo')) {
+        $filePath = $request->file('logo')->store('images', 'public');
+        $validated['logo'] = $filePath;
+    }
+
+    // Create the shop record
+    $shop = Shop::create($validated);
+
+    return response()->json([
+        'message' => 'Toko berhasil dibuat',
+        'data' => $shop
+    ], 201);
+}
 
     public function read(Request $request)
     {

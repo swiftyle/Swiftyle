@@ -10,8 +10,7 @@ class PasswordResetController extends Controller
 {
     public function index()
     {
-        $passwordResets = PasswordReset::all();
-        return view('admin.authentication.forget-password', compact('passwordResets'));
+        return view('admin.authentication.forget-password');
     }
 
     public function create()

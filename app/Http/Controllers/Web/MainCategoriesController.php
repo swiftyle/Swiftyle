@@ -17,7 +17,7 @@ class MainCategoriesController extends Controller
     public function index()
     {
         $mainCategories = MainCategory::all();
-        return view('admin.specification.data-main-category', compact('mainCategories'));
+        return view('admin.product.data-categories', compact('mainCategories'));
     }
 
     /**
@@ -27,7 +27,7 @@ class MainCategoriesController extends Controller
      */
     public function create()
     {
-        return view('admin.specification.data-category');
+        return view('admin.product.data-categories');
     }
 
     /**

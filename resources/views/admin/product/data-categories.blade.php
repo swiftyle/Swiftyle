@@ -1,29 +1,28 @@
 @extends('layouts.modern-layout.master')
 
 @section('title')
-    Data Shop Table
+    Data Main Category Table
     {{ $title }}
 @endsection
 
 @push('css')
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/animate.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/chartist.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/date-picker.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/prism.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vector-map.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/animate.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/chartist.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/date-picker.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/prism.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vector-map.css') }}">
 @endpush
 
 @section('content')
     @component('components.breadcrumb')
         @slot('breadcrumb_title')
-            <h3>Data Shop</h3>
+            <h3>Data Main Category</h3>
         @endslot
-        <li class="breadcrumb-item">Shop</li>
-        <li class="breadcrumb-item active">Data</li>
+        <li class="breadcrumb-item">Data</li>
+        <li class="breadcrumb-item active">Main Category</li>
     @endcomponent
 
     <div class="container-fluid">
-
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
@@ -31,11 +30,7 @@
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Seller</th>
-                                <th>Rating</th>
-                                <th>Email</th>
-                                <th>Addres</th>
-                                <th>Phone</th>
+                                <th>Description</th>
                                 <th>
                                     <div class="setting-list">
                                         <ul class="list-unstyled setting-option">
@@ -53,46 +48,24 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($shops as $shop)
+                            @foreach ($mainCategories as $mainCategory)
                                 <tr>
                                     <td>
-                                        <div class="media">
-                                            <img class="img-fluid rounded-circle" src="{{ $shop->logo }}"
-                                                alt="" width="30px" height="30px">
-                                            <div class="media-body">
-                                                <span>{{ $shop->name }}</span>
-                                            </div>
-                                        </div>
+                                        <p>{{ $mainCategory->name }}</p>
                                     </td>
                                     <td>
-                                        <p>{{ $shop->user->name }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{{ $shop->rating }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{{ $shop->email }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{{ $shop->address }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{{ $shop->phone }}</p>
+                                        <p>{{ $mainCategory->description }}</p>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
-                <div class="pagination">
-                    {{ $shops->links() }}
-                </div>
             </div>
         </div>
     </div>
 
-
-        @push('scripts')
+    @push('scripts')
         <script>
             if (window.history && window.history.pushState) {
                 window.history.pushState(null, null, window.location.href);
@@ -112,5 +85,5 @@
         <script src="{{ asset('assets/js/custom-card/custom-card.js') }}"></script>
         <script src="{{ asset('assets/js/notify/bootstrap-notify.min.js') }}"></script>
         <script src="{{ asset('assets/js/dashboard/default.js') }}"></script>
-        @endpush
-    @endsection
+    @endpush
+@endsection

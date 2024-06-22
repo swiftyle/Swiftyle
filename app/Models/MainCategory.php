@@ -18,8 +18,10 @@ class MainCategory extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'id', 'name', 'description'];
+
+    
+     protected $fillable = [
+        'name', 'description', 'modified_by'];
 
     /**
      * Boot method for the model.
@@ -28,6 +30,6 @@ class MainCategory extends Model
     
     public function subcategories()
     {
-        return $this->hasMany(SubCategory::class, 'sub_categories', 'id');
+        return $this->belongsTo(SubCategory::class, 'sub_categories', 'id');
     }
 }
