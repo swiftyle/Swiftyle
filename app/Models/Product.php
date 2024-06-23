@@ -45,7 +45,7 @@ class Product extends Model
     /**
      * Get the category that owns the product.
      */
-    public function subcategories()
+    public function categories()
     {
         return $this->belongsToMany(SubCategory::class, 'product_category');
     }

@@ -14,7 +14,6 @@ class SizeController extends Controller
         // Validate incoming request
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
-            'stock' => 'required|integer|min:0',
         ]);
 
         if ($validator->fails()) {
@@ -24,7 +23,6 @@ class SizeController extends Controller
         // Create the size
         $size = Size::create([
             'name' => $request->input('name'),
-            'stock' => $request->input('stock'),
         ]);
 
         return response()->json([
@@ -44,10 +42,10 @@ class SizeController extends Controller
         ], 200);
     }
 
-    public function read($id)
+    public function read()
     {
         // Fetch size by ID
-        $sizes = Size::find($id);
+        $sizes = Size::all();
 
         if (!$sizes) {
             return response()->json(['message' => 'Size not found'])->setStatusCode(404);
@@ -64,7 +62,6 @@ class SizeController extends Controller
         // Validate incoming request
         $validator = Validator::make($request->all(), [
             'name' => 'string',
-            'stock' => 'integer|min:0',
         ]);
 
         if ($validator->fails()) {
@@ -80,7 +77,6 @@ class SizeController extends Controller
 
         // Update the size
         $size->name = $request->input('name', $size->name);
-        $size->stock = $request->input('stock', $size->stock);
         $size->save();
 
         return response()->json([

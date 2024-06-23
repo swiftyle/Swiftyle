@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Api;
 
 use App\Events\ProductCreated;
@@ -25,6 +24,12 @@ class ProductController extends Controller
         return $shop !== null;
     }
 
+    // Function to verify seller role
+    private function verifySellerRole($user)
+    {
+        return $user->role === 'Seller';
+    }
+
     public function create(Request $request)
     {
         $user = $request->user();
@@ -40,16 +45,16 @@ class ProductController extends Controller
             'description' => 'required|string',
             'price' => 'required|numeric',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'rating' => 'required|numeric',
+            'rating' => 'default|0.0',
             'main_category_id' => 'required|exists:categories,id',
-            'subcategory_ids' => 'required|array',
-            'subcategory_ids.*' => 'exists:categories,id',
+            'sub_category_id' => 'required|array',
+            'sub_category_id.*' => 'exists:categories,id',
             'sizes' => 'required|array',
             'sizes.*.size_id' => 'required|exists:sizes,id',
-            'sizes.*.quantity' => 'required|numeric|min:1',
             'colors' => 'required|array',
             'colors.*.color_id' => 'required|exists:colors,id',
-            'colors.*.quantity' => 'required|numeric|min:1',
+            'colors.*.stock' => 'required|numeric|min:1',
+            'sell'  => 'default|0'
         ]);
 
         if ($validator->fails()) {
@@ -79,12 +84,13 @@ class ProductController extends Controller
             $product = $shop->products()->create($validated);
 
             // Attach main category to product
-            $productCategory = new ProductCategory(['main_category_id' => $validated['main_category_id']]);
-            $product->categories()->save($productCategory);
+            $productCategory = new ProductCategory(['sub_category_id' => $validated['sub_category_id']]);
+            
+            $product->subcategories()->save($productCategory);
 
             // Attach subcategories to product
-            foreach ($validated['subcategory_ids'] as $subcategoryId) {
-                $productCategory->categories()->attach($subcategoryId);
+            foreach ($validated['sub_category_id'] as $sub_categoryId) {
+                $productCategory->categories()->attach($sub_categoryId);
             }
 
             // Update sizes and quantities
@@ -153,17 +159,17 @@ class ProductController extends Controller
 
         // Add logic for user preferences and recommendations based on followed users
 
-        // 1. Retrieve user preferences
-        $userPreferences = $this->getUserPreferences($user);
+        // // 1. Retrieve user preferences
+        // $userPreferences = $this->getUserPreferences($user);
 
-        // 2. Retrieve products based on user preferences
-        $preferredProducts = $this->getPreferredProducts($userPreferences);
+        // // 2. Retrieve products based on user preferences
+        // $preferredProducts = $this->getPreferredProducts($userPreferences);
 
-        // 3. Retrieve products based on followed users' preferences
-        $recommendedProducts = $this->getRecommendedProducts($user);
+        // // 3. Retrieve products based on followed users' preferences
+        // $recommendedProducts = $this->getRecommendedProducts($user);
 
-        // Merge products from different sources (e.g., own shop, preferred, recommended)
-        $products = $products->merge($preferredProducts)->merge($recommendedProducts);
+        // // Merge products from different sources (e.g., own shop, preferred, recommended)
+        // $products = $products->merge($preferredProducts)->merge($recommendedProducts);
 
         return response()->json([
             'message' => 'Data Produk',
@@ -239,7 +245,7 @@ class ProductController extends Controller
         }
 
         // Verify ownership
-        if (!$product->shop->isOwnedBy($user->id)) {
+        if (!$this->verifySellerOwnership($user->id, $product->shop_id)) {
             return response()->json(['message' => 'Anda tidak memiliki izin untuk mengupdate produk ini'], 403);
         }
 
@@ -346,4 +352,3 @@ class ProductController extends Controller
         ], 200);
     }
 }
-

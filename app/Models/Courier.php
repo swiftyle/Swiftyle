@@ -10,11 +10,8 @@ class Courier extends Model
 {
     use HasFactory, SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    protected $table = 'couriers';
+    protected $primaryKey = 'id';
     protected $fillable = [
         'name',
         'logo',
@@ -22,11 +19,14 @@ class Courier extends Model
         'modified_by'
     ];
 
+    protected $dates = ['deleted_at', 'created_at', 'updated_at'];
+
     /**
      * Get the category that owns the courier.
      */
     public function category()
     {
-        return $this->hasMany(CourierCategory::class, 'courier_categories_id');
+        // Gunakan belongsTo jika setiap kurir hanya terkait dengan satu kategori
+        return $this->belongsTo(CourierCategory::class, 'courier_categories_id');
     }
 }

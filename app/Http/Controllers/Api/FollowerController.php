@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class FollowController extends Controller
+class FollowerController extends Controller
 {
     public function follow(Request $request, $followableType, $followableId)
     {

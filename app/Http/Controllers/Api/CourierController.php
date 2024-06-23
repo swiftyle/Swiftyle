@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Courier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class CourierController extends Controller
@@ -15,7 +16,7 @@ class CourierController extends Controller
         // Validate incoming request
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'logo' => 'required|string|max:255',
+            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'courier_categories_id' => 'required|exists:courier_categories,id',
         ]);
 
@@ -35,6 +36,12 @@ class CourierController extends Controller
 
         // Add user email as modified_by
         $validated['modified_by'] = $userEmail;
+
+        if ($request->hasFile('logo')) {
+            $filePath = $request->file('logo')->store('images', 'public');
+            $validated['logo'] = $filePath;
+        }
+
         // Create the courier
         $courier = Courier::create([
             'name' => $validated['name'],
@@ -64,7 +71,7 @@ class CourierController extends Controller
         // Validate incoming request
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|string|max:255',
-            'logo' => 'sometimes|string|max:255',
+            'logo' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'courier_categories_id' => 'sometimes|exists:courier_categories,id',
         ]);
 
@@ -86,6 +93,23 @@ class CourierController extends Controller
         $validated['modified_by'] = $userEmail;
         // Find the courier
         $courier = Courier::find($id);
+
+        if ($courier) {
+            // Handle image upload
+            if ($request->hasFile('image')) {
+                // Delete old image if it exists
+                if (!is_null($courier->image)) {
+                    Storage::disk('public')->delete($courier->image);
+                    // Store new image
+                    $filePath = $request->file('image')->store('images', 'public');
+                    $validated['image'] = $filePath;
+                } else {
+                    $filePath = $request->file('image')->store('images', 'public');
+                    $validated['image'] = $filePath;
+
+                }
+            }
+        }
 
         if ($courier) {
             // Update the courier

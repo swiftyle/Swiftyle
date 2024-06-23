@@ -15,83 +15,64 @@ class ShopCouponController extends Controller
 {
     public function create(Request $request)
     {
-        try {
-            // Decode JWT token dari header Authorization
-            $token = $request->bearerToken();
-            $data = JWT::decode($token, new Key(env('JWT_SECRET_KEY'), 'HS256'));
 
-            // Mendapatkan user dari decoded token
-            $user = User::find($data->id);
+        $user = $request->user();
 
-            // Memeriksa apakah user ditemukan
-            if (!$user) {
-                return response()->json([
-                    'msg' => 'Pengguna tidak ditemukan'
-                ], 404);
-            }
-
-            // Memastikan bahwa hanya seller yang dapat membuat kupon toko
-            if ($user->role !== 'Seller') {
-                return response()->json([
-                    'msg' => 'Hanya seller yang bisa membuat kupon toko'
-                ], 403);
-            }
-
-            // Validate incoming request
-            $validator = Validator::make($request->all(), [
-                'shop_id' => 'required|exists:shops,id,user_id,' . $user->id,
-                'name' => 'required|string|max:255',
-                'code' => 'required|string|unique:shop_coupons,code',
-                'type' => 'required|in:percentage_discount,fixed_discount',
-                'discount_amount' => 'required|numeric',
-                'max_uses' => 'nullable|integer',
-                'start_date' => 'nullable|date',
-                'end_date' => 'nullable|date|after_or_equal:start_date',
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json($validator->messages())->setStatusCode(422);
-            }
-
-            $validated = $validator->validated();
-
-            // Create the shop coupon
-            $shopCoupon = ShopCoupon::create([
-                'shop_id' => $validated['shop_id'],
-                'name' => $validated['name'],
-                'code' => $validated['code'],
-                'type' => $validated['type'],
-                'discount_amount' => $validated['discount_amount'],
-                'max_uses' => $validated['max_uses'] ?? null,
-                'start_date' => $validated['start_date'],
-                'end_date' => $validated['end_date'],
-            ]);
-
+        // Memeriksa apakah user ditemukan
+        if (!$user) {
             return response()->json([
-                'message' => 'Kupon Toko berhasil dibuat',
-                'data' => $shopCoupon
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
+                'msg' => 'Pengguna tidak ditemukan'
+            ], 404);
         }
-    }
 
+        // Memastikan bahwa hanya seller yang dapat membuat kupon toko
+        if ($user->role !== 'Seller') {
+            return response()->json([
+                'msg' => 'Hanya seller yang bisa membuat kupon toko'
+            ], 403);
+        }
+
+        // Validate incoming request
+        $validator = Validator::make($request->all(), [
+            'shop_id' => 'required|exists:shops,id,user_id,' . $user->id,
+            'name' => 'required|string|max:255',
+            'code' => 'required|string|unique:shop_coupons,code',
+            'type' => 'required|in:percentage_discount,fixed_discount',
+            'discount_amount' => 'required|numeric',
+            'max_uses' => 'nullable|integer',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->messages())->setStatusCode(422);
+        }
+
+        $validated = $validator->validated();
+
+        // Create the shop coupon
+        $shopCoupon = ShopCoupon::create([
+            'shop_id' => $validated['shop_id'],
+            'name' => $validated['name'],
+            'code' => $validated['code'],
+            'type' => $validated['type'],
+            'discount_amount' => $validated['discount_amount'],
+            'max_uses' => $validated['max_uses'] ?? null,
+            'start_date' => $validated['start_date'],
+            'end_date' => $validated['end_date'],
+        ]);
+
+        return response()->json([
+            'message' => 'Kupon Toko berhasil dibuat',
+            'data' => $shopCoupon
+        ], 201);
+    }
 
 
     public function read(Request $request)
     {
-        try {
-            // Decode JWT token dari header Authorization
-            $token = $request->bearerToken();
-            $data = JWT::decode($token, new Key(env('JWT_SECRET_KEY'), 'HS256'));
-        } catch (\Exception $e) {
-            return response()->json([
-                'msg' => 'Token tidak valid'
-            ], 401);
-        }
-
+        $user = $request->user();
         // Mendapatkan user dari decoded token
-        $user = User::find($data->id);
 
         // Memeriksa apakah user ditemukan
         if (!$user) {
@@ -126,13 +107,7 @@ class ShopCouponController extends Controller
 
     public function update(Request $request, $id)
     {
-        try {
-            // Decode JWT token dari header Authorization
-            $token = $request->bearerToken();
-            $data = JWT::decode($token, new Key(env('JWT_SECRET_KEY'), 'HS256'));
-
-            // Mendapatkan user dari decoded token
-            $user = User::find($data->id);
+            $user = $request->user();
 
             // Memeriksa apakah user ditemukan
             if (!$user) {
@@ -198,10 +173,6 @@ class ShopCouponController extends Controller
             return response()->json([
                 'message' => 'Kupon Toko dengan id: ' . $id . ' tidak ditemukan'
             ], 404);
-
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
-        }
     }
 
 

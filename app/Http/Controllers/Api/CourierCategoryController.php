@@ -36,10 +36,7 @@ class CourierCategoryController extends Controller
         // Add user email as modified_by
         $validated['modified_by'] = $userEmail;
         // Create the courier category
-        $courierCategory = CourierCategory::create([
-            'name' => $validated['name'],
-            'courier_costs' => $validated['courier_costs'],
-        ]);
+        $courierCategory = CourierCategory::create($validated);
 
         return response()->json([
             'message' => 'Kategori Kurir berhasil dibuat',

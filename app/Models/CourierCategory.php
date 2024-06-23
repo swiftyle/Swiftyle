@@ -10,18 +10,22 @@ class CourierCategory extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'courier_categories';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
+
+     protected $primaryKey = 'id';
     protected $fillable = [
         'name',
         'courier_costs',
-        'mmodified_by',
+        'modified_by',
     ];
-    public function couriers()
+    protected $dates = ['deleted_at, created_at, updated_at'];
+    public function courierCategories()
     {
-        return $this->belongsTo(Courier::class);
+        return $this->belongsTo(Courier::class, 'courier_id', 'id');
     }
 }

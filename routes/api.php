@@ -33,6 +33,7 @@ use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\WishlistController;
 use App\Http\Controllers\Api\WishlistItemController;
+use App\Http\Controllers\Api\FollowerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -342,6 +343,26 @@ Route::middleware(['jwt.auth'])->group(function () {
         Route::put('{id}', [SizeController::class, 'update']);
         Route::delete('{id}', [SizeController::class, 'delete']);
     });
+
+    //Follower
+    Route::prefix('followers')->group(function () {
+        Route::post('', [FollowerController::class, 'create']);
+        Route::get('', [FollowerController::class, 'read']);
+        Route::get('{id}', [FollowerController::class, 'readById']);
+        Route::put('{id}', [FollowerController::class, 'update']);
+        Route::delete('{id}', [FollowerController::class, 'delete']);
+    });
+
+    //Wishlist
+    Route::prefix('wishlists')->group(function () {
+        Route::post('', [WishlistController::class, 'create']);
+        Route::get('', [WishlistController::class, 'read']);
+        Route::get('{id}', [WishlistController::class, 'readById']);
+        Route::put('{id}', [WishlistController::class, 'update']);
+        Route::delete('{id}', [WishlistController::class, 'delete']);
+    });
+
+    //WishlistItem
 
     // Logout
     Route::post('logout', [AuthenticationController::class, 'logout']);
