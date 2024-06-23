@@ -47,15 +47,15 @@ class SizeController extends Controller
     public function read($id)
     {
         // Fetch size by ID
-        $size = Size::find($id);
+        $sizes = Size::find($id);
 
-        if (!$size) {
+        if (!$sizes) {
             return response()->json(['message' => 'Size not found'])->setStatusCode(404);
         }
 
         return response()->json([
             'message' => 'Size fetched successfully',
-            'data' => $size
+            'data' => $sizes
         ], 200);
     }
 

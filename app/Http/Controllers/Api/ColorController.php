@@ -66,10 +66,10 @@ class ColorController extends Controller
             return response()->json(['message' => 'Warna tidak ditemukan'], 404);
         }
 
-        // Check if the color is associated with the seller's shop
-        if (!$this->isColorOwnedBySeller($user, $color)) {
-            return response()->json(['message' => 'Anda tidak memiliki izin untuk mengubah warna ini'], 403);
-        }
+        // // Check if the color is associated with the seller's shop
+        // if (!$this->isColorOwnedBySeller($user, $color)) {
+        //     return response()->json(['message' => 'Anda tidak memiliki izin untuk mengubah warna ini'], 403);
+        // }
 
         // Validate incoming request
         $validator = Validator::make($request->all(), [
@@ -108,9 +108,9 @@ class ColorController extends Controller
         }
 
         // Check if the color is associated with the seller's shop
-        if (!$this->isColorOwnedBySeller($user, $color)) {
-            return response()->json(['message' => 'Anda tidak memiliki izin untuk menghapus warna ini'], 403);
-        }
+        // if (!$this->isColorOwnedBySeller($user, $color)) {
+        //     return response()->json(['message' => 'Anda tidak memiliki izin untuk menghapus warna ini'], 403);
+        // }
 
         // Delete the color record
         $color->delete();
@@ -122,11 +122,27 @@ class ColorController extends Controller
 
     private function isColorOwnedBySeller($user, $color)
     {
+        // Check if the user has shops
+        if (empty($user->shops) || !is_iterable($user->shops)) {
+            return false;
+        }
+
         // Traverse the relationships to check if the color is associated with the seller's shop
-        // Assuming the relationships are set correctly, adjust according to your actual model structure
         foreach ($user->shops as $shop) {
+            if (empty($shop->products) || !is_iterable($shop->products)) {
+                continue;
+            }
+
             foreach ($shop->products as $product) {
+                if (empty($product->productSizes) || !is_iterable($product->productSizes)) {
+                    continue;
+                }
+
                 foreach ($product->productSizes as $productSize) {
+                    if (empty($productSize->size->sizeColors) || !is_iterable($productSize->size->sizeColors)) {
+                        continue;
+                    }
+
                     foreach ($productSize->size->sizeColors as $sizeColor) {
                         if ($sizeColor->color_id == $color->id) {
                             return true;
@@ -135,6 +151,8 @@ class ColorController extends Controller
                 }
             }
         }
+
         return false;
     }
+
 }

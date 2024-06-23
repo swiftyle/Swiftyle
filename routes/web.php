@@ -161,7 +161,6 @@ Route::middleware('web')->group(function () {
             Route::delete('/{id}', [PreferencesController::class, 'destroy'])->name('preferences.destroy');
         });
 
-
         Route::group(['prefix' => 'orders'], function () {
             Route::get('/', [OrdersController::class, 'index'])->name('orders.index');
             Route::get('/create', [OrdersController::class, 'create'])->name('orders.create');

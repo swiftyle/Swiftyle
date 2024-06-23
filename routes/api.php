@@ -26,6 +26,7 @@ use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\ShippingController;
 use App\Http\Controllers\Api\ShopController;
 use App\Http\Controllers\Api\ShopCouponController;
+use App\Http\Controllers\Api\SizeController;
 use App\Http\Controllers\Api\StyleController;
 use App\Http\Controllers\Api\SubCategoryController;
 use App\Http\Controllers\Api\TransactionController;
@@ -331,6 +332,15 @@ Route::middleware(['jwt.auth'])->group(function () {
         Route::get('{id}', [CourierController::class, 'readById']);
         Route::put('{id}', [CourierController::class, 'update']);
         Route::delete('{id}', [CourierController::class, 'delete']);
+    });
+
+    //Size
+    Route::prefix('sizes')->group(function () {
+        Route::post('', [SizeController::class, 'create']);
+        Route::get('', [SizeController::class, 'read']);
+        Route::get('{id}', [SizeController::class, 'readById']);
+        Route::put('{id}', [SizeController::class, 'update']);
+        Route::delete('{id}', [SizeController::class, 'delete']);
     });
 
     // Logout
