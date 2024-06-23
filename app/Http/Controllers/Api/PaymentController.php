@@ -32,19 +32,19 @@ class PaymentController extends Controller
 
         $validated = $validator->validated();
 
+         // Menambahkan user ID ke data yang divalidasi
+         $validated['user_id'] = $user->id;
         // Create the payment with user relationship
-        $payment = Payment::create([
-            'payment_method' => $validated['payment_method'],
-            'payment_details' => $validated['payment_details'],
-        ]);
+        $payment = Payment::create($validated);
 
         // Process payment using Midtrans if 'dana' payment method is selected
         if ($validated['payment_method'] === 'dana') {
             // Set Midtrans configuration
-            Config::$serverKey = config('midtrans.server_key');
-            Config::$isProduction = config('midtrans.is_production');
-            Config::$isSanitized = config('midtrans.is_sanitized');
-            Config::$is3ds = config('midtrans.is_3ds');
+            Config::$serverKey = config('Mid-server-uHFIG_ZbKH9WX7L0sB-4h3_q');
+            Config::$clientKey = config('Mid-client-8rhtTOzlQobNA0l8');
+            Config::$isProduction = config('false');
+            Config::$isSanitized = config('true');
+            Config::$is3ds = config('true');
 
             // Create transaction details
             $transaction = [
@@ -105,7 +105,7 @@ class PaymentController extends Controller
 
         // Validasi input
         $validator = Validator::make($request->all(), [
-            'payment_method' => 'sometimes|required|in:debit_card,credit_card,e_wallet,bank_transfer,paypal',
+            'payment_method' => 'sometimes|in:debit_card,credit_card,e_wallet,bank_transfer,paypal',
             'payment_details' => 'nullable|string|max:255',
         ]);
 

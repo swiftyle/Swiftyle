@@ -14,9 +14,10 @@ class MidtransServiceProvider extends ServiceProvider
 
     public function register()
     {
-        Config::$serverKey = config('midtrans.serverKey');
-        Config::$isProduction = config('midtrans.isProduction');
-        Config::$isSanitized = config('midtrans.isSanitized');
-        Config::$is3ds = config('midtrans.is3ds');
+        Config::$serverKey = config('Mid-server-uHFIG_ZbKH9WX7L0sB-4h3_q');
+        Config::$clientKey = config('Mid-client-8rhtTOzlQobNA0l8');
+        Config::$isProduction = config('false');
+        Config::$isSanitized = config('true');
+        Config::$is3ds = config('true');
     }
 }

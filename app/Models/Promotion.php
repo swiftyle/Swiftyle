@@ -21,6 +21,7 @@ class Promotion extends Model
         'discount_percentage',
         'start_date',
         'end_date',
+        'modified_by'
     ];
 
     protected $casts = [

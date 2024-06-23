@@ -110,7 +110,6 @@ Route::middleware(['jwt.auth'])->group(function () {
         Route::post('', [PreferenceController::class, 'create']);
         Route::get('', [PreferenceController::class, 'read']);
         Route::get('{id}', [PreferenceController::class, 'readById']);
-        Route::put('{id}', [PreferenceController::class, 'update']);
         Route::delete('{id}', [PreferenceController::class, 'delete']);
     });
 
@@ -278,7 +277,9 @@ Route::middleware(['jwt.auth'])->group(function () {
     });
 
     //Midtrans
-    Route::post('/midtrans/notification', [TransactionController::class, 'notification'
+    Route::post('/midtrans/notification', [
+        TransactionController::class,
+        'notification'
     ]);
 
     //Complaints
@@ -345,13 +346,14 @@ Route::middleware(['jwt.auth'])->group(function () {
     });
 
     //Follower
-    Route::prefix('followers')->group(function () {
-        Route::post('', [FollowerController::class, 'create']);
-        Route::get('', [FollowerController::class, 'read']);
-        Route::get('{id}', [FollowerController::class, 'readById']);
-        Route::put('{id}', [FollowerController::class, 'update']);
-        Route::delete('{id}', [FollowerController::class, 'delete']);
-    });
+
+    Route::get('followers', [FollowerController::class, 'read']);
+    Route::post('follows/{followableType}/{followableId}', [FollowerController::class, 'follow']);
+    Route::post('unfollows/{followableType}/{followableId}', [FollowerController::class, 'unfollow']);
+    Route::delete('/followers/{followableId}', [FollowerController::class, 'delete'])->name('followers.unfollow');
+
+    
+
 
     //Wishlist
     Route::prefix('wishlists')->group(function () {

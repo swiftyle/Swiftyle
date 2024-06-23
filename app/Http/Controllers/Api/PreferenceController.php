@@ -26,11 +26,20 @@ class PreferenceController extends Controller
 
         $validated = $validator->validated();
 
+        $userId = $user->id;
+        // Ensure user ID is not null before proceeding
+        if (!$userId) {
+            return response()->json(['message' => 'User ID not found'], 401);
+        }
+
+        // Check if the user already has a preference with the same style_id
+        if ($user->preferences()->where('style_id', $validated['style_id'])->exists()) {
+            return response()->json(['message' => 'User already has a preference with this style'], 422);
+        }
+
+        $validated['user_id'] = $userId;
         // Save the preference
-        $preference = Preference::create([
-            'user_id' => $user->id,
-            'style_id' => $validated['style_id'],
-        ]);
+        $preference = Preference::create($validated);
 
         return response()->json([
             'message' => 'Preference berhasil disimpan',
@@ -38,18 +47,19 @@ class PreferenceController extends Controller
         ], 201);
     }
 
-
     public function read(Request $request)
     {
         $user = $request->user();
-        // Ambil semua data preference
-        $preferences = Preference::all();
+
+        // Retrieve preferences associated with the authenticated user
+        $preferences = $user->preferences()->get();
 
         return response()->json([
-            'message' => 'Data semua preference',
+            'message' => 'Data preference milik pengguna',
             'data' => $preferences
         ], 200);
     }
+
 
     public function update(Request $request, $id)
     {

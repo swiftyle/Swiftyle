@@ -39,67 +39,62 @@ class ChatController extends Controller
 
     public function read(Request $request)
     {
-        $user = $request->user();
-
         // Memeriksa apakah user ditemukan
+        $user = $request->user();
         if (!$user) {
             return response()->json([
-                'msg' => 'Pengguna tidak ditemukan'
-            ], 404);
+                'msg' => 'Pengguna tidak terotentikasi'
+            ], 401);
         }
 
-        // Memastikan bahwa hanya user dengan id 1 dan 2 yang dapat mengakses
-        if (!in_array($user->id, [1, 2])) {
-            return response()->json([
-                'msg' => 'Anda tidak memiliki izin untuk mengakses data ini'
-            ], 403);
-        }
-
-        // Get all chat records
-        $chats = Chat::all();
+        // Get all chat records where the user is either user1 or user2
+        $chats = Chat::where('user1_id', $user->id)
+            ->orWhere('user2_id', $user->id)
+            ->get();
 
         return response()->json([
-            'message' => 'Data semua chat',
+            'message' => 'Data semua chat untuk pengguna saat ini',
             'data' => $chats
         ], 200);
     }
 
-    public function update(Request $request, $id)
-    {
-        $user = $request->user();
 
-        // Validate incoming request
-        $validator = Validator::make($request->all(), [
-            'user2_id' => 'required|exists:users,id',
-        ]);
+    // public function update(Request $request, $id)
+    // {
+    //     $user = $request->user();
 
-        if ($validator->fails()) {
-            return response()->json($validator->messages())->setStatusCode(422);
-        }
+    //     // Validate incoming request
+    //     $validator = Validator::make($request->all(), [
+    //         'user2_id' => 'required|exists:users,id',
+    //     ]);
 
-        $validated = $validator->validated();
+    //     if ($validator->fails()) {
+    //         return response()->json($validator->messages())->setStatusCode(422);
+    //     }
 
-        // Find the chat record to update
-        $chat = Chat::find($id);
+    //     $validated = $validator->validated();
 
-        if (!$chat) {
-            return response()->json(['message' => 'Chat tidak ditemukan'], 404);
-        }
+    //     // Find the chat record to update
+    //     $chat = Chat::find($id);
 
-        // Check if the authenticated user is part of the chat
-        if ($chat->user1_id !== $user->id && $chat->user2_id !== $user->id) {
-            return response()->json(['message' => 'Anda tidak memiliki izin untuk mengupdate chat ini'], 403);
-        }
+    //     if (!$chat) {
+    //         return response()->json(['message' => 'Chat tidak ditemukan'], 404);
+    //     }
 
-        // Update the chat record
-        $chat->user2_id = $validated['user2_id'];
-        $chat->save();
+    //     // Check if the authenticated user is part of the chat
+    //     if ($chat->user1_id !== $user->id && $chat->user2_id !== $user->id) {
+    //         return response()->json(['message' => 'Anda tidak memiliki izin untuk mengupdate chat ini'], 403);
+    //     }
 
-        return response()->json([
-            'message' => 'Chat berhasil diupdate',
-            'data' => $chat
-        ], 200);
-    }
+    //     // Update the chat record
+    //     $chat->user2_id = $validated['user2_id'];
+    //     $chat->save();
+
+    //     return response()->json([
+    //         'message' => 'Chat berhasil diupdate',
+    //         'data' => $chat
+    //     ], 200);
+    // }
 
     public function delete(Request $request, $id)
     {

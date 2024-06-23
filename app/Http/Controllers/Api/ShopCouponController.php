@@ -179,12 +179,8 @@ class ShopCouponController extends Controller
     public function delete(Request $request, $id)
     {
         try {
-            // Decode JWT token dari header Authorization
-            $token = $request->bearerToken();
-            $data = JWT::decode($token, new Key(env('JWT_SECRET_KEY'), 'HS256'));
 
-            // Mendapatkan user dari decoded token
-            $user = User::find($data->id);
+            $user = $request->user();
 
             // Memeriksa apakah user ditemukan
             if (!$user) {

@@ -107,12 +107,10 @@ class AppCouponController extends Controller
         ], 200);
     }
 
-    public function delete($id)
+    public function delete(Request $request, $id)
     {
-        // Decode JWT token to get user data
-        $data = JWT::decode(request()->bearerToken(), new Key(env('JWT_SECRET_KEY'), 'HS256'));
-        $user = User::find($data->id);
-
+   
+        $user= $request->user();
         // Cari coupon yang akan dihapus
         $coupon = $user->coupons()->find($id);
 

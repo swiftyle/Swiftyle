@@ -8,16 +8,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Facades\Log;
 
 class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable, SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'name',
         'username',
@@ -33,11 +31,6 @@ class User extends Authenticatable implements JWTSubject
         'provider_token',
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password',
         'role',
@@ -52,11 +45,6 @@ class User extends Authenticatable implements JWTSubject
         'updated_at',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
         'created_at' => 'datetime',
@@ -64,9 +52,10 @@ class User extends Authenticatable implements JWTSubject
         'deleted_at' => 'datetime',
     ];
 
-    /**
-     * Get the addresses for the user.
-     */
+    public function preferences()
+    {
+        return $this->hasMany(Preference::class);
+    }
     public function addresses()
     {
         return $this->hasMany(Address::class, 'user_id', 'id');
@@ -76,7 +65,6 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(Shop::class, 'user_id', 'id');
     }
-
 
     public function orders()
     {
@@ -98,37 +86,33 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Cart::class, 'user_id', 'id');
     }
 
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
     public function transactions()
     {
         return $this->hasMany(Transaction::class, 'user_id', 'id');
     }
 
-    public static function generateUserName($username) {
+    public static function generateUserName($username)
+    {
         if ($username == null) {
             $username = Str::lower(Str::random(8));
         }
-        if(User::where('username', '=', $username)->exists()){
-            $newUsername = $username.Str::lower(Str::random(3));
+        if (User::where('username', '=', $username)->exists()) {
+            $newUsername = $username . Str::lower(Str::random(3));
             return self::generateUsername($newUsername);
         }
         return $username;
     }
 
-    /**
-     * Get the identifier that will be stored in the subject claim of the JWT.
-     *
-     * @return mixed
-     */
     public function getJWTIdentifier()
     {
         return $this->getKey();
     }
 
-    /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
-     *
-     * @return array
-     */
     public function getJWTCustomClaims()
     {
         return [];
@@ -153,4 +137,53 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(AppCoupon::class);
     }
+
+   public function followings(): MorphToMany
+    {
+        return $this->morphedByMany(User::class, 'followable', 'followers', 'follower_id', 'followable_id')
+            ->withPivot('followable_type')
+            ->withTimestamps();
+    }
+
+    // Define relationship for following shops
+    public function followingShops(): MorphToMany
+    {
+        return $this->morphedByMany(Shop::class, 'followable', 'followers', 'follower_id', 'followable_id')
+            ->withPivot('followable_type')
+            ->withTimestamps();
+    }
+
+    // Define relationship for followers
+    public function follows(): MorphMany
+    {
+        return $this->morphMany(Follower::class, 'followable');
+    }
+
+    // Check if following a particular entity
+    public function isFollowing($followableType, $followableId)
+    {
+        return $this->followings()
+            ->where('followable_id', $followableId)
+            ->where('followable_type', ucfirst($followableType))
+            ->exists();
+    }
+
+    // Unfollow a particular entity
+    public function unfollow($followableType, $followableId)
+    {
+        $followableType = ucfirst($followableType); // Ensure proper casing
+
+        $pivotQuery = $this->followings()
+            ->wherePivot('followable_id', $followableId)
+            ->wherePivot('followable_type', $followableType);
+
+        if ($pivotQuery->exists()) {
+            $pivotQuery->detach();
+            return true;
+        }
+
+        return false;
+    }
+
+
 }
