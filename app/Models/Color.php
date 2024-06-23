@@ -11,7 +11,7 @@ class Color extends Model
     protected $table = 'colors';
     protected $fillable = [
         'name',
-        'image',
+        'stock',
     ];
 
     public function sizes()
