@@ -77,10 +77,6 @@ class PaymentController extends Controller
             return response()->json($validator->messages(), 422);
         }
 
-        // Simpan data pembayaran
-        $validated = $validator->validated();
-        $payment = $user->payments()->create($validated);
-
         return response()->json([
             'message' => 'Pembayaran berhasil dibuat',
             'data' => $payment

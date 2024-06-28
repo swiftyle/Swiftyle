@@ -3,6 +3,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\ProductCreated;
 use App\Http\Controllers\Controller;
+use App\Models\Color;
+use App\Models\Follower;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductSize;
@@ -29,7 +31,6 @@ class ProductController extends Controller
     {
         return $user->role === 'Seller';
     }
-
     public function create(Request $request)
     {
         $user = $request->user();
@@ -45,19 +46,20 @@ class ProductController extends Controller
             'description' => 'required|string',
             'price' => 'required|numeric',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'rating' => 'default|0.0',
-            'main_category_id' => 'required|exists:categories,id',
-            'sub_category_id' => 'required|array',
-            'sub_category_id.*' => 'exists:categories,id',
+            'rating' => 'numeric|default:0.0',
+            'main_category_id' => 'required|exists:main_categories,id',
+            'sub_category_id' => 'required|exists:sub_categories,id',
             'sizes' => 'required|array',
             'sizes.*.size_id' => 'required|exists:sizes,id',
             'colors' => 'required|array',
-            'colors.*.color_id' => 'required|exists:colors,id',
+            'colors.*.name' => 'required|string',
             'colors.*.stock' => 'required|numeric|min:1',
-            'sell'  => 'default|0'
+            'sell' => 'numeric|default:0',
+            'style_id' => 'required|exists:styles,id',
         ]);
 
         if ($validator->fails()) {
+            Log::error('Validation failed: ' . json_encode($validator->messages()));
             return response()->json($validator->messages(), 422);
         }
 
@@ -67,6 +69,7 @@ class ProductController extends Controller
         $shop = Shop::where('user_id', $user->id)->first();
 
         if (!$shop) {
+            Log::error('Shop not found for user ID: ' . $user->id);
             return response()->json(['message' => 'Toko tidak ditemukan'], 404);
         }
 
@@ -82,60 +85,69 @@ class ProductController extends Controller
         try {
             // Create the product
             $product = $shop->products()->create($validated);
+            Log::info('Product created: ' . json_encode($product));
 
-            // Attach main category to product
-            $productCategory = new ProductCategory(['sub_category_id' => $validated['sub_category_id']]);
-            
-            $product->subcategories()->save($productCategory);
+            // Attach subcategory to product
+            $product->subcategories()->sync([$validated['sub_category_id']]);
+            Log::info('Subcategory attached: ' . $validated['sub_category_id']);
 
-            // Attach subcategories to product
-            foreach ($validated['sub_category_id'] as $sub_categoryId) {
-                $productCategory->categories()->attach($sub_categoryId);
-            }
-
-            // Update sizes and quantities
+            // Attach sizes to product
             foreach ($validated['sizes'] as $size) {
-                $productSize = new ProductSize(['size_id' => $size['size_id']]);
-                $product->sizes()->save($productSize);
-
-                // Update stock table
-                ProductSize::updateOrCreate([
-                    'product_id' => $product->id,
-                    'size_id' => $size['size_id'],
-                ]);
+                $product->sizes()->attach($size['size_id']);
+                Log::info('Size attached: ' . json_encode($size['size_id']));
             }
 
-            // Update colors and quantities
+            // Attach styles to product
+            $product->styles()->attach($validated['style_id']);
+            Log::info('Style attached: ' . json_encode($validated['style_id']));
+
+            // Attach colors to sizes in the size_color table
             foreach ($validated['colors'] as $color) {
-                $sizeColor = SizeColor::updateOrCreate([
-                    'size_id' => $color['size_id'],
-                    'color_id' => $color['color_id'],
-                ], [
-                    'stock' => $color['stock']
-                ]);
+                $colorModel = Color::firstOrCreate(['name' => $color['name']]);
+                foreach ($validated['sizes'] as $size) {
+                    SizeColor::updateOrCreate(
+                        ['size_id' => $size['size_id'], 'color_id' => $colorModel->id],
+                        ['stock' => $color['stock']]
+                    );
+                    Log::info('SizeColor attached: ' . json_encode(['size_id' => $size['size_id'], 'color_id' => $colorModel->id, 'stock' => $color['stock']]));
+                }
             }
 
             // Commit transaction
             DB::commit();
 
-            // Dispatch event
-            event(new ProductCreated($product));
+            // Check if shop has followers and dispatch event if true
+            $followersCount = Follower::where('followable_id', $shop->user_id)
+                ->where('followable_type', User::class)
+                ->count();
+
+            if ($followersCount > 0) {
+                event(new ProductCreated($product));
+                Log::info('Event dispatched for product ID: ' . $product->id);
+            }
 
             return response()->json([
                 'message' => "Data Berhasil Disimpan",
-                'data' => $product
+                'data' => $product,
             ], 200);
+
         } catch (\Exception $e) {
             // Rollback transaction on error
             DB::rollBack();
 
             // Log the error
-            Log::error('Error creating product: ' . $e->getMessage());
+            Log::error('Error creating product: ' . $e->getMessage(), ['exception' => $e]);
 
             // Return error response
-            return response()->json(['message' => 'Gagal menyimpan data produk'], 500);
+            return response()->json(['message' => 'Gagal menyimpan data produk', 'error' => $e->getMessage()], 500);
         }
     }
+
+
+
+
+
+
 
     public function read(Request $request)
     {
@@ -194,13 +206,13 @@ class ProductController extends Controller
         // Retrieve products based on style_id from preferences of users followed by $user
         $followedUsers = $user->follows()->pluck('id');
         $recommendedProducts = User::whereIn('id', $followedUsers)
-                                    ->with('preferences.products') // Assuming preferences relationship with products
-                                    ->get()
-                                    ->flatMap(function ($user) {
-                                        return $user->preferences->flatMap(function ($preference) {
-                                            return $preference->products;
-                                        });
-                                    });
+            ->with('preferences.products') // Assuming preferences relationship with products
+            ->get()
+            ->flatMap(function ($user) {
+                return $user->preferences->flatMap(function ($preference) {
+                    return $preference->products;
+                });
+            });
 
         return $recommendedProducts;
     }
@@ -221,15 +233,15 @@ class ProductController extends Controller
             'price' => 'sometimes|numeric',
             'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'rating' => 'sometimes|numeric',
-            'main_category_id' => 'sometimes|exists:categories,id',
-            'subcategory_ids' => 'sometimes|array',
-            'subcategory_ids.*' => 'exists:categories,id',
+            'main_category_id' => 'sometimes|exists:main_categories,id',
+            'sub_category_id' => 'sometimes|exists:sub_categories,id',
             'sizes' => 'sometimes|array',
             'sizes.*.size_id' => 'sometimes|exists:sizes,id',
-            'sizes.*.quantity' => 'sometimes|numeric|min:1',
             'colors' => 'sometimes|array',
-            'colors.*.color_id' => 'sometimes|exists:colors,id',
-            'colors.*.quantity' => 'sometimes|numeric|min:1',
+            'colors.*.name' => 'sometimes|string',
+            'colors.*.stock' => 'sometimes|numeric|min:1',
+            'sell' => 'sometimes|numeric|default:0',
+            'style_id' => 'sometimes|exists:styles,id',
         ]);
 
         if ($validator->fails()) {
@@ -268,37 +280,35 @@ class ProductController extends Controller
 
             // Update main category
             if (isset($validated['main_category_id'])) {
-                $product->categories()->updateExistingPivot($product->categories()->first()->id, ['main_category_id' => $validated['main_category_id']]);
+                $product->update(['main_category_id' => $validated['main_category_id']]);
             }
 
-            // Update subcategories
-            if (isset($validated['subcategory_ids'])) {
-                $product->categories()->sync($validated['subcategory_ids']);
+            // Update subcategory
+            if (isset($validated['sub_category_id'])) {
+                $product->update(['sub_category_id' => $validated['sub_category_id']]);
             }
 
             // Update sizes and quantities
             if (isset($validated['sizes'])) {
+                $product->sizes()->detach(); // Remove existing sizes first
                 foreach ($validated['sizes'] as $size) {
-                    $productSize = ProductSize::updateOrCreate([
-                        'product_id' => $product->id,
-                        'size_id' => $size['size_id']
-                    ], [
-                        'product_id' => $product->id,
-                        'size_id' => $size['size_id']
-                    ]);
-
+                    $product->sizes()->attach($size['size_id'], ['quantity' => $size['quantity']]);
                 }
             }
 
             // Update colors and quantities
             if (isset($validated['colors'])) {
                 foreach ($validated['colors'] as $color) {
-                    $sizeColor = SizeColor::updateOrCreate([
-                        'size_id' => $color['size_id'],
-                        'color_id' => $color['color_id'],
-                    ], [
-                        'stock' => $color['stock']
-                    ]);
+                    // Assuming you have a Color model with relationships properly set up
+                    $colorModel = Color::updateOrCreate(['name' => $color['name']]);
+                    foreach ($product->sizes as $size) {
+                        $sizeColor = SizeColor::updateOrCreate([
+                            'size_id' => $size->id,
+                            'color_id' => $colorModel->id,
+                        ], [
+                            'stock' => $color['stock']
+                        ]);
+                    }
                 }
             }
 
@@ -307,7 +317,7 @@ class ProductController extends Controller
 
             return response()->json([
                 'message' => 'Data dengan id: ' . $id . ' berhasil diupdate',
-                'data' => $product
+                'data' => $product->fresh(), // Refresh product data to get updated relationships
             ], 200);
         } catch (\Exception $e) {
             // Rollback transaction on error
@@ -326,7 +336,7 @@ class ProductController extends Controller
         $user = $request->user();
 
         // Check if the user is a seller
-        if ($user->role !== 'Seller') {
+        if (!$this->verifySellerRole($user)) {
             return response()->json(['msg' => 'Hanya seller yang bisa menghapus produk'], 403);
         }
 
@@ -341,14 +351,27 @@ class ProductController extends Controller
             return response()->json(['message' => 'Anda tidak memiliki izin untuk menghapus produk ini'], 403);
         }
 
-        // Delete product
-        if (!is_null($product->image)) {
-            Storage::disk('public')->delete($product->image);
-        }
-        $product->delete();
+        // Attempt to delete the product
+        try {
+            // Delete product image if exists
+            if (!is_null($product->image)) {
+                Storage::disk('public')->delete($product->image);
+            }
 
-        return response()->json([
-            'msg' => 'Data produk dengan ID: ' . $id . ' berhasil dihapus'
-        ], 200);
+            // Delete product from database
+            $product->delete();
+
+            return response()->json([
+                'message' => 'Data produk dengan ID: ' . $id . ' berhasil dihapus'
+            ], 200);
+        } catch (\Exception $e) {
+            // Log the error
+            Log::error('Error deleting product: ' . $e->getMessage());
+
+            // Return error response
+            return response()->json(['message' => 'Gagal menghapus produk'], 500);
+        }
     }
+
+
 }

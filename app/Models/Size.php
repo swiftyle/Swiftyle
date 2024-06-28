@@ -21,4 +21,9 @@ class Size extends Model
     {
         return $this->belongsToMany(Product::class,'product_size');
     }
+
+    public function colors()
+    {
+        return $this->belongsToMany(Color::class,'size_color');
+    }
 }

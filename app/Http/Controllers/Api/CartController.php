@@ -3,154 +3,196 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\AppCoupon;
 use App\Models\Cart;
+use App\Models\CartItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
     public function create(Request $request)
     {
-        $user = $request->user();
+        try {
+            $user = $request->user();
 
-        // Ensure user ID is not null before proceeding
-        if (!$user || !$user->id) {
-            return response()->json(['message' => 'User ID not found'], 401);
+            // Ensure user ID is valid and not an admin
+            if (!$user || !$user->id) {
+                return response()->json(['message' => 'User ID not found'], 401);
+            }
+
+            if ($user->role == 'Admin') {
+                return response()->json(['message' => 'Admins are not allowed to create a cart'], 403);
+            }
+
+            // Validate incoming request
+            $validator = Validator::make($request->all(), [
+                'app_coupon_id' => 'nullable|exists:app_coupons,id',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json($validator->messages(), 422);
+            }
+
+            // Add user ID to the validated data
+            $validated = $validator->validated();
+            $validated['user_id'] = $user->id;
+
+            // Create the cart
+            $cart = Cart::create([
+                'user_id' => $validated['user_id'],
+                'app_coupon_id' => $validated['app_coupon_id'],
+                'discount' => 0,
+                'total_discount' => 0,
+                'total_price' => 0,
+            ]);
+
+            return response()->json([
+                'message' => 'Cart created successfully',
+                'data' => $cart
+            ], 201);
+        } catch (\Exception $e) {
+            Log::error('CartController@create: Error', ['error' => $e->getMessage()]);
+            return response()->json(['message' => 'Failed to create cart', 'error' => $e->getMessage()], 500);
         }
-
-        // Ensure the user is not an admin
-        if ($user->role == 'Admin') {
-            return response()->json(['message' => 'Admins are not allowed to create a cart'], 403);
-        }
-
-        // Validate incoming request
-        $validator = Validator::make($request->all(), [
-            'app_coupon_id' => 'nullable|exists:app_coupons,id',
-            'discount' => 'required|numeric',
-            'total_discount' => 'required|numeric',
-            'total_price' => 'required|numeric',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->messages(), 422);
-        }
-
-        $validated = $validator->validated();
-
-        // Add user ID to the validated data
-        $validated['user_id'] = $user->id;
-
-        // Create the cart
-        $cart = Cart::create([
-            'user_id' => $validated['user_id'],
-            'app_coupon_id' => $validated['app_coupon_id'],
-            'discount' => $validated['discount'],
-            'total_discount' => $validated['total_discount'],
-            'total_price' => $validated['total_price'],
-        ]);
-
-        return response()->json([
-            'message' => 'Cart created successfully',
-            'data' => $cart
-        ], 201);
     }
-
 
     public function read(Request $request)
     {
-        // Mendecode JWT token dari header Authorization
-        $user = $request->user();
+        try {
+            $user = $request->user();
 
-        // Memeriksa apakah user ditemukan
-        if (!$user) {
-            return response()->json([
-                'message' => 'Pengguna tidak ditemukan'
-            ], 404);
+            if (!$user) {
+                return response()->json(['message' => 'User not found'], 404);
+            }
+
+            // Fetch carts associated with the user
+            $carts = Cart::where('user_id', $user->id)->get();
+
+            // Load related items for each cart
+            foreach ($carts as $cart) {
+                $cart->cartItems = CartItem::where('cart_id', $cart->id)->get();
+            }
+
+            return response()->json(['message' => 'Your Carts', 'data' => $carts], 200);
+        } catch (\Exception $e) {
+            Log::error('CartController@read: Error', ['error' => $e->getMessage()]);
+            return response()->json(['message' => 'Failed to fetch carts', 'error' => $e->getMessage()], 500);
         }
-
-        // Mendapatkan keranjang berdasarkan user_id pengguna yang terautentikasi
-        $carts = Cart::with(['user', 'appCoupon'])->where('user_id', $user->id)->get();
-
-        return response()->json([
-            'message' => 'Your Carts',
-            'data' => $carts
-        ], 200);
     }
 
     public function update(Request $request, $id)
     {
-        $user = $request->user();
+        try {
+            $user = $request->user();
 
-        // Validate incoming request
-        $validator = Validator::make($request->all(), [
-            'app_coupon_id' => 'nullable|exists:app_coupons,id',
-            'discount' => 'sometimes|required|numeric',
-            'total_discount' => 'sometimes|required|numeric',
-            'total_price' => 'sometimes|required|numeric',
-        ]);
+            if (!$user || !$user->id) {
+                return response()->json(['message' => 'User ID not found'], 401);
+            }
 
-        if ($validator->fails()) {
-            return response()->json($validator->messages(), 422);
-        }
+            $validator = Validator::make($request->all(), [
+                'app_coupon_id' => 'sometimes|exists:app_coupons,id',
+                'total_discount' => 'sometimes|numeric',
+                'total_price' => 'sometimes|numeric',
+            ]);
 
-        $validated = $validator->validated();
+            if ($validator->fails()) {
+                return response()->json($validator->messages(), 422);
+            }
 
-        // Ensure user ID is not null before proceeding
-        if (!$user || !$user->id) {
-            return response()->json(['message' => 'User ID not found'], 401);
-        }
+            $cart = Cart::find($id);
 
-        // Find the cart by ID
-        $cart = Cart::find($id);
+            if (!$cart) {
+                return response()->json(['message' => 'Cart not found'], 404);
+            }
 
-        if ($cart) {
-            // Check if the cart belongs to the authenticated user
             if ($cart->user_id != $user->id) {
                 return response()->json(['message' => 'Unauthorized'], 401);
             }
 
-            // Update the cart
+            $validated = $validator->validated();
+
             $cart->update([
                 'app_coupon_id' => $validated['app_coupon_id'] ?? $cart->app_coupon_id,
-                'discount' => $validated['discount'] ?? $cart->discount,
                 'total_discount' => $validated['total_discount'] ?? $cart->total_discount,
                 'total_price' => $validated['total_price'] ?? $cart->total_price,
             ]);
 
-            return response()->json([
-                'message' => 'Cart updated successfully',
-                'data' => $cart
-            ], 200);
-        }
+            $this->updateCartTotals($cart);
 
-        return response()->json([
-            'message' => 'Cart not found'
-        ], 404);
+            return response()->json(['message' => 'Cart updated successfully', 'data' => $cart], 200);
+        } catch (\Exception $e) {
+            Log::error('CartController@update: Error', ['error' => $e->getMessage()]);
+            return response()->json(['message' => 'Failed to update cart', 'error' => $e->getMessage()], 500);
+        }
     }
 
     public function delete(Request $request, $id)
     {
-        $user = $request->user();
+        try {
+            $user = $request->user();
 
-        // Find the cart
-        $cart = Cart::find($id);
+            if (!$user || !$user->id) {
+                return response()->json(['message' => 'User ID not found'], 401);
+            }
 
-        if ($cart) {
-            // Check if the cart belongs to the authenticated user
+            $cart = Cart::find($id);
+
+            if (!$cart) {
+                return response()->json(['message' => 'Cart not found'], 404);
+            }
+
             if ($cart->user_id != $user->id) {
                 return response()->json(['message' => 'Unauthorized'], 401);
             }
 
-            // Delete the cart
             $cart->delete();
 
-            return response()->json([
-                'message' => 'Cart deleted successfully'
-            ], 200);
+            return response()->json(['message' => 'Cart deleted successfully'], 200);
+        } catch (\Exception $e) {
+            Log::error('CartController@delete: Error', ['error' => $e->getMessage()]);
+            return response()->json(['message' => 'Failed to delete cart', 'error' => $e->getMessage()], 500);
         }
+    }
 
-        return response()->json([
-            'message' => 'Cart not found'
-        ], 404);
+    private function updateCartTotals(Cart $cart)
+    {
+        try {
+            $totalPrice = 0;
+            $totalDiscount = 0;
+
+            foreach ($cart->cartItems as $item) {
+                // Add subtotal of each item to calculate total price
+                $totalPrice += $item->subtotal;
+
+                // Add discount of each item to calculate total discount
+                $totalDiscount += $item->discount;
+            }
+
+            // Apply additional discount from app_coupon_id if available
+            if ($cart->app_coupon_id) {
+                $appCoupon = AppCoupon::find($cart->app_coupon_id);
+                if ($appCoupon) {
+                    // Calculate discount based on percentage of total price
+                    $additionalDiscount = $cart->total_price * ($appCoupon->discount_amount / 100);
+                    $totalDiscount += $additionalDiscount;
+                }
+            }
+
+            // Update cart totals
+            $cart->update([
+                'total_price' => $totalPrice,
+                'total_discount' => $totalDiscount,
+            ]);
+
+            Log::info('UpdateCartTotals: Cart Totals Updated', [
+                'cart_id' => $cart->id,
+                'total_price' => $totalPrice,
+                'total_discount' => $totalDiscount,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('UpdateCartTotals: Error', ['error' => $e->getMessage()]);
+        }
     }
 }

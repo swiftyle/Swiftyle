@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -23,13 +24,13 @@ class AuthenticationController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8'
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->messages()], 422);
         }
-    
+
         $validated = $validator->validate();
-    
+
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
@@ -39,10 +40,10 @@ class AuthenticationController extends Controller
             'gender' => 'Other',
             'status' => 'Active',
         ]);
-    
+
         // Generate JWT token
         $token = $this->generateToken($user);
-    
+
         return response()->json([
             'message' => 'User successfully registered',
             'user' => $user,
@@ -61,13 +62,22 @@ class AuthenticationController extends Controller
             return response()->json(['errors' => $validator->messages()], 422);
         }
 
-        $validated = $validator->validate();
+        $credentials = $validator->validated();
 
-        if (Auth::attempt($validated)) {
+        try {
+            if (!Auth::attempt($credentials)) {
+                return response()->json(["error" => "Credentials not found"], 422);
+            }
+
             $user = Auth::user();
 
             // Generate JWT token
             $token = $this->generateToken($user);
+
+            // Create or update cart for Customer role
+            if (strtolower($user->role) === 'customer') {
+                $this->createOrUpdateCart($user);
+            }
 
             return response()->json([
                 'id' => $user->id,
@@ -75,9 +85,25 @@ class AuthenticationController extends Controller
                 'role' => $user->role,
                 'bearer' => $token
             ], 200);
-        }
 
-        return response()->json(["error" => "Credentials not found"], 422);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Authentication error: ' . $e->getMessage()], 500);
+        }
+    }
+
+    protected function createOrUpdateCart($user)
+    {
+        // Find existing cart or create new if not exists
+        $cart = Cart::where('user_id', $user->id)->first();
+
+        if (!$cart) {
+            Cart::create([
+                'user_id' => $user->id,
+                'app_coupon_id' => null,
+                'total_discount' => 0,
+                'total_price' => 0,
+            ]);
+        }
     }
 
     public function refresh(Request $request)

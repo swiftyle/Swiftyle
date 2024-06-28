@@ -13,7 +13,6 @@ class Preference extends Model
     protected $fillable = [
         'user_id',
         'style_id',
-        'genre_id',
     ];
 
     // Relationships

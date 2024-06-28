@@ -14,11 +14,11 @@ class ProductSize extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['id','product_id', 'size_id'];
 
-    public function product()
+    public function products()
     {
         return $this->hasMany(Product::class, 'product_id');
     }
-    public function size()
+    public function sizes()
     {
         return $this->hasMany(Size::class,'size_id');
     }

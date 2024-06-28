@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
         $project_title = '| Swiftyle Project';
         View::share('title', $project_title);
         
-        Product::observe(ProductObserver::class);
+        // Product::observe(ProductObserver::class);
         // View::composer('*',ViewComposer::class);
         Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');

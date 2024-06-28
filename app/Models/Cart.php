@@ -18,8 +18,16 @@ class Cart extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'app_coupon_id', 'quantity', 'price', 'discount', 'total_discount', 'subtotal', 'total_price',
+        'id', 'user_id', 'app_coupon_id', 'quantity', 'price', 'discount', 'total_discount', 'subtotal', 'total_price',
     ];
+    protected $casts = [
+        'id' => 'integer',
+        'user_id' => 'integer',
+        'app_coupon_id' => 'integer',
+        'quantity' => 'integer',];
+    protected $dates = ['deleted_at'];
+
+    protected $hidden = ['deleted_at','created_at', 'update_at'];
 
     /**
      * Boot method for the model.
@@ -28,9 +36,9 @@ class Cart extends Model
     /**
      * Get the product that owns the cart item.
      */
-    public function cartItem()
+    public function cartItems()
     {
-        return $this->belongsToMany(Product::class, 'cart_item');
+        return $this->hasMany(CartItem::class);
     }
 
     public function checkout()

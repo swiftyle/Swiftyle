@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreign('shop_id')->references('id')->on('shops')->onDelete('cascade');
             $table->string('name', 255);
             $table->string('description', 255);
+            $table->integer('price');
             $table->string('image', 255);
             $table->integer('sell')->nullable();
             $table->decimal('rating', 10, 2)->nullable();

@@ -29,4 +29,10 @@ class Courier extends Model
         // Gunakan belongsTo jika setiap kurir hanya terkait dengan satu kategori
         return $this->belongsTo(CourierCategory::class, 'courier_categories_id');
     }
+
+    public function checkout()
+    {
+        // Gunakan hasMany jika setiap checkout terkait dengan satu kurir
+        return $this->hasMany(Checkout::class, 'courier_id');
+    }
 }

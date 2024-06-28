@@ -7,10 +7,9 @@ use App\Models\User;
 use App\Models\Wishlist;
 use App\Models\Product;
 use App\Models\WishlistItem;
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 class WishlistItemController extends Controller
 {
@@ -44,17 +43,24 @@ class WishlistItemController extends Controller
     {
         $user = $request->user();
 
-        // Fetch wishlist items associated with user's wishlists
-        $wishlistItems = WishlistItem::whereIn('wishlist_id', function ($query) use ($user) {
-            $query->select('id')
-                ->from('wishlist')
-                ->where('user_id', $user->id);
-        })->get();
+        try {
+            // Fetch wishlist items associated with user's wishlists
+            $wishlistItems = WishlistItem::whereIn('wishlist_id', function ($query) use ($user) {
+                $query->select('id')
+                    ->from('wishlists') // Ensure this table name is correct
+                    ->where('user_id', $user->id);
+            })->get();
 
-        return response()->json([
-            'message' => 'Wishlist items fetched successfully',
-            'data' => $wishlistItems
-        ], 200);
+            return response()->json([
+                'message' => 'Wishlist items fetched successfully',
+                'data' => $wishlistItems
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Error fetching wishlist items: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Server error while fetching wishlist items'
+            ], 500);
+        }
     }
 
     public function delete(Request $request, $id)

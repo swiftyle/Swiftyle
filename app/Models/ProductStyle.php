@@ -17,11 +17,11 @@ class ProductStyle extends Model
         'product_id' => 'integer',
        'style_id' => 'integer',
     ];
-    public function product()
+    public function products()
     {
         return $this->belongsToMany(Product::class, 'product_id');
     }
-    public function style()
+    public function styles()
     {
         return $this->belongsToMany(Style::class, 'style_id');
     }

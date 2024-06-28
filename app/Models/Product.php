@@ -45,7 +45,7 @@ class Product extends Model
     /**
      * Get the category that owns the product.
      */
-    public function categories()
+    public function subcategories()
     {
         return $this->belongsToMany(SubCategory::class, 'product_category');
     }
@@ -60,14 +60,14 @@ class Product extends Model
         return $this->belongsToMany(Promotion::class, 'product_promotion');
     }
 
-    public function size()
+    public function sizes()
     {
         return $this->belongsToMany(Size::class, 'product_size');
     }
 
     public function shops()
     {
-        return $this->belongsTo(Shop::class);
+        return $this->belongsTo(Shop::class,'shop_id');
     }
 
     public function cart()
@@ -81,5 +81,9 @@ class Product extends Model
     public function review()
     {
         return $this->hasMany(Review::class);
+    }
+    public function mainCategory()
+    {
+        return $this->hasOneThrough(MainCategory::class, SubCategory::class);
     }
 }
