@@ -6,11 +6,7 @@
 @endsection
 
 @push('css')
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/animate.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/chartist.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/date-picker.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/prism.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vector-map.css') }}">
+
 @endpush
 
 @section('content')
@@ -81,15 +77,5 @@
             }
         </script>
 
-        <script src="{{ asset('assets/js/chart/knob/knob.min.js') }}"></script>
-        <script src="{{ asset('assets/js/chart/knob/knob-chart.js') }}"></script>
-        <script src="{{ asset('assets/js/prism/prism.min.js') }}"></script>
-        <script src="{{ asset('assets/js/clipboard/clipboard.min.js') }}"></script>
-        <script src="{{ asset('assets/js/counter/jquery.waypoints.min.js') }}"></script>
-        <script src="{{ asset('assets/js/counter/jquery.counterup.min.js') }}"></script>
-        <script src="{{ asset('assets/js/counter/counter-custom.js') }}"></script>
-        <script src="{{ asset('assets/js/custom-card/custom-card.js') }}"></script>
-        <script src="{{ asset('assets/js/notify/bootstrap-notify.min.js') }}"></script>
-        <script src="{{ asset('assets/js/dashboard/default.js') }}"></script>
         @endpush
     @endsection
