@@ -24,6 +24,9 @@ class CourierCategory extends Model
         'modified_by',
     ];
     protected $dates = ['deleted_at, created_at, updated_at'];
+    protected $hidden = [
+        'created_at', 'updated_at','deleted_at'
+    ];
     public function courierCategories()
     {
         return $this->belongsTo(Courier::class, 'courier_id', 'id');

@@ -13,6 +13,9 @@ class Payment extends Model
 
     protected $fillable = ['id','user_id', 'order_id', 'amount', 'method', 'status'];
 
+    protected $hidden = [
+        'created_at', 'updated_at','deleted_at'
+    ];
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');

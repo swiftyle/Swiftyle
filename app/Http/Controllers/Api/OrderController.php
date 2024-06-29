@@ -9,10 +9,7 @@ use App\Events\OrderReceived;
 use App\Events\OrderReviewed;
 use App\Events\OrderShipped;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Models\Order;
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -20,31 +17,25 @@ class OrderController extends Controller
 {
     public function create(Request $request)
     {
-        try {
-            // Decode JWT token to get user data
-            $data = JWT::decode($request->bearerToken(), new Key(env('JWT_SECRET_KEY'), 'HS256'));
-            $user = User::find($data->id);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
+        $user = $request->user();
 
         // Validate incoming request
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
             'shipping_id' => 'required|exists:shippings,id', // Ensure the table name is correct
             'status' => 'required|in:delivered,received,reviewed',
+            'transaction_id' => 'required|string|max:255|unique',
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->messages())->setStatusCode(422);
         }
 
+        $validated = $validator->validated();
+
+        // Menambahkan user ID ke data yang divalidasi
+        $validated['user_id'] = $user->id;
         // Create the order
-        $order = Order::create([
-            'user_id' => $request->input('user_id'),
-            'shipping_id' => $request->input('shipping_id'),
-            'status' => $request->input('status'),
-        ]);
+        $order = Order::create($validated);
 
         event(new OrderCreated($order));
 
@@ -56,13 +47,7 @@ class OrderController extends Controller
 
     public function read(Request $request)
     {
-        try {
-            // Decode JWT token to get user data
-            $data = JWT::decode($request->bearerToken(), new Key(env('JWT_SECRET_KEY'), 'HS256'));
-            $user = User::find($data->id);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
+        $user = $request->user();
 
         // Fetch orders associated with the authenticated user
         $orders = Order::where('user_id', $user->id)->get();

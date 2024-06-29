@@ -11,17 +11,20 @@ class Order extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'id',
         'user_id',
         'transaction_id',
         'shipping_id',
         'total',
         'status',
     ];
-    
+
+    protected $hidden = [
+        'created_at', 'updated_at', 'deleted_at'
+    ];
+
     public function shipping()
     {
-        return $this->belongsTo(Shipping::class,'shipping_id', 'id');
+        return $this->belongsTo(Shipping::class, 'shipping_id', 'id');
     }
 
     public function user()
@@ -29,7 +32,7 @@ class Order extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function review()
+    public function reviews()
     {
         return $this->hasOne(Review::class, 'order_id', 'id');
     }
@@ -39,7 +42,7 @@ class Order extends Model
         return $this->hasOne(OrderHistory::class, 'order_id', 'id');
     }
 
-    public function complaint()
+    public function complaints()
     {
         return $this->hasOne(Complaint::class, 'order_id', 'id');
     }
@@ -51,7 +54,6 @@ class Order extends Model
 
     public function transaction()
     {
-        return $this->belongsTo(Transaction::class, 'transaction_id', 'transaction_id');
+        return $this->hasOne(Transaction::class, 'order_id', 'id');
     }
-    
 }

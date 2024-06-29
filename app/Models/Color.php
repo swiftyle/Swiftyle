@@ -11,7 +11,10 @@ class Color extends Model
     protected $table = 'colors';
     protected $fillable = [
         'name',
-        'stock',
+    ];
+
+    protected $hidden = [
+        'created_at', 'updated_at','deleted_at'
     ];
 
     public function sizes()

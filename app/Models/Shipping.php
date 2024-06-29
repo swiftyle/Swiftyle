@@ -14,6 +14,7 @@ class Shipping extends Model
     protected $table ='shipping';
     protected $fillable = [
         'checkout_id',
+        'order_id',
         'shipping_address',
         'courier_name',
         'tracking_number',
@@ -38,6 +39,9 @@ class Shipping extends Model
         'deleted_at',
     ];
 
+    protected $hidden = [
+        'created_at', 'updated_at','deleted_at'
+    ];
     /**
      * Get the checkout associated with the shipping.
      */

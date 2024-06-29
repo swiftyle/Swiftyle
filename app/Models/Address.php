@@ -16,6 +16,9 @@ class Address extends Model
         'id', 'user_id', 'firstname', 'lastname', 'street', 'city', 'province', 'district', 'country', 'postal_code', 'house_number', 'apartment_number', 'phone_number', 'type', 'primary'
     ];
 
+    protected $hidden = [
+        'created_at', 'updated_at','deleted_at'
+    ];
     protected static function boot()
     {
         parent::boot();

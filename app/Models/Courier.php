@@ -21,6 +21,9 @@ class Courier extends Model
 
     protected $dates = ['deleted_at', 'created_at', 'updated_at'];
 
+    protected $hidden = [
+        'created_at', 'updated_at','deleted_at'
+    ];
     /**
      * Get the category that owns the courier.
      */

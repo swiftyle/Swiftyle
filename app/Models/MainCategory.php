@@ -22,7 +22,10 @@ class MainCategory extends Model
     
      protected $fillable = [
         'name', 'description', 'modified_by'];
-
+    
+    protected $hidden = [
+        'created_at', 'updated_at','deleted_at'
+    ];
     /**
      * Boot method for the model.
      */

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Checkout;
 use App\Models\Courier;
+use App\Models\Order;
 use App\Models\Shipping;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -27,6 +28,7 @@ class ShippingController extends Controller
         // Validate incoming request
         $validator = Validator::make($request->all(), [
             'checkout_id' => 'required|exists:checkouts,id',
+            'order_id' => 'required|exists:orders,id',
             'shipped_date' => 'required|date',
             'shipping_method' => 'required|in:car,ship,plane',
             'shipping_status' => 'required|in:pending,shipped,delivered,cancelled',
@@ -118,6 +120,7 @@ class ShippingController extends Controller
             // Create the shipping record
             $shipping = Shipping::create([
                 'checkout_id' => $request->input('checkout_id'),
+                'order_id' => $request->input('order_id'),
                 'shipping_address' => $shippingAddress,
                 'courier_name' => $courierName,
                 'tracking_number' => strtoupper(Str::random(10)), // Random tracking number
@@ -129,6 +132,7 @@ class ShippingController extends Controller
                 'estimated_delivery_date' => $request->input('estimated_delivery_date'),
             ]);
 
+            
             return response()->json([
                 'message' => 'Shipping record created successfully',
                 'data' => $shipping

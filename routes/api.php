@@ -311,7 +311,7 @@ Route::middleware(['jwt.auth'])->group(function () {
 
     //Refund
     Route::prefix('refunds')->group(function () {
-        Route::post('', [RefundController::class, 'create']);
+        Route::post('', [RefundController::class, 'process']);
         Route::get('', [RefundController::class, 'read']);
         Route::get('{id}', [RefundController::class, 'readById']);
         Route::put('{id}', [RefundController::class, 'update']);

@@ -24,11 +24,13 @@ class RefundRequestController extends Controller
             return response()->json($validator->messages())->setStatusCode(422);
         }
 
+
         // Create the refund request
         $refundRequest = RefundRequest::create([
             'user_id' => $user->id,  // Automatically set the user_id from the authenticated user
             'order_id' => $request->input('order_id'),
             'reason' => $request->input('reason'),
+            'status' => 'pending' // Set the initial status to 'pending'
         ]);
 
         return response()->json([

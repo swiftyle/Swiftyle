@@ -17,7 +17,9 @@ class Wishlist extends Model
         'user_id',
         'name',
     ];
-
+    protected $hidden = [
+        'created_at', 'updated_at','deleted_at'
+    ];
 
     public function product()
     {

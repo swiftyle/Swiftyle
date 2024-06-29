@@ -31,6 +31,9 @@ class PasswordReset extends Model
         'created_at' => 'datetime',
     ];
 
+    protected $hidden = [
+        'created_at', 'updated_at','deleted_at'
+    ];
     protected function setKeysForSaveQuery($query)
     {
         $query

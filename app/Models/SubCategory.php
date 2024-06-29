@@ -14,6 +14,9 @@ class SubCategory extends Model
         'id', 'name', 'description', 'main_category_id', 'modified_by'
     ];
 
+    protected $hidden = [
+        'created_at', 'updated_at','deleted_at'
+    ];
     /**
      * Get the products for the category.
      */

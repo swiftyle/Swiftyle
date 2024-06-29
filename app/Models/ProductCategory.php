@@ -11,12 +11,18 @@ class ProductCategory extends Model
     protected $table = 'product_category';
     protected $fillable = [
         'product_id',
-        'sub_category_id'];
+        'sub_category_id'
+    ];
 
-        public function product(){
-            return $this->hasMany(Product::class, 'product_id');
-        }
-        public function categories(){
-            return $this->hasMany(SubCategory::class, 'sub_category_id');
-        }
+    protected $hidden = [
+        'created_at', 'updated_at'
+    ];
+    public function product()
+    {
+        return $this->hasMany(Product::class, 'product_id');
+    }
+    public function categories()
+    {
+        return $this->hasMany(SubCategory::class, 'sub_category_id');
+    }
 }

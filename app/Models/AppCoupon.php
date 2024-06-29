@@ -33,4 +33,17 @@ class AppCoupon extends Model
         'end_date',
         'deleted_at',
     ];
+    protected $hidden = [
+        'created_at', 'updated_at','deleted_at'
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
+    public function cart()
+    {
+        return $this->hasMany(Cart::class);
+    }
 }

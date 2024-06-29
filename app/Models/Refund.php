@@ -16,10 +16,14 @@ class Refund extends Model
         'refund_request_id',
         'amount',
         'status',
+        'confirmed_by'
     ];
 
+    protected $hidden = [
+        'created_at', 'updated_at','deleted_at'
+    ];
     public function refundRequest()
     {
-        return $this->belongsTo(RefundRequest::class);
+        return $this->belongsTo(RefundRequest::class, 'refund_request_id', 'id');
     }
 }

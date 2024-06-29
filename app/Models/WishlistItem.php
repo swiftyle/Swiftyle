@@ -13,7 +13,9 @@ class WishlistItem extends Model
         'wishlist_id',
         'product_id',
     ];
-    
+    protected $hidden = [
+        'created_at', 'updated_at','deleted_at'
+    ];
     public function wishlist()
     {
         return $this->hasOne(Wishlist::class);

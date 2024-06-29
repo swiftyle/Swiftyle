@@ -41,11 +41,17 @@ return [
         'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
         'redirect' => env('FACEBOOK_REDIRECT_URI'),
     ],
-    
+
     'instagram' => [
         'client_id' => env('INSTAGRAM_CLIENT_ID'),
         'client_secret' => env('INSTAGRAM_CLIENT_SECRET'),
         'redirect' => env('INSTAGRAM_REDIRECT_URI'),
     ],
-
+    'midtrans' => [
+        'client_key' => env('MIDTRANS_CLIENT_KEY'),
+        'server_key' => env('MIDTRANS_SERVER_KEY'),
+        'is_production' => env('MIDTRANS_IS_PRODUCTION', false),
+        'is_sanitize' => env('MIDTRANS_IS_SANITIZE', true),
+        'is_3ds' => env('MIDTRANS_IS_3DS', true)
+    ]
 ];

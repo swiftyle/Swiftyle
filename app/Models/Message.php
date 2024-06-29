@@ -18,7 +18,9 @@ class Message extends Model
     ];
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
-
+    protected $hidden = [
+        'created_at', 'updated_at','deleted_at'
+    ];
     public function chat()
     {
         return $this->belongsTo(Chat::class);

@@ -6,6 +6,7 @@ use App\Events\ReviewCreated;
 use App\Http\Controllers\Controller;
 use App\Models\Review;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class ReviewController extends Controller
@@ -13,39 +14,59 @@ class ReviewController extends Controller
     public function create(Request $request)
     {
         $user = $request->user();
+
         // Validate incoming request
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
             'product_id' => 'required|exists:products,id',
-            'content' => 'required',
+            'comment' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'rating' => 'required|integer|min:1|max:5',
             'order_id' => 'required|exists:orders,id',
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->messages())->setStatusCode(422);
+            return response()->json($validator->messages(), 422);
         }
 
-        // Create the review
-        $review = Review::create([
-            'user_id' => $request->input('user_id'),
-            'product_id' => $request->input('product_id'),
-            'content' => $request->input('content'),
-            'rating' => $request->input('rating'),
-            'order_id' => $request->input('order_id'),
-        ]);
+        // Add user ID to the validated data
+        $validated = $validator->validated();
+        $validated['user_id'] = $user->id;
 
-        event(new ReviewCreated($review));
-        return response()->json([
-            'message' => 'Review created successfully',
-            'data' => $review
-        ], 201);
+        if ($request->hasFile('image')) {
+            try {
+                $filePath = $request->file('image')->store('images', 'public');
+                $validated['image'] = $filePath;
+            } catch (\Exception $e) {
+                Log::error('Error uploading image: ' . $e->getMessage());
+                return response()->json([
+                    'message' => 'Error uploading image: ' . $e->getMessage()
+                ], 500);
+            }
+        }
+
+        try {
+            // Create the review
+            $review = Review::create($validated);
+
+            // Trigger event
+            event(new ReviewCreated($review));
+
+            return response()->json([
+                'message' => 'Review created successfully',
+                'data' => $review
+            ], 201);
+        } catch (\Exception $e) {
+            // Log the error message
+            Log::error('Error creating review: ' . $e->getMessage());
+
+            return response()->json([
+                'message' => 'Server error: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     public function readAll(Request $request)
     {
-        $user = $request->user();
-        // Fetch all reviews
         $reviews = Review::all();
 
         return response()->json([
@@ -56,12 +77,10 @@ class ReviewController extends Controller
 
     public function read(Request $request, $id)
     {
-        $user = $request->user();
-        // Fetch review by ID
         $review = Review::find($id);
 
         if (!$review) {
-            return response()->json(['message' => 'Review not found'])->setStatusCode(404);
+            return response()->json(['message' => 'Review not found'], 404);
         }
 
         return response()->json([
@@ -72,8 +91,6 @@ class ReviewController extends Controller
 
     public function update(Request $request, $id)
     {
-        $user = $request->user();
-        // Validate incoming request
         $validator = Validator::make($request->all(), [
             'user_id' => 'exists:users,id',
             'product_id' => 'exists:products,id',
@@ -82,23 +99,16 @@ class ReviewController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->messages())->setStatusCode(422);
+            return response()->json($validator->messages(), 422);
         }
 
-        // Find the review
         $review = Review::find($id);
 
         if (!$review) {
-            return response()->json(['message' => 'Review not found'])->setStatusCode(404);
+            return response()->json(['message' => 'Review not found'], 404);
         }
 
-        // Update the review
-        $review->user_id = $request->input('user_id', $review->user_id);
-        $review->product_id = $request->input('product_id', $review->product_id);
-        $review->content = $request->input('content', $review->content);
-        $review->rating = $request->input('rating', $review->rating);
-        $review->order_id = $request->input('order_id', $review->order_id);
-        $review->save();
+        $review->update($request->all());
 
         return response()->json([
             'message' => 'Review updated successfully',
@@ -108,14 +118,12 @@ class ReviewController extends Controller
 
     public function delete($id)
     {
-        // Find the review
         $review = Review::find($id);
 
         if (!$review) {
-            return response()->json(['message' => 'Review not found'])->setStatusCode(404);
+            return response()->json(['message' => 'Review not found'], 404);
         }
 
-        // Delete the review
         $review->delete();
 
         return response()->json(['message' => 'Review deleted successfully'], 200);

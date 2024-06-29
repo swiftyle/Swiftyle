@@ -11,7 +11,12 @@ class SizeColor extends Model
     protected $table ='size_color';
     protected $fillable = [
        'size_id',
-        'color_id'
+        'color_id',
+        'stock'
+    ];
+
+    protected $hidden = [
+        'created_at', 'updated_at'
     ];
     public function size()
     {

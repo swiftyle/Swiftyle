@@ -6,44 +6,58 @@ use App\Events\ComplaintSubmitted;
 use App\Http\Controllers\Controller;
 use App\Models\Complaint;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class ComplaintController extends Controller
 {
     public function create(Request $request)
-    {
-        $user = $request->user();
+{
+    $user = $request->user();
 
-        // Ensure user is a Customer
-        if ($user->role !== 'Customer') {
-            return response()->json(['message' => 'Only customers can create complaints'], 403);
-        }
+    // Ensure user is a Customer
+    if ($user->role !== 'Customer') {
+        return response()->json(['message' => 'Only customers can create complaints'], 403);
+    }
 
-        // Validate incoming request
-        $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
-            'order_id' => 'required|exists:orders,id',
-            'description' => 'required',
-        ]);
+    // Validate incoming request
+    $validator = Validator::make($request->all(), [
+        'order_id' => 'required|exists:orders,id',
+        'description' => 'required',
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->messages())->setStatusCode(422);
-        }
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 422);
+    }
 
+    // Extract validated data
+    $validated = $validator->validated();
+
+    // Add user_id and status to the validated data
+    $validated['user_id'] = $user->id;
+    $validated['status'] = 'pending';
+
+    try {
         // Create the complaint
-        $complaint = Complaint::create([
-            'user_id' => $request->input('user_id'),
-            'order_id' => $request->input('order_id'),
-            'description' => $request->input('description'),
-        ]);
+        $complaint = Complaint::create($validated);
 
+        // Fire event
         event(new ComplaintSubmitted($complaint));
 
         return response()->json([
             'message' => 'Complaint created successfully',
             'data' => $complaint
         ], 201);
+    } catch (\Exception $e) {
+        // Log any errors
+        Log::error('Error creating complaint: ' . $e->getMessage());
+        
+        return response()->json([
+            'message' => 'Failed to create complaint',
+            'error' => $e->getMessage()
+        ], 500);
     }
+}
 
     public function readAll(Request $request)
     {

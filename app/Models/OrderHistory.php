@@ -20,6 +20,9 @@ class OrderHistory extends Model
         'status',
         'description',
     ];
+    protected $hidden = [
+        'created_at', 'updated_at','deleted_at'
+    ];
 
     public function order()
     {

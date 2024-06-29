@@ -52,6 +52,10 @@ class ShopCoupon extends Model
         'used_count' => 'integer',
         'discount_amount' => 'float',
     ];
+
+    protected $hidden = [
+        'created_at', 'updated_at','deleted_at'
+    ];
     /**
      * Get the shop that owns the coupon.
      */

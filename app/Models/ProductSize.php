@@ -14,6 +14,10 @@ class ProductSize extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['id','product_id', 'size_id'];
 
+    protected $hidden = [
+        'created_at', 'updated_at',
+    ];
+
     public function products()
     {
         return $this->hasMany(Product::class, 'product_id');

@@ -15,6 +15,9 @@ class Preference extends Model
         'style_id',
     ];
 
+    protected $hidden = [
+        'created_at', 'updated_at',
+    ];
     // Relationships
     public function user()
     {

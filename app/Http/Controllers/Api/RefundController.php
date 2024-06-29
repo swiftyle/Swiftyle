@@ -9,76 +9,134 @@ use App\Models\RefundRequest;
 use App\Models\Transaction;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class RefundController extends Controller
 {
     public function process(Request $request)
     {
-        // Validate incoming request
-        $validator = Validator::make($request->all(), [
-            'refund_request_id' => 'required|exists:refund_requests,id',
-            'amount' => 'required|numeric|min:0',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->messages(), 422);
-        }
-
         try {
-            // Find the refund request
-            $refundRequest = RefundRequest::findOrFail($request->input('refund_request_id'));
+            $user = $request->user();
 
-            // Retrieve the order associated with the refund request
-            $order = $refundRequest->order;
-
-            if (!$order || !$order->transaction_id) {
-                return response()->json(['message' => 'Transaction ID not found for this order'], 404);
-            }
-
-            // Initialize Midtrans
-            \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');
-            \Midtrans\Config::$isProduction = env('MIDTRANS_IS_PRODUCTION', false);
-            \Midtrans\Config::$isSanitized = true;
-            \Midtrans\Config::$is3ds = true;
-
-            // Process the refund through Midtrans
-            $transactionId = $order->transaction_id;
-            $params = [
-                'refund_key' => 'order-' . $refundRequest->order_id . '-refund-' . time(),
-                'amount' => $request->input('amount'),
-                'reason' => 'Refund for Order ID: ' . $refundRequest->order_id
-            ];
-
-            $refundResponse = Transaction::refund($transactionId, $params);
-
-            if ($refundResponse->status_code !== '200') {
-                return response()->json(['message' => 'Failed to process refund: ' . $refundResponse->status_message], 400);
-            }
-
-            // Create the refund record
-            $refund = Refund::create([
-                'refund_request_id' => $refundRequest->id,
-                'amount' => $request->input('amount'),
-                'status' => 'refunded', // Set status to 'refunded'
+            // Validasi incoming request
+            $validator = Validator::make($request->all(), [
+                'refund_request_id' => 'required|exists:refund_requests,id',
+                'status' => 'required|in:accepted,canceled',
             ]);
 
-            // Update status of refund request to 'processed'
-            $refundRequest->status = 'processed';
-            $refundRequest->save();
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 422);
+            }
 
-            // Call event RefundProcessed to send notifications and other actions
-            event(new RefundProcessed($refundRequest));
+            // Mencari permintaan pengembalian
+            $refundRequest = RefundRequest::findOrFail($request->input('refund_request_id'));
+            Log::info('Refund request found', ['refund_request_id' => $refundRequest->id]);
 
-            // Response
+            // Mencari transaksi yang terkait dengan permintaan pengembalian
+            $transaction = Transaction::where('order_id', $refundRequest->order_id)->first();
+
+            if (!$transaction) {
+                Log::error('Transaction not found for refund request', ['refund_request_id' => $refundRequest->id]);
+                return response()->json(['message' => 'Transaction not found'], 404);
+            }
+            Log::info('Transaction found', ['transaction_id' => $transaction->id]);
+
+            // Mendapatkan email pengguna yang membuat permintaan
+            $userEmail = $user->email;
+            Log::info('User email retrieved', ['user_email' => $userEmail]);
+
+            // Membuat entri refund baru
+            DB::beginTransaction();
+
+            $amount = $transaction->amount;
+
+            $refund = Refund::create([
+                'refund_request_id' => $refundRequest->id,
+                'status' => $request->input('status'),
+                'amount' => $amount,
+                'confirmed_by' => $userEmail,
+            ]);
+
+            DB::commit();
+
+            Log::info('Refund request created successfully', ['refund_id' => $refund->id]);
+
             return response()->json([
-                'message' => 'Refund processed successfully',
-                'data' => $refund
+                'message' => 'Refund request created successfully',
+                'data' => $refund,
             ], 201);
-        } catch (Exception $e) {
-            return response()->json(['message' => 'Failed to process refund: ' . $e->getMessage()], 500);
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            Log::error('Failed to process refund request', ['error' => $e->getMessage()]);
+
+            return response()->json([
+                'message' => 'Failed to process refund request',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
+
+
+
+
+
+    // try {
+    //     // Find the refund request
+    //     $refundRequest = RefundRequest::findOrFail($request->input('refund_request_id'));
+
+    //     // Retrieve the order associated with the refund request
+    //     $order = $refundRequest->order;
+
+    //     if (!$order || !$order->transaction_id) {
+    //         return response()->json(['message' => 'Transaction ID not found for this order'], 404);
+    //     }
+
+    //     // Initialize Midtrans
+    //     \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');
+    //     \Midtrans\Config::$isProduction = env('MIDTRANS_IS_PRODUCTION', false);
+    //     \Midtrans\Config::$isSanitized = true;
+    //     \Midtrans\Config::$is3ds = true;
+
+    //     // Process the refund through Midtrans
+    //     $transactionId = $order->transaction_id;
+    //     $params = [
+    //         'refund_key' => 'order-' . $refundRequest->order_id . '-refund-' . time(),
+    //         'amount' => $request->input('amount'),
+    //         'reason' => 'Refund for Order ID: ' . $refundRequest->order_id
+    //     ];
+
+    //     $refundResponse = Transaction::refund($transactionId, $params);
+
+    //     if ($refundResponse->status_code !== '200') {
+    //         return response()->json(['message' => 'Failed to process refund: ' . $refundResponse->status_message], 400);
+    //     }
+
+    //     // Create the refund record
+    //     $refund = Refund::create([
+    //         'refund_request_id' => $refundRequest->id,
+    //         'amount' => $request->input('amount'),
+    //         'status' => 'refunded', // Set status to 'refunded'
+    //     ]);
+
+    //     // Update status of refund request to 'processed'
+    //     $refundRequest->status = 'processed';
+    //     $refundRequest->save();
+
+    //     // Call event RefundProcessed to send notifications and other actions
+    //     event(new RefundProcessed($refundRequest));
+
+    //     // Response
+    //     return response()->json([
+    //         'message' => 'Refund processed successfully',
+    //         'data' => $refund
+    //     ], 201);
+    // } catch (Exception $e) {
+    //     return response()->json(['message' => 'Failed to process refund: ' . $e->getMessage()], 500);
+    // }
+
 
     public function readAll()
     {

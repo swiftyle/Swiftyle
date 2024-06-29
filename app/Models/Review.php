@@ -15,11 +15,15 @@ class Review extends Model
         'id',
         'user_id',
         'product_id',
-        'content',
+        'comment',
+        'order_id',
+        'image',
         'rating',
     ];
 
-
+    protected $hidden = [
+        'created_at', 'updated_at','deleted_at'
+    ];
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');

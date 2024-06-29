@@ -19,6 +19,9 @@ class Shop extends Model
         'logo',
         'rating',
     ];
+    protected $hidden = [
+        'created_at', 'updated_at','deleted_at'
+    ];
     public function user()
     {
         return $this->belongsTo(User::class);

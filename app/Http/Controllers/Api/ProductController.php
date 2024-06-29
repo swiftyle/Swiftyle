@@ -144,11 +144,6 @@ class ProductController extends Controller
     }
 
 
-
-
-
-
-
     public function read(Request $request)
     {
         $user = $request->user();
@@ -156,17 +151,34 @@ class ProductController extends Controller
         // Initialize an empty array for products
         $products = [];
 
-        // Check if the user is an Admin
-        if ($user->role == 'Admin') {
-            // Admin can see all products
-            $products = Product::all();
-        } else {
-            // Non-admin users can only see products from their own shop
-            $shop = Shop::where('user_id', $user->id)->first();
+        try {
+            // Check if the user is an Admin
+            if ($user->role == 'Admin') {
+                // Admin can see all products
+                $products = Product::with([
+                    'subcategories.mainCategory',
+                    'sizes',
+                    'styles',
+                    'sizes.colors'
+                ])->get();
+            } else {
+                // Non-admin users can only see products from their own shop
+                $shop = Shop::where('user_id', $user->id)->first();
 
-            if ($shop) {
-                $products = Product::where('shop_id', $shop->id)->get();
+                if ($shop) {
+                    $products = Product::where('shop_id', $shop->id)
+                        ->with([
+                            'subcategories.mainCategory',
+                            'sizes',
+                            'styles',
+                            'sizes.colors'
+                        ])
+                        ->get();
+                }
             }
+        } catch (\Exception $e) {
+            Log::error('Error fetching products: ' . $e->getMessage(), ['exception' => $e]);
+            return response()->json(['message' => 'Gagal mengambil data produk', 'error' => $e->getMessage()], 500);
         }
 
         // Add logic for user preferences and recommendations based on followed users

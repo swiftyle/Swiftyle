@@ -13,10 +13,12 @@ class Size extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'name',
-        'stock',
     ];
 
-    protected $dates = [ 'created_at', 'updated_at'];
+    protected $dates = [ 'created_at', 'updated_at', 'deleted_at' ];
+    protected $hidden = [
+        'created_at', 'updated_at','deleted_at'
+    ];
     public function products()
     {
         return $this->belongsToMany(Product::class,'product_size');

@@ -19,6 +19,10 @@ class Chat extends Model
         'user2_id',
     ];
 
+    protected $hidden = [
+        'created_at', 'updated_at','deleted_at'
+    ];
+    
     public function user1()
     {
         return $this->belongsTo(User::class, 'user1_id', 'id');

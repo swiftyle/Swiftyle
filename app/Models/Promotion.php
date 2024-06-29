@@ -40,6 +40,9 @@ class Promotion extends Model
         'discount_percentage' => null,
     ];
 
+    protected $hidden = [
+        'created_at', 'updated_at','deleted_at'
+    ];
     /**
      * Get the products associated with the promotion.
      */

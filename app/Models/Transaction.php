@@ -14,12 +14,14 @@ class Transaction extends Model
     protected $fillable = [
         'id',
         'user_id',
-        'product_id',
+        'order_id',
+        'payment_url',
         'amount',
-        'type',
         'status',
     ];
-
+    protected $hidden = [
+        'created_at', 'updated_at','deleted_at'
+    ];
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
@@ -27,6 +29,6 @@ class Transaction extends Model
 
     public function order()
     {
-        return $this->hasOne(Order::class, 'transaction_id', 'transaction_id');
+        return $this->belongsTo(Order::class, 'order_id', 'id');
     }
 }
