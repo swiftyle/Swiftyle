@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -39,7 +38,7 @@ class UserController extends Controller
         // Ambil data user berdasarkan id
         $user = User::find($id);
 
-        $user = DB::select("SELECT * FROM users WHERE id = $id");
+        // $user = DB::select("SELECT * FROM users WHERE id = $id");
 
         if (!$user) {
             return response()->json(['message' => 'User tidak ditemukan'], 404);
