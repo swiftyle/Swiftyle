@@ -52,10 +52,10 @@
                             @foreach ($preferences as $preference)
                                 <tr>
                                     <td>
-                                        <p>{{ $preference->user_id }}</p>
+                                        <p>{{ $preference->user->name }}</p>
                                     </td>
                                     <td>
-                                        <p>{{ $preference->style_id }}</p>
+                                        <p>{{ $preference->style->name }}</p>
                                     </td>                                    
                                 </tr>
                             @endforeach

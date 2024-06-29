@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\User;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -77,6 +78,7 @@ class AuthenticationController extends Controller
             // Create or update cart for Customer role
             if (strtolower($user->role) === 'customer') {
                 $this->createOrUpdateCart($user);
+                $this->createOrUpdateWishlist($user);
             }
 
             return response()->json([
@@ -102,6 +104,18 @@ class AuthenticationController extends Controller
                 'app_coupon_id' => null,
                 'total_discount' => 0,
                 'total_price' => 0,
+            ]);
+        }
+    }
+
+    protected function createOrUpdateWishlist($user)
+    {
+        // Find existing wishlist or create new if not exists
+        $wishlist = Wishlist::where('user_id', $user->id)->first();
+
+        if (!$wishlist) {
+            Wishlist::create([
+                'user_id' => $user->id,
             ]);
         }
     }

@@ -26,6 +26,6 @@ class Preference extends Model
 
     public function style()
     {
-        return $this->hasMany(Style::class);
+        return $this->belongsTo(Style::class);
     }
 }

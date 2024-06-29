@@ -6,11 +6,11 @@
 @endsection
 
 @push('css')
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/animate.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/chartist.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/date-picker.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/prism.css') }}">
-<link rel="stylesheet" type="text/css' href="{{ asset('assets/css/vector-map.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/animate.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/chartist.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/date-picker.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/prism.css') }}">
+    <link rel="stylesheet" type="text/css' href="{{ asset('assets/css/vector-map.css') }}">
 @endpush
 
 @section('content')
@@ -54,7 +54,7 @@
                             @foreach ($orders as $order)
                                 <tr>
                                     <td>
-                                        <p>{{ $order->transaction_id }}</p>
+                                        <p>{{ $order->id }}</p>
                                     </td>
                                     <td>
                                         <div class="media">
@@ -66,7 +66,11 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <p>{{ $order->shipping->address }}</p>
+                                        @if ($order->shipping)
+                                            <p>{{ $order->shipping->shipping_address }}</p>
+                                        @else
+                                            <p>No shipping address found</p>
+                                        @endif
                                     </td>
                                     <td>
                                         <p>{{ ucfirst($order->status) }}</p>
@@ -83,25 +87,25 @@
         </div>
     </div>
 
-@push('scripts')
-    <script>
-        if (window.history && window.history.pushState) {
-            window.history.pushState(null, null, window.location.href);
-            window.onpopstate = function() {
+    @push('scripts')
+        <script>
+            if (window.history && window.history.pushState) {
                 window.history.pushState(null, null, window.location.href);
-            };
-        }
-    </script>
+                window.onpopstate = function() {
+                    window.history.pushState(null, null, window.location.href);
+                };
+            }
+        </script>
 
-    <script src="{{ asset('assets/js/chart/knob/knob.min.js') }}"></script>
-    <script src="{{ asset('assets/js/chart/knob/knob-chart.js') }}"></script>
-    <script src="{{ asset('assets/js/prism/prism.min.js') }}"></script>
-    <script src="{{ asset('assets/js/clipboard/clipboard.min.js') }}"></script>
-    <script src="{{ asset('assets/js/counter/jquery.waypoints.min.js') }}"></script>
-    <script src="{{ asset('assets/js/counter/jquery.counterup.min.js') }}"></script>
-    <script src="{{ asset('assets/js/counter/counter-custom.js') }}"></script>
-    <script src="{{ asset('assets/js/custom-card/custom-card.js') }}"></script>
-    <script src="{{ asset('assets/js/notify/bootstrap-notify.min.js') }}"></script>
-    <script src="{{ asset('assets/js/dashboard/default.js') }}"></script>
-@endpush
+        <script src="{{ asset('assets/js/chart/knob/knob.min.js') }}"></script>
+        <script src="{{ asset('assets/js/chart/knob/knob-chart.js') }}"></script>
+        <script src="{{ asset('assets/js/prism/prism.min.js') }}"></script>
+        <script src="{{ asset('assets/js/clipboard/clipboard.min.js') }}"></script>
+        <script src="{{ asset('assets/js/counter/jquery.waypoints.min.js') }}"></script>
+        <script src="{{ asset('assets/js/counter/jquery.counterup.min.js') }}"></script>
+        <script src="{{ asset('assets/js/counter/counter-custom.js') }}"></script>
+        <script src="{{ asset('assets/js/custom-card/custom-card.js') }}"></script>
+        <script src="{{ asset('assets/js/notify/bootstrap-notify.min.js') }}"></script>
+        <script src="{{ asset('assets/js/dashboard/default.js') }}"></script>
+    @endpush
 @endsection

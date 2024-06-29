@@ -18,7 +18,6 @@ class WishlistController extends Controller
 
         // Validate incoming request
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
         ]);
 
         if ($validator->fails()) {

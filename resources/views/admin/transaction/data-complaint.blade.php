@@ -6,11 +6,11 @@
 @endsection
 
 @push('css')
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/animate.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/chartist.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/date-picker.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/prism.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vector-map.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/animate.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/chartist.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/date-picker.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/prism.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vector-map.css') }}">
 @endpush
 
 @section('content')
@@ -55,10 +55,11 @@
                                 <tr>
                                     <td>
                                         <div class="media">
-                                            <img class="img-fluid rounded-circle" src="{{ $complaint->user>avatar }}"
-                                                alt="" width="30px" height="30px">
+                                            <img class="img-fluid rounded-circle"
+                                                src="{{ optional($complaint->user)->avatar }}" alt="" width="30px"
+                                                height="30px">
                                             <div class="media-body">
-                                                <span>{{ $complaint->user>name }}</span>
+                                                <span>{{ optional($complaint->user)->name }}</span>
                                             </div>
                                         </div>
                                     </td>
@@ -71,9 +72,9 @@
                                     <td>
                                         <p>{{ $complaint->status }}</p>
                                     </td>
-                                    
                                 </tr>
                             @endforeach
+
                         </tbody>
                     </table>
                 </div>
@@ -82,7 +83,7 @@
     </div>
 
 
-        @push('scripts')
+    @push('scripts')
         <script>
             if (window.history && window.history.pushState) {
                 window.history.pushState(null, null, window.location.href);
@@ -102,5 +103,5 @@
         <script src="{{ asset('assets/js/custom-card/custom-card.js') }}"></script>
         <script src="{{ asset('assets/js/notify/bootstrap-notify.min.js') }}"></script>
         <script src="{{ asset('assets/js/dashboard/default.js') }}"></script>
-        @endpush
-    @endsection
+    @endpush
+@endsection

@@ -15,7 +15,6 @@ class Wishlist extends Model
     protected $fillable = [
         'id',
         'user_id',
-        'name',
     ];
     protected $hidden = [
         'created_at', 'updated_at','deleted_at'
