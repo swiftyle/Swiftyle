@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Courier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -37,9 +38,13 @@ class CourierController extends Controller
         // Add user email as modified_by
         $validated['modified_by'] = $userEmail;
 
+        // Handle image upload
         if ($request->hasFile('logo')) {
-            $filePath = $request->file('logo')->store('images', 'public');
-            $validated['logo'] = $filePath;
+            $file = $request->file('logo');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $filePath = public_path('courierLogo');
+            $file->move($filePath, $fileName);
+            $validated['logo'] = 'public/courierLogo/' . $fileName;
         }
 
         // Create the courier
@@ -96,18 +101,18 @@ class CourierController extends Controller
 
         if ($courier) {
             // Handle image upload
-            if ($request->hasFile('image')) {
-                // Delete old image if it exists
-                if (!is_null($courier->image)) {
-                    Storage::disk('public')->delete($courier->image);
-                    // Store new image
-                    $filePath = $request->file('image')->store('images', 'public');
-                    $validated['image'] = $filePath;
-                } else {
-                    $filePath = $request->file('image')->store('images', 'public');
-                    $validated['image'] = $filePath;
-
+            if ($request->hasFile('logo')) {
+                // Delete old logo if it exists
+                if (!is_null($courier->logo) && File::exists(public_path($courier->logo))) {
+                    File::delete(public_path($courier->logo));
                 }
+
+                // Store new logo
+                $file = $request->file('logo');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $filePath = public_path('courierLogo');
+                $file->move($filePath, $fileName);
+                $validated['logo'] = 'public/courierLogo/' . $fileName;
             }
         }
 

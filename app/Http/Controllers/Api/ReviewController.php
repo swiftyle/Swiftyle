@@ -32,16 +32,13 @@ class ReviewController extends Controller
         $validated = $validator->validated();
         $validated['user_id'] = $user->id;
 
+        // Handle image upload
         if ($request->hasFile('image')) {
-            try {
-                $filePath = $request->file('image')->store('images', 'public');
-                $validated['image'] = $filePath;
-            } catch (\Exception $e) {
-                Log::error('Error uploading image: ' . $e->getMessage());
-                return response()->json([
-                    'message' => 'Error uploading image: ' . $e->getMessage()
-                ], 500);
-            }
+            $file = $request->file('image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $filePath = public_path('reviewImage');
+            $file->move($filePath, $fileName);
+            $validated['image'] = 'public/reviewImage/' . $fileName;
         }
 
         try {
@@ -108,7 +105,17 @@ class ReviewController extends Controller
             return response()->json(['message' => 'Review not found'], 404);
         }
 
-        $review->update($request->all());
+        $validated = $validator->validated();
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $filePath = public_path('reviewImage');
+            $file->move($filePath, $fileName);
+            $validated['image'] = 'public/reviewImage/' . $fileName;
+        }
+
+        $review->update($validated);
 
         return response()->json([
             'message' => 'Review updated successfully',

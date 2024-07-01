@@ -23,7 +23,8 @@ class AuthenticationController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8'
+            'password' => 'required|string|min:8',
+            'phone_number' => 'required|string|min:10',
         ]);
 
         if ($validator->fails()) {
@@ -36,6 +37,7 @@ class AuthenticationController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
+            'phone_number' =>$validated['phone_number'],
             'role' => 'customer', // Set a default role, adjust as necessary
             'phone_verified' => 'No',
             'gender' => 'Other',

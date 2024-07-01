@@ -13,6 +13,7 @@ use App\Models\SizeColor;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -75,8 +76,11 @@ class ProductController extends Controller
 
         // Handle image upload
         if ($request->hasFile('image')) {
-            $filePath = $request->file('image')->store('images', 'public');
-            $validated['image'] = $filePath;
+            $file = $request->file('image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $filePath = public_path('productImage');
+            $file->move($filePath, $fileName);
+            $validated['image'] = 'public/productImage/' . $fileName;
         }
 
         // Begin database transaction
@@ -276,11 +280,16 @@ class ProductController extends Controller
         // Handle image upload
         if ($request->hasFile('image')) {
             // Delete old image if it exists
-            if (!is_null($product->image)) {
-                Storage::disk('public')->delete($product->image);
+            if (!is_null($product->image) && File::exists(public_path($product->image))) {
+                File::delete(public_path($product->image));
             }
-            $filePath = $request->file('image')->store('images', 'public');
-            $validated['image'] = $filePath;
+
+            // Store new image
+            $file = $request->file('image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $filePath = public_path('productImage');
+            $file->move($filePath, $fileName);
+            $validated['image'] = 'public/productImage/' . $fileName;
         }
 
         // Begin database transaction

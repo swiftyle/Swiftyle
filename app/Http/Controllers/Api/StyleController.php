@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Style;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class StyleController extends Controller
@@ -43,11 +43,15 @@ class StyleController extends Controller
 
         // Add user email as modified_by
         $validated['modified_by'] = $userEmail;
-        
+
         if ($request->hasFile('image')) {
-            $filePath = $request->file('image')->store('images', 'public');
-            $validated['image'] = $filePath;
+            $file = $request->file('image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $filePath = public_path('styleImage');
+            $file->move($filePath, $fileName);
+            $validated['image'] = 'public/styleImage/' . $fileName;
         }
+
         // Create the style without associating it with the user
         $style = Style::create($validated);
 
@@ -82,7 +86,7 @@ class StyleController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|string|max:255',
             'description' => 'sometimes|string',
-            'image' => 'somtimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
         if ($validator->fails()) {
@@ -96,25 +100,24 @@ class StyleController extends Controller
             return response()->json(['message' => 'Style tidak ditemukan'], 404);
         }
 
-        if ($style) {
-            // Handle image upload
-            if ($request->hasFile('image')) {
-                // Delete old image if it exists
-                if (!is_null($style->image)) {
-                    Storage::disk('public')->delete($style->image);
-                    // Store new image
-                    $filePath = $request->file('image')->store('images', 'public');
-                    $validated['image'] = $filePath;
-                } else {
-
-                    $filePath = $request->file('image')->store('images', 'public');
-                    $validated['image'] = $filePath;
-
-                }
-            }
-        }
         // Update data style sesuai dengan data yang divalidasi
         $validated = $validator->validated();
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if it exists
+            if (!is_null($style->image) && File::exists(public_path($style->image))) {
+                File::delete(public_path($style->image));
+            }
+
+            // Store new image
+            $file = $request->file('image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $filePath = public_path('styleImage');
+            $file->move($filePath, $fileName);
+            $validated['image'] = 'styleImage/' . $fileName;
+        }
+
         $style->update($validated);
 
         return response()->json([
@@ -122,7 +125,6 @@ class StyleController extends Controller
             'data' => $style
         ], 200);
     }
-
 
     public function delete(Request $request, $id)
     {
@@ -141,6 +143,11 @@ class StyleController extends Controller
             return response()->json(['message' => 'Style tidak ditemukan'], 404);
         }
 
+        // Delete old image if it exists
+        if (!is_null($style->image) && File::exists(public_path($style->image))) {
+            File::delete(public_path($style->image));
+        }
+
         // Hapus style
         $style->delete();
 
@@ -148,6 +155,4 @@ class StyleController extends Controller
             'message' => 'Style berhasil dihapus'
         ], 200);
     }
-
 }
-

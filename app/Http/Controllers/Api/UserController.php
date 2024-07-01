@@ -92,17 +92,17 @@ class UserController extends Controller
         // Validasi data masukan
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|string|max:255',
-            'username' => 'nullable|string|max:255',
+            'username' => 'sometimes|string|max:255',
             'email' => 'sometimes|email|unique:users,email,' . $id,
-            'password' => 'nullable|string|min:6',
-            'phone_number' => 'nullable|string|max:20|unique:users,phone_number,' . $id,
-            'gender' => 'nullable|in:Male,Female,Other',
-            'role' => 'nullable|in:Admin,Customer,Seller',
-            'avatar' => 'nullable|string',
-            'status' => 'nullable|in:Active,Inactive',
-            'provider' => 'nullable|string',
-            'provider_id' => 'nullable|string',
-            'provider_token' => 'nullable|string',
+            'password' => 'sometimes|string|min:6',
+            'phone_number' => 'sometimes|string|max:20|unique:users,phone_number,' . $id,
+            'gender' => 'sometimes|in:Male,Female,Other',
+            'role' => 'sometimes|in:Admin,Customer,Seller',
+            'avatar' => 'sometimes|string',
+            'status' => 'sometimes|in:Active,Inactive',
+            'provider' => 'sometimes|string',
+            'provider_id' => 'sometimes|string',
+            'provider_token' => 'sometimes|string',
         ]);
 
         if ($validator->fails()) {
@@ -124,6 +124,13 @@ class UserController extends Controller
             $userData['password'] = Hash::make($userData['password']);
         }
 
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $filePath = public_path('userAvatar');
+            $file->move($filePath, $fileName);
+            $userData['avatar'] = 'public/userAvatar/' . $fileName;
+        }
         $user->update($userData);
 
         return response()->json([
