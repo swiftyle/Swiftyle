@@ -9,6 +9,11 @@ use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ProductExport;
+
 
 class ProductsController extends Controller
 {
@@ -17,12 +22,12 @@ class ProductsController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
+        $pageSize = $request->input('size', 10); // Default to 10 items per page
+        $products = Product::paginate($pageSize);
         return view('admin.product.data-product', compact('products'));
     }
-
     /**
      * Show the form for creating a new product.
      *
@@ -74,8 +79,8 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        $product = Product::where('id', $id)->firstOrFail();
-        return view('products.show', compact('product'));
+        $products = Product::where('id', $id)->firstOrFail();
+        return view('products.show', compact('products'));
     }
 
     /**
@@ -86,9 +91,9 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
-        $product = Product::where('id', $id)->firstOrFail();
+        $products = Product::where('id', $id)->firstOrFail();
         $categories = SUbCategory::all();
-        return view('products.edit', compact('product', 'categories'));
+        return view('products.edit', compact('products', 'categories'));
     }
 
     /**
@@ -100,7 +105,7 @@ class ProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = Product::where('id', $id)->firstOrFail();
+        $products = Product::where('id', $id)->firstOrFail();
 
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|required|string|max:255',
@@ -114,7 +119,7 @@ class ProductsController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $product->update($request->all());
+        $products->update($request->all());
 
         return redirect()->route('products.index')->with('success', 'Product updated successfully.');
     }
@@ -127,9 +132,31 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        $product = Product::where('id', $id)->firstOrFail();
-        $product->delete();
+        $products = Product::where('id', $id)->firstOrFail();
+        $products->delete();
 
         return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
+    }
+
+    public function printProduct()
+    {
+        $products = Product::all();
+        return view('admin.product.print-product', compact('products'));
+    }
+
+    public function exportexcel() 
+    {
+        return Excel::download(new ProductExport, 'Product.xlsx');
+    }
+
+    public function exportProduct()
+    {
+        $products = Product::all();
+        return view('admin.product.export-data-product', compact('products'));
+    }
+    public function addProduct()
+    {
+        $products = Product::all();
+        return view('admin.product.add-product', compact('products'));
     }
 }

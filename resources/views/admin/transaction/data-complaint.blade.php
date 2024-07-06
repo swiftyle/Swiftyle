@@ -6,7 +6,6 @@
 @endsection
 
 @push('css')
-
 @endpush
 
 @section('content')
@@ -19,31 +18,36 @@
     @endcomponent
 
     <div class="container-fluid">
-
         <div class="card">
             <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="flex-grow-1">
+                        <div class="d-flex align-items-center">
+                            <input class="form-control" type="text" id="searchInput" style="max-width: 300px" placeholder="Search..">
+                            <div class="ms-2">
+                                <a href="{{ route('transaction.export-data-complaint') }}" class="btn btn-info"><span class="fa fa-file-archive-o"></span> Export </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="paginationSelect" class="form-label me-2">Items per page:</label>
+                        <select id="paginationSelect" class="form-select" onchange="changePagination(this.value)">
+                            <option value="10" {{ $complaints->perPage() == 10 ? 'selected' : '' }}>10</option>
+                            <option value="25" {{ $complaints->perPage() == 25 ? 'selected' : '' }}>25</option>
+                            <option value="50" {{ $complaints->perPage() == 50 ? 'selected' : '' }}>50</option>
+                            <option value="100" {{ $complaints->perPage() == 100 ? 'selected' : '' }}>100</option>
+                            <option value="-1" {{ $complaints->perPage() == -1 ? 'selected' : '' }}>All</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="table-responsive">
-                    <table class="table table-bordernone">
+                    <table class="table table-bordernone" id="complaintTable">
                         <thead>
                             <tr>
                                 <th>User</th>
                                 <th>Order ID</th>
                                 <th>Description</th>
                                 <th>Status</th>
-                                <th>
-                                    <div class="setting-list">
-                                        <ul class="list-unstyled setting-option">
-                                            <li>
-                                                <div class="setting-primary"><i class="icon-settings"> </i></div>
-                                            </li>
-                                            <li><i class="view-html fa fa-code font-primary"></i></li>
-                                            <li><i class="icofont icofont-maximize full-card font-primary"></i></li>
-                                            <li><i class="icofont icofont-minus minimize-card font-primary"></i></li>
-                                            <li><i class="icofont icofont-refresh reload-card font-primary"></i></li>
-                                            <li><i class="icofont icofont-error close-card font-primary"></i></li>
-                                        </ul>
-                                    </div>
-                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,34 +63,82 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td>
-                                        <p>{{ $complaint->order_id }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{{ $complaint->description }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{{ $complaint->status }}</p>
-                                    </td>
+                                    <td>{{ $complaint->order_id }}</td>
+                                    <td>{{ $complaint->description }}</td>
+                                    <td>{{ $complaint->status }}</td>
                                 </tr>
                             @endforeach
-
                         </tbody>
                     </table>
+                </div>
+                <div class="pagination justify-content-center pagination-primary">
+                    <ul class="pagination">
+                        {{-- Previous Page Link --}}
+                        @if ($complaints->onFirstPage())
+                            <li class="page-item disabled">
+                                <span class="page-link" aria-hidden="true">&laquo;</span>
+                            </li>
+                        @else
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $complaints->previousPageUrl() }}" aria-label="Previous">&laquo;</a>
+                            </li>
+                        @endif
+
+                        {{-- Pagination Elements --}}
+                        @foreach ($complaints->getUrlRange(1, $complaints->lastPage()) as $page => $url)
+                            @if ($page == $complaints->currentPage())
+                                <li class="page-item active" aria-current="page">
+                                    <span class="page-link">{{ $page }}</span>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                </li>
+                            @endif
+                        @endforeach
+
+                        {{-- Next Page Link --}}
+                        @if ($complaints->hasMorePages())
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $complaints->nextPageUrl() }}" aria-label="Next">&raquo;</a>
+                            </li>
+                        @else
+                            <li class="page-item disabled">
+                                <span class="page-link" aria-hidden="true">&raquo;</span>
+                            </li>
+                        @endif
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 
-
     @push('scripts')
-        <script>
-            if (window.history && window.history.pushState) {
-                window.history.pushState(null, null, window.location.href);
-                window.onpopstate = function() {
-                    window.history.pushState(null, null, window.location.href);
-                };
+    <script>
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            var searchTerm = this.value.toLowerCase();
+            var tableRows = document.querySelectorAll('#complaintTable tbody tr');
+
+            tableRows.forEach(function(row) {
+                var rowText = row.textContent.toLowerCase();
+                row.style.display = rowText.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+        function changePagination(size) {
+            var url = "{{ route('complaints.index') }}";
+            if (size != -1) {
+                url += "?size=" + size;
             }
-        </script>
+            window.location.href = url;
+        }
+
+        if (window.history && window.history.pushState) {
+            window.history.pushState(null, null, window.location.href);
+            window.onpopstate = function() {
+                window.history.pushState(null, null, window.location.href);
+            };
+        }
+    </script>
     @endpush
 @endsection

@@ -74,16 +74,21 @@ class TransactionController extends Controller
         }
     }
 
-    public function read(Request $request, $userId)
-    {
-        // Fetch transactions associated with the given user ID
-        $transactions = Transaction::where('user_id', $userId)->get();
-
-        return response()->json([
-            'message' => 'Transactions fetched successfully',
-            'data' => $transactions
-        ], 200);
-    }
+    
+        public function read(Request $request)
+        {
+            // Get the authenticated user
+            $user = $request->user();
+    
+            // Fetch transactions associated with the given user ID
+            $transactions = Transaction::where('user_id', $user->id)->get();
+    
+            return response()->json([
+                'message' => 'Transactions fetched successfully',
+                'data' => $transactions
+            ], 200);
+        }
+    
 
     public function getStatus(Request $request, $transactionId)
     {

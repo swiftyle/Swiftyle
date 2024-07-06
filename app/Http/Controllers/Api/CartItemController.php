@@ -127,6 +127,28 @@ class CartItemController extends Controller
         }
     }
 
+    public function readWithTrashed(Request $request)
+    {
+        try {
+            $user = $request->user();
+
+            // Find the cart associated with the user
+            $cart = Cart::where('user_id', $user->id)->first();
+
+            if (!$cart) {
+                return response()->json(['message' => 'Cart not found for this user'], 404);
+            }
+
+            // Fetch cart items for the found cart including trashed items
+            $cartItems = CartItem::withTrashed()->where('cart_id', $cart->id)->get();
+            Log::info('ReadWithTrashed CartItems: Items Fetched', ['count' => $cartItems->count()]);
+
+            return response()->json(['message' => 'Cart items fetched successfully including trashed items', 'data' => $cartItems], 200);
+        } catch (\Exception $e) {
+            Log::error('ReadWithTrashed CartItems: Error', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'Failed to fetch cart items'], 500);
+        }
+    }
     public function update(Request $request, $id)
     {
         try {

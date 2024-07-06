@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\OrderExport;
 
 class OrdersController extends Controller
 {
@@ -14,22 +18,25 @@ class OrdersController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::paginate(10);
-        $totalOrders = Order::count();
-        $deliveredOrders = Order::where('status', 'delivered')->count();
-        $receivedOrders = Order::where('status', 'received')->count();
-        $reviewedOrders = Order::where('status', 'reviewed')->count();
+    $size = $request->query('size', 10); // Default to 10 if no size parameter is provided
+    $orders = Order::paginate($size);
 
-        return view('admin.seller.data-order', [
-            'orders' => $orders,
-            'totalOrders' => $totalOrders,
-            'deliveredOrders' => $deliveredOrders,
-            'receivedOrders' => $receivedOrders,
-            'reviewedOrders' => $reviewedOrders,
-        ]);
+    $totalOrders = Order::count();
+    $deliveredOrders = Order::where('status', 'delivered')->count();
+    $receivedOrders = Order::where('status', 'received')->count();
+    $reviewedOrders = Order::where('status', 'reviewed')->count();
+
+    return view('admin.seller.data-order', [
+        'orders' => $orders,
+        'totalOrders' => $totalOrders,
+        'deliveredOrders' => $deliveredOrders,
+        'receivedOrders' => $receivedOrders,
+        'reviewedOrders' => $reviewedOrders,
+    ]);
     }
+
 
     /**
      * Show the form for creating a new order.
@@ -60,7 +67,7 @@ class OrdersController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $order = Order::create($request->all());
+        $orders = Order::create($request->all());
 
         return redirect()->route('orders.index')->with('success', 'Order created successfully.');
     }
@@ -73,8 +80,8 @@ class OrdersController extends Controller
      */
     public function show($id)
     {
-        $order = Order::where('id', $id)->firstOrFail();
-        return view('admin.orders.edit-order', compact('order'));
+        $orders = Order::where('id', $id)->firstOrFail();
+        return view('admin.orders.edit-order', compact('orders'));
     }
 
     /**
@@ -85,8 +92,8 @@ class OrdersController extends Controller
      */
     public function edit($id)
     {
-        $order = Order::where('id', $id)->firstOrFail();
-        return view('orders.edit', compact('order'));
+        $orders = Order::where('id', $id)->firstOrFail();
+        return view('orders.edit', compact('orders'));
     }
 
     /**
@@ -98,10 +105,10 @@ class OrdersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $order = Order::where('id', $id)->firstOrFail();
+        $orders = Order::where('id', $id)->firstOrFail();
 
         $validator = Validator::make($request->all(), [
-            'transaction_id' => 'sometimes|required|string|max:255|unique:orders,transaction_id,' . $order->id,
+            'transaction_id' => 'sometimes|required|string|max:255|unique:orders,transaction_id,' . $orders->id,
             'shipping_id' => 'sometimes|required|exists:shipping,id',
             'status' => 'sometimes|required|in:delivered,received,reviewed',
         ]);
@@ -110,7 +117,7 @@ class OrdersController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $order->update($request->all());
+        $orders->update($request->all());
 
         return redirect()->route('orders.index')->with('success', 'Order updated successfully.');
     }
@@ -123,9 +130,31 @@ class OrdersController extends Controller
      */
     public function destroy($id)
     {
-        $order = Order::where('id', $id)->firstOrFail();
-        $order->delete();
+        $orders = Order::where('id', $id)->firstOrFail();
+        $orders->delete();
 
         return redirect()->route('orders.index')->with('success', 'Order deleted successfully.');
+    }
+
+    public function printOrder()
+    {
+        $orders = Order::all();
+        return view('admin.seller.print-order', compact('orders'));
+    }
+
+    public function exportexcel() 
+    {
+        return Excel::download(new OrderExport, 'order.xlsx');
+    }
+
+    public function exportOrder()
+    {
+        $orders = Order::all();
+        return view('admin.seller.export-data-order', compact('orders'));
+    }
+    public function addOrder()
+    {
+        $orders = Order::all();
+        return view('admin.seller.add-order', compact('orders'));
     }
 }

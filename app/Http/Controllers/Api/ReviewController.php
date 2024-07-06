@@ -72,19 +72,22 @@ class ReviewController extends Controller
         ], 200);
     }
 
-    public function read(Request $request, $id)
-    {
-        $review = Review::find($id);
-
-        if (!$review) {
-            return response()->json(['message' => 'Review not found'], 404);
+    public function read(Request $request)
+        {
+            $user = $request->user();
+    
+            // Misalnya, Anda ingin mendapatkan semua review yang ditulis oleh pengguna
+            $reviews = Review::where('user_id', $user->id)->get();
+    
+            if ($reviews->isEmpty()) {
+                return response()->json(['message' => 'Reviews not found'], 404);
+            }
+    
+            return response()->json([
+                'message' => 'Reviews fetched successfully',
+                'data' => $reviews
+            ], 200);
         }
-
-        return response()->json([
-            'message' => 'Review fetched successfully',
-            'data' => $review
-        ], 200);
-    }
 
     public function update(Request $request, $id)
     {

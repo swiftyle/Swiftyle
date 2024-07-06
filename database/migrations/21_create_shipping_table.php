@@ -23,7 +23,7 @@ return new class extends Migration
             $table->date('shipped_date');
             $table->enum('shipping_method', ['car', 'ship','plane']);
             $table->decimal('shipping_cost', 10, 2);
-            $table->enum('shipping_status', ['pending', 'shipped', 'delivered', 'cancelled'])->default('pending');
+            $table->enum('shipping_status', ['delivered', 'received','cancelled'])->default('delivered');
             $table->enum('payment_status', ['cod', 'paid']);
             $table->date('estimated_delivery_date');
             $table->softDeletes();

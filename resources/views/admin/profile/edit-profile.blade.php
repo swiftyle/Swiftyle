@@ -19,7 +19,7 @@ Edit Profile
     <div class="container-fluid">
         <div class="edit-profile">
             <div class="row">
-            <div class="container-fluid">
+                <div class="col-md-12">
                     <div class="card">
                         <div class="card-header pb-0">
                             <h4 class="card-title mb-0">Edit Profile</h4>
@@ -29,85 +29,60 @@ Edit Profile
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6 col-md-3">
-                                    <div class="mb-3">
-                                        <label class="form-label">Name</label>
-                                        <input class="form-control" type="text" placeholder="First Name" value="{{ session('name') }}" />
+                            <form method="POST" action="{{ route('users.update', $user->id) }}" enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Name</label>
+                                            <input class="form-control" type="text" name="name" placeholder="First Name" value="{{ old('name', $user->name) }}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Username</label>
+                                            <input class="form-control" type="text" name="username" placeholder="Username" value="{{ old('username', $user->username) }}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Email address</label>
+                                            <input class="form-control" type="email" name="email" placeholder="Email" value="{{ old('email', $user->email) }}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Phone</label>
+                                            <input class="form-control" type="text" name="phone" placeholder="Phone" value="{{ old('phone', $user->phone) }}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Gender</label>
+                                            <input class="form-control" type="text" name="gender" placeholder="Gender" value="{{ old('gender', $user->gender) }}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Avatar</label>
+                                            <input class="form-control" type="file" name="avatar">
+                                            @if ($user->avatar)
+                                                <img src="{{ asset('storage/' . $user->avatar) }}" alt="Current Avatar" style="max-width: 100px; max-height: 100px;">
+                                            @else
+                                                <p>No avatar uploaded</p>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-md-3">
-                                    <div class="mb-3">
-                                        <label class="form-label">Username</label>
-                                        <input class="form-control" type="text" placeholder="Username" value="{{ session('username') }}" />
-                                    </div>
+
+                                <div class="card-footer text-end">
+                                    <button class="btn btn-primary" type="submit">Update Profile</button>
                                 </div>
-                                <div class="col-md-6 col-md-4">
-                                    <div class="mb-3">
-                                        <label class="form-label">Email address</label>
-                                        <input class="form-control" type="email" placeholder="Email" value="{{ session('email') }}" />
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Phone</label>
-                                        <input class="form-control" type="text" placeholder="Phone" value="{{ session('phone') }}" />
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Gender</label>
-                                        <input class="form-control" type="text" placeholder="Home Address" value="{{ session('gender') }}" />
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Role</label>
-                                        <input class="form-control" type="text" placeholder="Home Address" value="{{ session('role') }}" />
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="mb-3">
-                                        <label class="form-label">Address</label>
-                                        <input class="form-control" type="text" placeholder="Home Address" value="{{ session('address') }}" />
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-4">
-                                    <div class="mb-3">
-                                        <label class="form-label">City</label>
-                                        <input class="form-control" type="text" placeholder="City" value="{{ session('city') }}" />
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-3">
-                                    <div class="mb-3">
-                                        <label class="form-label">Postal Code</label>
-                                        <input class="form-control" type="number" placeholder="ZIP Code" value="{{ session('postalCode') }}" />
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="mb-3">
-                                        <label class="form-label">Country</label>
-                                        <select class="form-control btn-square">
-                                            <option value="0">--Select--</option>
-                                            <option value="1">Germany</option>
-                                            <option value="2">Canada</option>
-                                            <option value="3">USA</option>
-                                            <option value="4">Australia</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div>
-                                        <label class="form-label">About Me</label>
-                                        <textarea class="form-control" rows="5" placeholder="Enter About your description">{{ session('aboutMe') }}</textarea>
-                                    </div>
-                                </div>
-                            </div>
+                            </form>
                         </div>
-                        <div class="card-footer text-end">
-                            <button class="btn btn-primary" type="submit">Update Profile</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>

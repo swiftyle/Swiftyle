@@ -8,15 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class SizeColor extends Model
 {
     use HasFactory;
-    protected $table ='size_color';
+    protected $table = 'size_color';
     protected $fillable = [
-       'size_id',
+        'size_id',
         'color_id',
         'stock'
     ];
 
     protected $hidden = [
-        'created_at', 'updated_at'
+        'created_at',
+        'updated_at'
     ];
     public function size()
     {

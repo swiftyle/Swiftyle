@@ -18,10 +18,10 @@ class WishlistItem extends Model
     ];
     public function wishlist()
     {
-        return $this->hasOne(Wishlist::class);
+        return $this->belongsTo(Wishlist::class);
     }
     public function product()
     {
-        return $this->hasOne(Product::class);
+        return $this->belongsTo(Product::class);
     }
 }

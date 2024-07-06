@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Checkout;
 use App\Models\Courier;
+use App\Models\Notification;
 use App\Models\Order;
 use App\Models\Shipping;
 use Illuminate\Http\Request;
@@ -31,7 +32,6 @@ class ShippingController extends Controller
             'order_id' => 'required|exists:orders,id',
             'shipped_date' => 'required|date',
             'shipping_method' => 'required|in:car,ship,plane',
-            'shipping_status' => 'required|in:pending,shipped,delivered,cancelled',
             'payment_status' => 'required|in:cod,paid',
             'estimated_delivery_date' => 'required|date',
         ]);
@@ -60,7 +60,8 @@ class ShippingController extends Controller
                 ], 404);
             }
 
-            $cartItems = $cart->cartItems;
+            // Include soft-deleted cartItems
+            $cartItems = $cart->cartItems()->withTrashed()->get();
             if ($cartItems->isEmpty()) {
                 return response()->json([
                     'message' => 'Cart items not found for this cart'
@@ -77,14 +78,14 @@ class ShippingController extends Controller
             // Log the product data
             Log::info('Product data:', ['product' => $product]);
 
-            $shops = $product->shops;
-            if (!$shops) {
+            $shop = $product->shops;
+            if (!$shop) {
                 return response()->json([
                     'message' => 'Shop not found for this product'
                 ], 404);
             }
 
-            if ($shops->user_id !== $user->id) {
+            if ($shop->user_id !== $user->id) {
                 return response()->json([
                     'message' => 'Unauthorized. You can only create shipping records for your own products'
                 ], 403);
@@ -117,25 +118,51 @@ class ShippingController extends Controller
 
             $shippingAddress = $this->formatAddress($address);
 
+            // Update the order status
+            $order = Order::find($request->input('order_id'));
+            if (!$order) {
+                return response()->json([
+                    'message' => 'Order not found'
+                ], 404);
+            }
+
+            $order->status = 'delivered';
+            $order->save();
+
             // Create the shipping record
             $shipping = Shipping::create([
                 'checkout_id' => $request->input('checkout_id'),
-                'order_id' => $request->input('order_id'),
+                'order_id' => $order->id,
                 'shipping_address' => $shippingAddress,
                 'courier_name' => $courierName,
                 'tracking_number' => strtoupper(Str::random(10)), // Random tracking number
                 'shipped_date' => $request->input('shipped_date'),
                 'shipping_method' => $request->input('shipping_method'),
                 'shipping_cost' => $shippingCost,
-                'shipping_status' => $request->input('shipping_status'),
+                'shipping_status' => 'delivered',
                 'payment_status' => $request->input('payment_status'),
                 'estimated_delivery_date' => $request->input('estimated_delivery_date'),
             ]);
 
-            
+            $user = $order->user; 
+            $notificationData = [
+                'type' => 'OrderDelivered',
+                'notifiable_id' => $user->id,
+                'notifiable_type' => 'App\Models\User',
+                'data' => json_encode([
+                    'message' => 'Your order with ID ' . $order->id . ' has been delivered on ' . now() . '.',
+                    'order_id' => $order->id,
+                    'timestamp' => now(),
+                ]),
+            ];
+            Notification::create($notificationData);
+
             return response()->json([
                 'message' => 'Shipping record created successfully',
-                'data' => $shipping
+                'data' => [
+                    'order' => $order,
+                    'shipping' => $shipping,
+                ],
             ], 201);
         } catch (\Exception $e) {
             Log::error('Error creating shipping record: ' . $e->getMessage());
@@ -144,6 +171,7 @@ class ShippingController extends Controller
             ], 500);
         }
     }
+
 
     // Helper function to format address
     private function formatAddress($address)
@@ -159,7 +187,7 @@ class ShippingController extends Controller
             $address->province,
             $address->country,
             $address->postal_code,
-            $address->phone_number
+            $address->phone_number,
         ]));
     }
 
@@ -167,17 +195,29 @@ class ShippingController extends Controller
     {
         $user = $request->user();
 
-        // Fetch shipping records associated with user's checkouts
-        $shippingRecords = Shipping::whereIn('checkout_id', function ($query) use ($user) {
-            $query->select('id')
-                ->from('checkouts')
-                ->where('user_id', $user->id);
-        })->get();
+        // Check if the user is a seller
+        if ($user->role !== 'Seller') {
+            return response()->json([
+                'message' => 'Unauthorized. Only sellers can view their shipping records'
+            ], 403);
+        }
 
-        return response()->json([
-            'message' => 'Shipping records fetched successfully',
-            'data' => $shippingRecords
-        ], 200);
+        try {
+            // Fetch shipping records associated with the seller's products
+            $shippingRecords = Shipping::whereHas('checkout.cart.cartItems.product.shops', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->get();
+
+            return response()->json([
+                'message' => 'Shipping records fetched successfully',
+                'data' => $shippingRecords
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Error fetching shipping records: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Server error: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     public function update(Request $request, $id)

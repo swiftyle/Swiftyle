@@ -149,19 +149,32 @@ class RefundController extends Controller
         ], 200);
     }
 
-    public function read($id)
+    public function read(Request $request)
     {
-        // Fetch refund by ID
-        $refund = Refund::find($id);
+        try {
+            $user = $request->user();
 
-        if (!$refund) {
-            return response()->json(['message' => 'Refund not found'])->setStatusCode(404);
+            // Mendapatkan refund berdasarkan user melalui relasi refundRequest
+            $refunds = Refund::whereHas('refundRequest', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->get();
+
+            if ($refunds->isEmpty()) {
+                return response()->json(['message' => 'Refunds not found'], 404);
+            }
+
+            return response()->json([
+                'message' => 'Refunds fetched successfully',
+                'data' => $refunds
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Failed to fetch refunds', ['error' => $e->getMessage()]);
+
+            return response()->json([
+                'message' => 'Failed to fetch refunds',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-
-        return response()->json([
-            'message' => 'Refund fetched successfully',
-            'data' => $refund
-        ], 200);
     }
 
     public function update(Request $request, $id)

@@ -24,6 +24,7 @@ class Checkout extends Model
     protected $hidden = [
         'created_at', 'updated_at','deleted_at'
     ];
+
     public function cart()
     {
         return $this->belongsTo(Cart::class);
@@ -47,5 +48,15 @@ class Checkout extends Model
     public function shipping()
     {
         return $this->hasOne(Shipping::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'checkout_product');
     }
 }

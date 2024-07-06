@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -42,11 +41,13 @@ class CartController extends Controller
             // Create the cart
             $cart = Cart::create([
                 'user_id' => $validated['user_id'],
-                'app_coupon_id' => $validated['app_coupon_id'],
+                'app_coupon_id' => $validated['app_coupon_id'] ?? null,
                 'discount' => 0,
                 'total_discount' => 0,
                 'total_price' => 0,
             ]);
+
+            $this->updateCartTotals($cart);
 
             return response()->json([
                 'message' => 'Cart created successfully',
@@ -175,20 +176,20 @@ class CartController extends Controller
                 $appCoupon = AppCoupon::find($cart->app_coupon_id);
                 if ($appCoupon) {
                     // Calculate discount based on percentage of total price
-                    $additionalDiscount = $cart->total_price * ($appCoupon->discount_amount / 100);
+                    $additionalDiscount = $totalPrice * ($appCoupon->discount_amount / 100);
                     $totalDiscount += $additionalDiscount;
                 }
             }
 
             // Update cart totals
             $cart->update([
-                'total_price' => $totalPrice,
+                'total_price' => $totalPrice - $totalDiscount,
                 'total_discount' => $totalDiscount,
             ]);
 
             Log::info('UpdateCartTotals: Cart Totals Updated', [
                 'cart_id' => $cart->id,
-                'total_price' => $totalPrice,
+                'total_price' => $totalPrice - $totalDiscount,
                 'total_discount' => $totalDiscount,
             ]);
         } catch (\Exception $e) {
@@ -196,3 +197,4 @@ class CartController extends Controller
         }
     }
 }
+

@@ -12,14 +12,12 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
-        'transaction_id',
-        'shipping_id',
-        'total',
+        'checkout_id',
         'status',
     ];
 
     protected $hidden = [
-        'created_at', 'updated_at', 'deleted_at'
+        'updated_at', 'deleted_at'
     ];
 
     public function shipping()
@@ -55,5 +53,9 @@ class Order extends Model
     public function transaction()
     {
         return $this->hasOne(Transaction::class, 'order_id', 'id');
+    }
+    public function checkout()
+    {
+        return $this->belongsTo(Checkout::class, 'checkout_id', 'id');
     }
 }

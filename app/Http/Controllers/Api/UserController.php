@@ -98,7 +98,7 @@ class UserController extends Controller
             'phone_number' => 'sometimes|string|max:20|unique:users,phone_number,' . $id,
             'gender' => 'sometimes|in:Male,Female,Other',
             'role' => 'sometimes|in:Admin,Customer,Seller',
-            'avatar' => 'sometimes|string',
+            'avatar' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'sometimes|in:Active,Inactive',
             'provider' => 'sometimes|string',
             'provider_id' => 'sometimes|string',

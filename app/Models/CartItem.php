@@ -10,20 +10,24 @@ class CartItem extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'cart_item';
+    // Pastikan nama tabel sesuai dengan yang ada di basis data
+    protected $table = 'cart_item'; // Atur nama tabel di sini
     protected $fillable = ['cart_id', 'product_id', 'quantity', 'price', 'subtotal', 'coupon_id'];
 
     protected $hidden = [
         'created_at', 'updated_at','deleted_at'
     ];
+
     public function coupon()
     {
         return $this->belongsTo(ShopCoupon::class);
     }
+
     public function product()
     {
         return $this->belongsTo(Product::class);
     }
+
     public function cart()
     {
         return $this->belongsTo(Cart::class);

@@ -22,7 +22,6 @@ class ColorController extends Controller
         // Validate incoming request
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'stock' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -74,7 +73,6 @@ class ColorController extends Controller
         // Validate incoming request
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|required|string|max:255',
-            'stock' => 'sometimes|required|integer',
         ]);
 
         if ($validator->fails()) {

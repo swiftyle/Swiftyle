@@ -3,10 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Models\OrderHistory;
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -22,7 +19,7 @@ class OrderHistoryController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->messages())->setStatusCode(422);
+            return response()->json($validator->messages(), 422);
         }
 
         // Create the order history
@@ -40,7 +37,6 @@ class OrderHistoryController extends Controller
 
     public function read(Request $request, $orderId)
     {
-
         // Fetch order histories associated with the given order ID
         $orderHistories = OrderHistory::where('order_id', $orderId)->get();
 

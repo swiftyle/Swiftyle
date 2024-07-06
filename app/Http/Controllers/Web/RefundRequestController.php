@@ -6,12 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Models\RefundRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\RefundRequestExport;
+
 
 class RefundRequestController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $refundRequest = RefundRequest::all();
+        $pageSize = $request->input('size', 10); // Default to 10 items per page
+        $refundRequest = RefundRequest::paginate($pageSize);
+
         return view('admin.refund.refund-request', compact('refundRequest'));
     }
 
@@ -77,4 +84,46 @@ class RefundRequestController extends Controller
 
         return redirect()->route('refundRequests.index')->with('success', 'Refund request deleted successfully');
     }
+    
+    
+    public function printRefundRequest()
+    {
+        $refundRequest = RefundRequest::all();
+        return view('admin.refund.print-refund-request', compact('refundRequest'));
+    }
+
+    public function exportexcel() 
+    {
+        return Excel::download(new RefundRequestExport, 'Refund Request.xlsx');
+    }
+
+    public function exportRefundRequest()
+    {
+        $refundRequest = RefundRequest::all();
+        return view('admin.refund.export-refund-request', compact('refundRequest'));
+    }
+    public function addRefundRequest()
+    {
+        $refundRequest = RefundRequest::all();
+        return view('admin.refund.add-refund-request', compact('refundRequest'));
+    }
+
+    public function approve($id)
+{
+    $refundRequest = RefundRequest::findOrFail($id);
+    $refundRequest->status = 'approved';
+    $refundRequest->save();
+
+    return redirect()->route('refund-request.index')->with('success', 'Refund request approved successfully.');
+}
+
+public function reject($id)
+{
+    $refundRequest = RefundRequest::findOrFail($id);
+    $refundRequest->status = 'rejected';
+    $refundRequest->save();
+
+    return redirect()->route('refund-request.index')->with('success', 'Refund request rejected successfully.');
+}
+
 }

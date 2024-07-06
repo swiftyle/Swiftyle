@@ -10,7 +10,6 @@ use Illuminate\Support\Str;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Support\Facades\Log;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -29,6 +28,7 @@ class User extends Authenticatable implements JWTSubject
         'provider',
         'provider_id',
         'provider_token',
+        'email_otp'
     ];
 
     protected $hidden = [
@@ -39,7 +39,7 @@ class User extends Authenticatable implements JWTSubject
         'provider_token',
         'provider',
         'phone_verified',
-        'email_veified_at',
+        'email_verified_at',
         'deleted_at',
         'created_at',
         'updated_at',
@@ -47,6 +47,7 @@ class User extends Authenticatable implements JWTSubject
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'phone_verified_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
@@ -184,6 +185,4 @@ class User extends Authenticatable implements JWTSubject
 
         return false;
     }
-
-
 }

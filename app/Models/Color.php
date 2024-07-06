@@ -19,6 +19,8 @@ class Color extends Model
 
     public function sizes()
     {
-        return $this->belongsToMany(Size::class, 'size_color');
+        return $this->belongsToMany(Size::class, 'size_color')
+                    ->withPivot('stock')
+                    ->withTimestamps();
     }
 }

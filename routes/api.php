@@ -34,6 +34,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\WishlistController;
 use App\Http\Controllers\Api\WishlistItemController;
 use App\Http\Controllers\Api\FollowerController;
+use App\Http\Controllers\Api\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -48,13 +49,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Public routes
-Route::post('login', [AuthenticationController::class, 'login'])->middleware('throttle:login');
 Route::post('register', [AuthenticationController::class, 'register']);
-Route::post('otp', [AuthenticationController::class, 'sendOTPMail']);
+Route::post('confirm-email-otp', [AuthenticationController::class, 'confirmEmailOTP']);
+Route::post('input-phone-number', [AuthenticationController::class, 'inputPhoneNumber']);
+Route::post('confirm-phone-otp', [AuthenticationController::class, 'confirmPhoneOTP']);
+Route::post('login', [AuthenticationController::class, 'login'])->middleware('throttle:login');
 
-Route::prefix('auth/google')->group(function () {
-    Route::get('', [ProviderController::class, 'redirect']);
-    Route::get('callback', [ProviderController::class, 'callbackGoogle']);
+Route::prefix('auth')->group(function () {
+    Route::get('{provider}', [ProviderController::class, 'redirect']);
+    Route::get('{provider}/callback', [ProviderController::class, 'callback']);
 });
 
 // Protected routes with 'jwt.auth' middleware
@@ -208,7 +211,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::prefix('cart-item')->group(function () {
         Route::post('', [CartItemController::class, 'create']);
         Route::get('', [CartItemController::class, 'read']);
-        Route::get('{id}', [CartItemController::class, 'readById']);
+        Route::get('with-trashed', [CartItemController::class, 'readWithTrashed']);
         Route::put('{id}', [CartItemController::class, 'update']);
         Route::delete('{id}', [CartItemController::class, 'delete']);
     });
@@ -368,6 +371,10 @@ Route::middleware(['jwt.auth'])->group(function () {
 
     // Logout
     Route::post('logout', [AuthenticationController::class, 'logout']);
+
+    // Notifications
+        Route::get('', [NotificationController::class, 'read']);
+        Route::get('{id}',[NotificationController::class, 'readById']);
 
 });
 

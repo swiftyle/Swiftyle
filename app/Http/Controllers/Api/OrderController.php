@@ -45,6 +45,8 @@ class OrderController extends Controller
         ], 201);
     }
 
+
+
     public function read(Request $request)
     {
         $user = $request->user();
@@ -55,6 +57,23 @@ class OrderController extends Controller
         return response()->json([
             'message' => 'Orders fetched successfully',
             'data' => $orders
+        ], 200);
+    }
+
+    public function readById(Request $request, $id)
+    {
+        $user = $request->user();
+
+        // Find the order by ID
+        $order = Order::where('user_id', $user->id)->find($id);
+
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+
+        return response()->json([
+            'message' => 'Order fetched successfully',
+            'data' => $order
         ], 200);
     }
 
@@ -83,22 +102,6 @@ class OrderController extends Controller
             return response()->json($validator->messages())->setStatusCode(422);
         }
 
-        // Update the order status and trigger the respective event
-        $status = $request->input('status');
-
-        if ($status === 'packaged' && $user->role === 'Seller') {
-            event(new OrderPackaged($order));
-        } elseif ($status === 'shipped' && $user->role === 'Seller') {
-            event(new OrderShipped($order));
-        } elseif ($status === 'delivered' && $user->role === 'Courier') {
-            event(new OrderDelivered($order));
-        } elseif ($status === 'received' && $order->user_id === $user->id) {
-            event(new OrderReceived($order));
-        } elseif ($status === 'reviewed' && $order->user_id === $user->id) {
-            event(new OrderReviewed($order));
-        } else {
-            return response()->json(['message' => 'Unauthorized to change status to ' . $status], 403);
-        }
 
         return response()->json([
             'message' => 'Order status updated successfully',

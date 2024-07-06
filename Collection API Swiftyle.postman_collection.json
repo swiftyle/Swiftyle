@@ -1,0 +1,4852 @@
+{
+	"info": {
+		"_postman_id": "62eaa118-1978-4c31-a02e-6d1002622602",
+		"name": "Collection API Swiftyle L",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33381190"
+	},
+	"item": [
+		{
+			"name": "1-users",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/users",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						},
+						"description": "melihat semua user"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Indah Nirmala",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/users/3?_method=PUT",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"3"
+							],
+							"query": [
+								{
+									"key": "_method",
+									"value": "PUT"
+								}
+							]
+						},
+						"description": "menyunting user sesuai id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM5LCJuYW1lIjoiYnV5ZXI1Iiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzE5OTEyOTkwLCJleHAiOjE3MTk5OTkzOTB9.cvkSLSc-yWxh3jeoqAE7QAkGwg8ohvp1oc6oMn1GJSI"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/users/39",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"39"
+							]
+						},
+						"description": "menghapus user sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola user"
+		},
+		{
+			"name": "2-addresses",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/addresses",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"addresses"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQ1LCJuYW1lIjoicGlwaXQiLCJyb2xlIjoiQ3VzdG9tZXIiLCJpYXQiOjE3MjAxNjk5NTMsImV4cCI6MTcyMDI1NjM1M30.XV_iyTo7DpEqYCfEBh5EUcBoHebIgm-2ZkVReIWVP5M"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "firstname",
+									"value": "Pipit",
+									"type": "text"
+								},
+								{
+									"key": "lastname",
+									"value": "Julaeha",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "Home",
+									"type": "text"
+								},
+								{
+									"key": "primary",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "country",
+									"value": "Indonesia",
+									"type": "text"
+								},
+								{
+									"key": "province",
+									"value": "Jawa Barat",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "Karawang",
+									"type": "text"
+								},
+								{
+									"key": "district",
+									"value": "CKM ",
+									"type": "text"
+								},
+								{
+									"key": "street",
+									"value": "Jalan cikurut",
+									"type": "text"
+								},
+								{
+									"key": "house_number",
+									"value": "B6 no 19",
+									"type": "text"
+								},
+								{
+									"key": "apartment_number",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "postal_code",
+									"value": "41371",
+									"type": "text"
+								},
+								{
+									"key": "phone_number",
+									"value": "0895349066544",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/addresses",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"addresses"
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsIm5hbWUiOiJEZXZpIiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzE5OTEzMTc1LCJleHAiOjE3MTk5OTk1NzV9.Ru3ZddUIsiSRS-FZu7m26kOO8xbRBJBrjZCz-co4ERI"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "street",
+									"value": "Jalan mekar sari indah",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/addresses/10?_method=PUT",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"addresses",
+								"10"
+							],
+							"query": [
+								{
+									"key": "_method",
+									"value": "PUT"
+								}
+							]
+						},
+						"description": "menyunting kategori sesuai id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsIm5hbWUiOiJEZXZpIiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzE5OTEzMTc1LCJleHAiOjE3MTk5OTk1NzV9.Ru3ZddUIsiSRS-FZu7m26kOO8xbRBJBrjZCz-co4ERI"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/addresses/10",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"addresses",
+								"10"
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori"
+		},
+		{
+			"name": "3-main-categories",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"url": {
+							"raw": "http://swiftyleshop.com/api/main-categories",
+							"protocol": "http",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"main-categories"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Accessories",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Lengkapi penampilan anda dengan koleksi aksesoris",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/main-categories",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"main-categories"
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "description",
+									"value": "Pakaian Pria",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/main-categories/12?_method=PUT",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"main-categories",
+								"12"
+							],
+							"query": [
+								{
+									"key": "_method",
+									"value": "PUT"
+								}
+							]
+						},
+						"description": "menyunting kategori sesuai id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/main-categories/12",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"main-categories",
+								"12"
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "4-promotions",
+			"item": [
+				{
+					"name": "read",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Hemat pengguna baru",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "description",
+									"value": "Diskon ini khusus perngguna baru",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "percentage_discount",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "discount_amount",
+									"value": "10000",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "discount_percentage",
+									"value": "5",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "start_date",
+									"value": "2024-08-15",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "end_date",
+									"value": "2024-08-20",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/promotions",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"promotions"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Hemat pengguna baru",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Diskon ini khusus perngguna baru",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "percentage_discount",
+									"type": "text"
+								},
+								{
+									"key": "discount_amount",
+									"value": "10000",
+									"type": "text"
+								},
+								{
+									"key": "discount_percentage",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "start_date",
+									"value": "2024-08-15",
+									"type": "text"
+								},
+								{
+									"key": "end_date",
+									"value": "2024-08-20",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/promotions",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"promotions"
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "WITA",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/promotions/3?_method=PUT",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"promotions",
+								"3"
+							],
+							"query": [
+								{
+									"key": "_method",
+									"value": "PUT"
+								}
+							]
+						},
+						"description": "menyunting kategori sesuai id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/promotions/4",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"promotions",
+								"4"
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "5-notifications",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/notifications",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"notifications"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/notifications",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"notifications"
+							]
+						},
+						"description": "menyunting kategori sesuai id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/notifications",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"notifications"
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "6-styles +",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/styles",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"styles"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Sporty",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Gaya sporty menampilkan pakaian yang cocok untuk kegiatan olahraga atau aktivitas aktif lainnya",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/ahmad/OneDrive/Dokumen/style/casual.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/styles",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"styles"
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk4MjY1NzAsImV4cCI6MTcxOTgzMDE3MH0.quiWon88haAaggB9idGVo5nWgqsC5vuGIl9Y9MgDF9I"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/ahmad/OneDrive/Dokumen/style/hipster.jpg"
+								},
+								{
+									"key": "name",
+									"value": "Hipster",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/styles/30?_method=PUT",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"styles",
+								"30"
+							],
+							"query": [
+								{
+									"key": "_method",
+									"value": "PUT"
+								}
+							]
+						},
+						"description": "menyunting kategori sesuai id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/styles/31",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"styles",
+								"31"
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "7-preferences",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/preferences",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"preferences"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "style_ids[0]",
+									"value": "30",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/preferences",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"preferences"
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "style_id",
+									"value": "29",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/preferences/20?_method=PUT",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"preferences",
+								"20"
+							],
+							"query": [
+								{
+									"key": "_method",
+									"value": "PUT"
+								}
+							]
+						},
+						"description": "menyunting kategori sesuai id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/preferences/20",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"preferences",
+								"20"
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "9-app-coupons",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/app-coupons",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"app-coupons"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "cupon hemat",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "0003",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "percentage_discount",
+									"type": "text"
+								},
+								{
+									"key": "discount_amount",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "max_uses",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "start_date",
+									"value": "2024-08-20",
+									"type": "text"
+								},
+								{
+									"key": "end_date",
+									"value": "2024-08-22",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/app-coupons",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"app-coupons"
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "9.9 Berhadiah",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/app-coupons/5?_method=PUT",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"app-coupons",
+								"5"
+							],
+							"query": [
+								{
+									"key": "_method",
+									"value": "PUT"
+								}
+							]
+						},
+						"description": "menyunting kategori sesuai id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/app-coupons/5",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"app-coupons",
+								"5"
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "10-chat",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/chats",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"chats"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQsIm5hbWUiOiJMdWRmaSIsInJvbGUiOiJTZWxsZXIiLCJpYXQiOjE3MjAwODQwMzMsImV4cCI6MTcyMDE3MDQzM30.RqsQkgGl_IvT41eK1Xgge9WT3d7p2vkiXBGtoOPPESA"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "user2_id",
+									"value": "42",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/chats",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"chats"
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/chat",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"chat"
+							]
+						},
+						"description": "menyunting kategori sesuai id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/chat",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"chat"
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "11-shops",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQsIm5hbWUiOiJMdWRmaSIsInJvbGUiOiJTZWxsZXIiLCJpYXQiOjE3MTk5ODMwMDksImV4cCI6MTcyMDA2OTQwOX0.t-lvqb5tj3VHe2EJjMQujzznOIiC_piPEpOI_amoicQ"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/shops",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"shops"
+							]
+						},
+						"description": "melihat semua data produk"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQsIm5hbWUiOiJMdWRmaSIsInJvbGUiOiJTZWxsZXIiLCJpYXQiOjE3MTk2NjEyMzIsImV4cCI6MTcxOTY2NDgzMn0.jC0lnECgfQ74LOynGyhSqR-55-_-ICGoP8bbmV9dYgE"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "CKM Roars Collection",
+									"type": "text"
+								},
+								{
+									"key": "logo",
+									"type": "file",
+									"src": "/C:/Users/ahmad/Downloads/CKMroars.jpeg"
+								},
+								{
+									"key": "address",
+									"value": "Perum Citra Kebun Mas",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "089546373365",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "ckmroars@gmail.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/shops",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"shops"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "logo",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "address",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "phone",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": null,
+									"disabled": true
+								}
+							]
+						},
+						"description": "membuat data produk baru"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/shops/?_method=PUT",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"shops",
+								""
+							],
+							"query": [
+								{
+									"key": "_method",
+									"value": "PUT"
+								}
+							]
+						},
+						"description": "menyunting data produk sesuai dengan id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/shops/",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"shops",
+								""
+							]
+						},
+						"description": "menghapus data produk dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "mengelola data produk"
+		},
+		{
+			"name": "12-courier-categories",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/courier-categories",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"courier-categories"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQsIm5hbWUiOiJMdWRmaSIsInJvbGUiOiJTZWxsZXIiLCJpYXQiOjE3MTk2NTcwMTMsImV4cCI6MTcxOTY2MDYxM30.vCCIv8DPM9GWJ1ssJ90dKQ0xNyHMG6mbe6J-0OB5SMM"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Hemat",
+									"type": "text"
+								},
+								{
+									"key": "courier_costs",
+									"value": "10000",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/courier-categories",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"courier-categories"
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/courier-categories/?_method=PUT",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"courier-categories",
+								""
+							],
+							"query": [
+								{
+									"key": "_method",
+									"value": "PUT"
+								}
+							]
+						},
+						"description": "menyunting kategori sesuai id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/courier-categories/",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"courier-categories",
+								""
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "13-messages",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/messages",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"messages"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQyLCJuYW1lIjoiS2ltIE1pbmd5dSIsInJvbGUiOiJDdXN0b21lciIsImlhdCI6MTcyMDEwNjM1MiwiZXhwIjoxNzIwMTkyNzUyfQ.yN3y_471qsv6hiy6MZQh5pj_K-nYO5pfZKqucVZPZFI"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "chat_id",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "content",
+									"value": "okedeh min, serlok ajaa",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/messages",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"messages"
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/messages",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"messages"
+							]
+						},
+						"description": "menyunting kategori sesuai id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/messages",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"messages"
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "14-couriers",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/couriers",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"couriers"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQsIm5hbWUiOiJMdWRmaSIsInJvbGUiOiJTZWxsZXIiLCJpYXQiOjE3MTk2NTcwMTMsImV4cCI6MTcxOTY2MDYxM30.vCCIv8DPM9GWJ1ssJ90dKQ0xNyHMG6mbe6J-0OB5SMM"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "TIKI",
+									"type": "text"
+								},
+								{
+									"key": "logo",
+									"type": "file",
+									"src": "/C:/Users/ahmad/Downloads/TIKI.png"
+								},
+								{
+									"key": "courier_categories_id",
+									"value": "5",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/couriers",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"couriers"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "logo",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "courier_categories_id",
+									"value": null,
+									"disabled": true
+								}
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk4MjY1NzAsImV4cCI6MTcxOTgzMDE3MH0.quiWon88haAaggB9idGVo5nWgqsC5vuGIl9Y9MgDF9I"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "logo",
+									"type": "file",
+									"src": "/C:/Users/ahmad/Downloads/TIKI.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/couriers/10?_method=PUT",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"couriers",
+								"10"
+							],
+							"query": [
+								{
+									"key": "_method",
+									"value": "PUT"
+								}
+							]
+						},
+						"description": "menyunting kategori sesuai id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/couriers/",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"couriers",
+								""
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "15-shop-coupons",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/shop-coupons",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"shop-coupons"
+							]
+						},
+						"description": "melihat semua data produk"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQsIm5hbWUiOiJMdWRmaSIsInJvbGUiOiJTZWxsZXIiLCJpYXQiOjE3MTk5ODMwMDksImV4cCI6MTcyMDA2OTQwOX0.t-lvqb5tj3VHe2EJjMQujzznOIiC_piPEpOI_amoicQ"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "shop_id",
+									"value": "6",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "cupon hemat",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "0002",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "percentage_discount",
+									"type": "text"
+								},
+								{
+									"key": "discount_amount",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "max_uses",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "start_date",
+									"value": "2024-08-20",
+									"type": "text"
+								},
+								{
+									"key": "end_date",
+									"value": "2024-08-22",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/shop-coupons",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"shop-coupons"
+							]
+						},
+						"description": "membuat data produk baru"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMsIm5hbWUiOiJJbmRhaCIsInJvbGUiOiJTZWxsZXIiLCJpYXQiOjE3MTk4OTk5ODIsImV4cCI6MTcxOTk4NjM4Mn0.b5Hbu60tdDuGFWW1iJIz67R-FNlr02kjIMLANPQHdGo"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Gratis Ongkir",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/shop-coupons/7?_method=PUT",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"shop-coupons",
+								"7"
+							],
+							"query": [
+								{
+									"key": "_method",
+									"value": "PUT"
+								}
+							]
+						},
+						"description": "menyunting data produk sesuai dengan id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/shop-coupons/",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"shop-coupons",
+								""
+							]
+						},
+						"description": "menghapus data produk dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "mengelola data produk"
+		},
+		{
+			"name": "16-carts",
+			"item": [
+				{
+					"name": "read",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsIm5hbWUiOiJEZXZpIiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzE5OTg4MDk4LCJleHAiOjE3MjAwNzQ0OTh9.gv4T6yEOVLA0KiPbERZgycmf5lALIJLX6Crrd6hnfHo"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/carts",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"carts"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsIm5hbWUiOiJEZXZpIiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzE5OTg4MDk4LCJleHAiOjE3MjAwNzQ0OTh9.gv4T6yEOVLA0KiPbERZgycmf5lALIJLX6Crrd6hnfHo"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "app_coupon_id",
+									"value": "5",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/carts/22?_method=PUT",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"carts",
+								"22"
+							],
+							"query": [
+								{
+									"key": "_method",
+									"value": "PUT"
+								}
+							]
+						},
+						"description": "menyunting kategori sesuai id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/carts/",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"carts",
+								""
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "17-checkouts",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsIm5hbWUiOiJEZXZpIiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzE5OTg4MDk4LCJleHAiOjE3MjAwNzQ0OTh9.gv4T6yEOVLA0KiPbERZgycmf5lALIJLX6Crrd6hnfHo"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/checkouts",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"checkouts"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsIm5hbWUiOiJEZXZpIiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzE5OTg4MDk4LCJleHAiOjE3MjAwNzQ0OTh9.gv4T6yEOVLA0KiPbERZgycmf5lALIJLX6Crrd6hnfHo"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "cart_id",
+									"value": "22",
+									"type": "text"
+								},
+								{
+									"key": "address_id",
+									"value": "11",
+									"type": "text"
+								},
+								{
+									"key": "courier_id",
+									"value": "5",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/checkouts",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"checkouts"
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "18-wishlist",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsIm5hbWUiOiJEZXZpIiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzE5OTg4MDk4LCJleHAiOjE3MjAwNzQ0OTh9.gv4T6yEOVLA0KiPbERZgycmf5lALIJLX6Crrd6hnfHo"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/wishlists",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"wishlists"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "19-products",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQsIm5hbWUiOiJMdWRmaSIsInJvbGUiOiJTZWxsZXIiLCJpYXQiOjE3MTk5MTEwMjksImV4cCI6MTcxOTk5NzQyOX0.Go52OOa8YfoplL6sTenV2iDnzGQQrMR2VnU4KoXpPNw"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/products",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"products"
+							]
+						},
+						"description": "melihat semua data produk"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQsIm5hbWUiOiJMdWRmaSIsInJvbGUiOiJTZWxsZXIiLCJpYXQiOjE3MTk5MDg3NTAsImV4cCI6MTcxOTk5NTE1MH0.Rel96XK6MSgbgHjGsFIixca2bTXq7KYbclFJFT-sH4U"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "T-Shirt",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Bahan dari kualitas terjamin",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "150000",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"description": "upload gambar produk",
+									"type": "file",
+									"src": "/C:/Users/ahmad/OneDrive/Dokumen/style/retro.jpg"
+								},
+								{
+									"key": "main_category_id",
+									"value": "8",
+									"type": "text"
+								},
+								{
+									"key": "sub_category_id",
+									"value": "7",
+									"type": "text"
+								},
+								{
+									"key": "sizes[0][name]",
+									"value": "XL",
+									"type": "text"
+								},
+								{
+									"key": "sizes[0][size_id]",
+									"value": "13",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "colors[0][name]",
+									"value": "Green",
+									"type": "text"
+								},
+								{
+									"key": "colors[0][stock]",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "style_id",
+									"value": "16",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/products",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"products"
+							]
+						},
+						"description": "membuat data produk baru"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Alissan\",\r\n    \"description\": \"Kemeja bagus dan harga terjangkau\",\r\n    \"price\": 200000,\r\n    \"categories_id\": \"baju\",\r\n    \"expired_at\": \"2025-10-09\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/products",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"products"
+							]
+						},
+						"description": "menyunting data produk sesuai dengan id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/products",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"products"
+							]
+						},
+						"description": "menghapus data produk dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "mengelola data produk"
+		},
+		{
+			"name": "20-sub-categories",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5MTI3ODEsImV4cCI6MTcxOTk5OTE4MX0.Orr8ZVPpJpFtK6eABtUgcRTghRA2qpZV8v1Pzvgnjhc"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/sub-categories",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"sub-categories"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk2NTgzMDUsImV4cCI6MTcxOTY2MTkwNX0.nG3DNHcBNt_qSRiUlG1hYKSSx_5tqdxYCQY_42psU0g"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Hats & Caps",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Topi, kupluk, topi panama, dan topi lainnya",
+									"type": "text"
+								},
+								{
+									"key": "main_category_id",
+									"value": "11",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/sub-categories",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"sub-categories"
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/sub-categories/?_method=PUT",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"sub-categories",
+								""
+							],
+							"query": [
+								{
+									"key": "_method",
+									"value": "PUT"
+								}
+							]
+						},
+						"description": "menyunting kategori sesuai id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/sub-categories/",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"sub-categories",
+								""
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "21-shipping",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQsIm5hbWUiOiJMdWRmaSIsInJvbGUiOiJTZWxsZXIiLCJpYXQiOjE3MjAwODQwMzMsImV4cCI6MTcyMDE3MDQzM30.RqsQkgGl_IvT41eK1Xgge9WT3d7p2vkiXBGtoOPPESA"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/shippings",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"shippings"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQsIm5hbWUiOiJMdWRmaSIsInJvbGUiOiJTZWxsZXIiLCJpYXQiOjE3MjAwODQwMzMsImV4cCI6MTcyMDE3MDQzM30.RqsQkgGl_IvT41eK1Xgge9WT3d7p2vkiXBGtoOPPESA"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "checkout_id",
+									"value": "49",
+									"type": "text"
+								},
+								{
+									"key": "order_id",
+									"value": "798577",
+									"type": "text"
+								},
+								{
+									"key": "shipping_address",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "courier_name",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "tracking_number",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "shipped_date",
+									"value": "2024-8-15",
+									"type": "text"
+								},
+								{
+									"key": "shipping_method",
+									"value": "car",
+									"type": "text"
+								},
+								{
+									"key": "shipping_cost",
+									"value": "15000",
+									"type": "text"
+								},
+								{
+									"key": "payment_status",
+									"value": "paid",
+									"type": "text"
+								},
+								{
+									"key": "estimated_delivery_date",
+									"value": "2024-8-17",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/shippings",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"shippings"
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQsIm5hbWUiOiJMdWRmaSIsInJvbGUiOiJTZWxsZXIiLCJpYXQiOjE3MjAwODQwMzMsImV4cCI6MTcyMDE3MDQzM30.RqsQkgGl_IvT41eK1Xgge9WT3d7p2vkiXBGtoOPPESA"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "shipping_status",
+									"value": "delivered",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/shippings/7?_method=PUT",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"shippings",
+								"7"
+							],
+							"query": [
+								{
+									"key": "_method",
+									"value": "PUT"
+								}
+							]
+						},
+						"description": "menyunting kategori sesuai id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/shippings/",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"shippings",
+								""
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "22-wishlist-item",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsIm5hbWUiOiJEZXZpIiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzE5OTg4MDk4LCJleHAiOjE3MjAwNzQ0OTh9.gv4T6yEOVLA0KiPbERZgycmf5lALIJLX6Crrd6hnfHo"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/wishlist-item",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"wishlist-item"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsIm5hbWUiOiJEZXZpIiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzE5OTg4MDk4LCJleHAiOjE3MjAwNzQ0OTh9.gv4T6yEOVLA0KiPbERZgycmf5lALIJLX6Crrd6hnfHo"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "product_id",
+									"value": "95",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/wishlist-item",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"wishlist-item"
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/wishlist-item/",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"wishlist-item",
+								""
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "23-orders",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsIm5hbWUiOiJEZXZpIiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzE5OTkyMDQyLCJleHAiOjE3MjAwNzg0NDJ9.I40bJNG9-fz9MV72tTHj0p_8YKwro-2Dg-yWr0wO3uA"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/orders",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"orders"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/orders/?_method=PUT",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"orders",
+								""
+							],
+							"query": [
+								{
+									"key": "_method",
+									"value": "PUT"
+								}
+							]
+						},
+						"description": "menyunting kategori sesuai id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/orders/",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"orders",
+								""
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "24-order-histories",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/orders-histories",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"orders-histories"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/orders-histories",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"orders-histories"
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/orders-histories",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"orders-histories"
+							]
+						},
+						"description": "menyunting kategori sesuai id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/orders-histories",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"orders-histories"
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "25-transactions",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsIm5hbWUiOiJEZXZpIiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzE5OTkyMDQyLCJleHAiOjE3MjAwNzg0NDJ9.I40bJNG9-fz9MV72tTHj0p_8YKwro-2Dg-yWr0wO3uA"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/transactions",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"transactions"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsIm5hbWUiOiJEZXZpIiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzE5OTkyMDQyLCJleHAiOjE3MjAwNzg0NDJ9.I40bJNG9-fz9MV72tTHj0p_8YKwro-2Dg-yWr0wO3uA"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/transactions/",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"transactions",
+								""
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "26-size",
+			"item": [
+				{
+					"name": "read",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQsIm5hbWUiOiJMdWRmaSIsInJvbGUiOiJTZWxsZXIiLCJpYXQiOjE3MTk5ODMwMDksImV4cCI6MTcyMDA2OTQwOX0.t-lvqb5tj3VHe2EJjMQujzznOIiC_piPEpOI_amoicQ"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "XS",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/sizes",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"sizes"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQsIm5hbWUiOiJMdWRmaSIsInJvbGUiOiJTZWxsZXIiLCJpYXQiOjE3MTk2NTcwMTMsImV4cCI6MTcxOTY2MDYxM30.vCCIv8DPM9GWJ1ssJ90dKQ0xNyHMG6mbe6J-0OB5SMM"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "XXL",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/sizes",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"sizes"
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQsIm5hbWUiOiJMdWRmaSIsInJvbGUiOiJTZWxsZXIiLCJpYXQiOjE3MTk2NTcwMTMsImV4cCI6MTcxOTY2MDYxM30.vCCIv8DPM9GWJ1ssJ90dKQ0xNyHMG6mbe6J-0OB5SMM"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "XS",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/sizes/9?_method=PUT",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"sizes",
+								"9"
+							],
+							"query": [
+								{
+									"key": "_method",
+									"value": "PUT"
+								}
+							]
+						},
+						"description": "menyunting kategori sesuai id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/sizes/",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"sizes",
+								""
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "27-refund-requests",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5OTUxMjUsImV4cCI6MTcyMDA4MTUyNX0.z6t9gJjm2fQAU2eZoENh3D9IMzLJS_VW6AZ0dq9x_k4"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/refund-requests",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"refund-requests"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsIm5hbWUiOiJEZXZpIiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzE5OTkyMDQyLCJleHAiOjE3MjAwNzg0NDJ9.I40bJNG9-fz9MV72tTHj0p_8YKwro-2Dg-yWr0wO3uA"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "order_id",
+									"value": "798565",
+									"type": "text"
+								},
+								{
+									"key": "reason",
+									"value": "Barang tidak sesuai",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "pending",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/refund-requests",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"refund-requests"
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "28-refunds",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsIm5hbWUiOiJEZXZpIiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzIwMDc5NTI0LCJleHAiOjE3MjAxNjU5MjR9.m3Zdvf3ikCeecvKRbiVUR6US33nVKj5iijpvnQIbpUg"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/refunds",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"refunds"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk5OTUxMjUsImV4cCI6MTcyMDA4MTUyNX0.z6t9gJjm2fQAU2eZoENh3D9IMzLJS_VW6AZ0dq9x_k4"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "refund_request_id",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "accepted",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/refunds",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"refunds"
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/refunds",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"refunds"
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "29-reviews",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsIm5hbWUiOiJEZXZpIiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzIwMDc5NTI0LCJleHAiOjE3MjAxNjU5MjR9.m3Zdvf3ikCeecvKRbiVUR6US33nVKj5iijpvnQIbpUg"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/reviews",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"reviews"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsIm5hbWUiOiJEZXZpIiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzE5OTkyMDQyLCJleHAiOjE3MjAwNzg0NDJ9.I40bJNG9-fz9MV72tTHj0p_8YKwro-2Dg-yWr0wO3uA"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "product_id",
+									"value": "92",
+									"type": "text"
+								},
+								{
+									"key": "comment",
+									"value": "Kacamatanya bagus banget deh",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/ahmad/OneDrive/Gambar/download (1).jpeg"
+								},
+								{
+									"key": "rating",
+									"value": "4",
+									"type": "text"
+								},
+								{
+									"key": "order_id",
+									"value": "798556",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/reviews",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"reviews"
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/reviews/?_method=PUT",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"reviews",
+								""
+							],
+							"query": [
+								{
+									"key": "_method",
+									"value": "PUT"
+								}
+							]
+						},
+						"description": "menyunting kategori sesuai id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/reviews/",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"reviews",
+								""
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "30-complaints",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsIm5hbWUiOiJEZXZpIiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzIwMTYyMTA1LCJleHAiOjE3MjAyNDg1MDV9.7T811FjCVLFqIplZIZi0DZsgzYL7hE9OFQMOBvoesjk"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/complaints",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"complaints"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsIm5hbWUiOiJEZXZpIiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzIwMTYyMTA1LCJleHAiOjE3MjAyNDg1MDV9.7T811FjCVLFqIplZIZi0DZsgzYL7hE9OFQMOBvoesjk"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "order_id",
+									"value": "798565",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Barang ini tidak sesuai dengan di gambar",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/complaints",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"complaints"
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/complaints",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"complaints"
+							]
+						},
+						"description": "menyunting kategori sesuai id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/complaints",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"complaints"
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "33-followers",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsIm5hbWUiOiJEZXZpIiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzIwMDIxNTkyLCJleHAiOjE3MjAxMDc5OTJ9.iyd8x_0RuQDlvhLQmOIViS_h8awDAnQgKuP5UiZY2zc"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/followers",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"followers"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsIm5hbWUiOiJEZXZpIiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzIwMDIxNTkyLCJleHAiOjE3MjAxMDc5OTJ9.iyd8x_0RuQDlvhLQmOIViS_h8awDAnQgKuP5UiZY2zc"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/follows/user/3",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"follows",
+								"user",
+								"3"
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsIm5hbWUiOiJEZXZpIiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzIwMDIxNTkyLCJleHAiOjE3MjAxMDc5OTJ9.iyd8x_0RuQDlvhLQmOIViS_h8awDAnQgKuP5UiZY2zc"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/followers/3",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"followers",
+								"3"
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "35-password-reset",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/password-reset",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"password-reset"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/password-reset",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"password-reset"
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/password-reset",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"password-reset"
+							]
+						},
+						"description": "menyunting kategori sesuai id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/password-reset",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"password-reset"
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "36-cart-item",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM3LCJuYW1lIjoiYnV5ZXIzIiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzIwMTY3NTA4LCJleHAiOjE3MjAyNTM5MDh9.iCZppZ72I3c5NGKs55Cwj7FDRXVbRB7GKy2xRAv1_us"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/cart-item",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"cart-item"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsIm5hbWUiOiJEZXZpIiwicm9sZSI6IkN1c3RvbWVyIiwiaWF0IjoxNzIwMTY2OTQ0LCJleHAiOjE3MjAyNTMzNDR9.hzbgMn3IdijbgEbZy73W-Y5EoKSB65mAd6OMBGUwrbU"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "product_id",
+									"value": "90",
+									"type": "text"
+								},
+								{
+									"key": "shop_coupon_id",
+									"value": "6",
+									"type": "text"
+								},
+								{
+									"key": "quantity",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/cart-item",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"cart-item"
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/cart-item",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"cart-item"
+							]
+						},
+						"description": "menyunting kategori sesuai id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/cart-item",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"cart-item"
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "38-color",
+			"item": [
+				{
+					"name": "read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJGYWpyaSBZYW51YXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk2NTY1NzIsImV4cCI6MTcxOTY2MDE3Mn0.IMXnUeuj5eIT7zbaIKEgH19BPTbux561yg7JnUBY15E"
+							}
+						],
+						"url": {
+							"raw": "https://swiftyleshop.com/api/colors",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"colors"
+							]
+						},
+						"description": "melihat semua kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQsIm5hbWUiOiJMdWRmaSIsInJvbGUiOiJTZWxsZXIiLCJpYXQiOjE3MTk2NTcwMTMsImV4cCI6MTcxOTY2MDYxM30.vCCIv8DPM9GWJ1ssJ90dKQ0xNyHMG6mbe6J-0OB5SMM"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Orange",
+									"type": "text"
+								},
+								{
+									"key": "stock",
+									"value": "100",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/colors",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"colors"
+							]
+						},
+						"description": "membuat kategori"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/color",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"color"
+							]
+						},
+						"description": "menyunting kategori sesuai id yang dipilih"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE2MDc2NzQyLCJleHAiOjE3MTYwODAzNDJ9.Iy_xZk9gfa9ZLDWjRc8vNo1lrLw857n-D9nQRyr7iXU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://swiftyleshop.com/api/color",
+							"protocol": "https",
+							"host": [
+								"swiftyleshop",
+								"com"
+							],
+							"path": [
+								"api",
+								"color"
+							]
+						},
+						"description": "menghapus kategori sesuai dengan id yang dipilih"
+					},
+					"response": []
+				}
+			],
+			"description": "kelola kategori produk"
+		},
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"rafi\",\r\n    \"email\":\"rafichoirul12@gmail.com\",\r\n    \"password\": \"26Januari2003\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://swiftyleshop.com/api/register",
+					"protocol": "https",
+					"host": [
+						"swiftyleshop",
+						"com"
+					],
+					"path": [
+						"api",
+						"register"
+					]
+				},
+				"description": "registrasi akun"
+			},
+			"response": []
+		},
+		{
+			"name": "login customer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"ahmadludfi@mail.com\",\r\n    \"password\":\"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://swiftyleshop.com/api/login",
+					"protocol": "https",
+					"host": [
+						"swiftyleshop",
+						"com"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login seller",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"ahmadludfi@gmail.com\",\r\n    \"password\":\"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://swiftyleshop.com/api/login",
+					"protocol": "https",
+					"host": [
+						"swiftyleshop",
+						"com"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login admin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"fajriyanuar1@gmail.com\",\r\n    \"password\":\"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://swiftyleshop.com/api/login",
+					"protocol": "https",
+					"host": [
+						"swiftyleshop",
+						"com"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register with oauth google",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "https://swiftyleshop.com/api/auth/google",
+					"protocol": "https",
+					"host": [
+						"swiftyleshop",
+						"com"
+					],
+					"path": [
+						"api",
+						"auth",
+						"google"
+					]
+				},
+				"description": "registrasi akun baru menggunakan google oauth (install laravel socialite)"
+			},
+			"response": []
+		},
+		{
+			"name": "passwordreset",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "phone",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "otp_code",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "otp_expiry",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "email_token",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "email_token_expiry",
+							"value": "",
+							"type": "text"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "confirm-otp with email",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://swiftyleshop.com/api/confirm-email-otp?user_id=56&otp=837917",
+					"protocol": "https",
+					"host": [
+						"swiftyleshop",
+						"com"
+					],
+					"path": [
+						"api",
+						"confirm-email-otp"
+					],
+					"query": [
+						{
+							"key": "user_id",
+							"value": "56"
+						},
+						{
+							"key": "otp",
+							"value": "837917"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

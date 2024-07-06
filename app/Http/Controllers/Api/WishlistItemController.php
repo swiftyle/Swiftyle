@@ -82,54 +82,6 @@ class WishlistItemController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
-    {
-        try {
-            $user = $request->user();
-            Log::info('Update WishlistItem: User ID', ['user_id' => $user->id, 'wishlist_item_id' => $id]);
-
-            $validator = Validator::make($request->all(), [
-                'product_id' => 'exists:products,id',
-            ]);
-
-            if ($validator->fails()) {
-                Log::warning('Update WishlistItem: Validation Failed', ['errors' => $validator->messages()]);
-                return response()->json(['errors' => $validator->messages()], 422);
-            }
-
-            $validated = $validator->validated();
-
-            $wishlistItem = WishlistItem::find($id);
-            if (!$wishlistItem) {
-                Log::error('Update WishlistItem: Wishlist Item Not Found', ['wishlist_item_id' => $id]);
-                return response()->json(['message' => 'Wishlist item not found'], 404);
-            }
-
-            // Check if the wishlist item belongs to the user's wishlist
-            if ($wishlistItem->wishlist->user_id !== $user->id) {
-                return response()->json(['message' => 'Unauthorized'], 403);
-            }
-
-            // Update the wishlist item
-            if (isset($validated['product_id'])) {
-                $product = Product::find($validated['product_id']);
-                if (!$product) {
-                    Log::error('Update WishlistItem: Product Not Found', ['product_id' => $validated['product_id']]);
-                    return response()->json(['message' => 'Product not found'], 404);
-                }
-                $wishlistItem->product_id = $validated['product_id'];
-            }
-
-            $wishlistItem->save();
-            Log::info('Update WishlistItem: Wishlist Item Updated', ['wishlist_item_id' => $wishlistItem->id]);
-
-            return response()->json(['message' => 'Wishlist item updated successfully', 'data' => $wishlistItem], 200);
-        } catch (\Exception $e) {
-            Log::error('Update WishlistItem: Error', ['error' => $e->getMessage()]);
-            return response()->json(['error' => 'Failed to update wishlist item'], 500);
-        }
-    }
-
     public function delete(Request $request, $id)
     {
         try {

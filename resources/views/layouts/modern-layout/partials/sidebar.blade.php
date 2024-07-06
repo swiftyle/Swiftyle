@@ -2,7 +2,7 @@
     <div class="sidebar-user text-center">
         <a class="setting-primary" href="{{ route('profile.show') }}"><i data-feather="settings"></i></a>
         <img class="img-90 rounded-circle" src="{{ session('avatar') }}" alt="" />
-        <div class="badge-bottom"><span class="badge badge-primary">New</span></div>
+        <!-- <div class="badge-bottom"><span class="badge badge-primary">New</span></div> -->
         <a href="user-profile">
             <h6 class="mt-3 f-14 f-w-600">{{ session('username') }}</h6>
         </a>
@@ -90,6 +90,13 @@
                     </li>
 
                     <li>
+                        <a class="nav-link menu-title link-nav {{ prefixActive('/sub-categories') }} {{ routeActive('data-sub-category') }}"
+                            href="{{ route('sub-categories.index') }}">
+                            <i data-feather="grid"></i><span>Data Sub Category</span>
+                        </a>
+                    </li>
+
+                    <li>
                         <a class="nav-link menu-title link-nav {{ prefixActive('/preferences') }} {{ routeActive('data-preference') }}"
                             href="{{ route('preferences.index') }}"><i data-feather="sliders"></i><span>Data
                                 Preference</span></a>
@@ -151,6 +158,7 @@
                             href="{{ route('developers.index') }}"><i
                                 data-feather="users"></i><span>Developer</span></a>
                     </li>
+                    <!-- <li><a href="{{ route('pagination') }}" class="{{routeActive('pagination')}}">Pagination</a></li> -->
 
 
 
@@ -232,7 +240,7 @@
                             </li>
                         </ul>
                     </li> --}}
-                    {{-- <li class="dropdown">
+                    <!-- <li class="dropdown">
                         <a class="nav-link menu-title {{ prefixActive('/builders') }}" href="javascript:void(0)"><i data-feather="edit-3"></i><span>Builders</span></a>
                         <ul class="nav-submenu menu-content" style="display: {{ prefixBlock('/builders') }};">
                             <li><a href="{{ route('form-builder-1') }}" class="{{routeActive('form-builder-1')}}">Form Builder 1</a></li>
@@ -240,7 +248,7 @@
                             <li><a href="{{ route('pagebuild') }}" class="{{routeActive('pagebuild')}}">Page Builder</a></li>
                             <li><a href="{{ route('button-builder') }}" class="{{routeActive('button-builder')}}">Button Builder</a></li>
                         </ul>
-                    </li> --}}
+                    </li> -->
                     {{-- <li class="dropdown">
                         <a class="nav-link menu-title {{ prefixActive('/animation') }}" href="javascript:void(0)"><i data-feather="cloud-drizzle"></i><span>Animation</span></a>
                         <ul class="nav-submenu menu-content" style="display: {{ prefixBlock('/animation') }};">
@@ -269,7 +277,7 @@
                                     class="{{ routeActive('whether-icon') }}">Whether Icon </a></li>
                         </ul>
                     </li> --}}
-                    {{-- <li class="dropdown">
+                    <!-- <li class="dropdown">
                         <a class="nav-link menu-title {{ prefixActive('/buttons') }}" href="javascript:void(0)"><i data-feather="cloud"></i><span>Buttons</span></a>
                         <ul class="nav-submenu menu-content" style="display: {{ prefixBlock('/buttons') }};">
                             <li><a href="{{ route('buttons') }}" class="{{routeActive('buttons')}}">Default Style</a></li>
@@ -278,7 +286,7 @@
                             <li><a href="{{ route('raised-button') }}" class="{{routeActive('raised-button')}}">Raised Style</a></li>
                             <li><a href="{{ route('button-group') }}" class="{{routeActive('button-group')}}">Button Group</a></li>
                         </ul>
-                    </li> --}}
+                    </li> -->
                     {{-- <li class="dropdown">
                         <a class="nav-link menu-title {{ prefixActive('/charts') }}" href="javascript:void(0)"><i data-feather="bar-chart"></i><span>Charts</span></a>
                         <ul class="nav-submenu menu-content" style="display: {{ prefixBlock('/charts') }};">
@@ -298,7 +306,7 @@
                             <h6>Forms</h6>
                         </div>
                     </li> --}}
-                    {{-- <li class="dropdown">
+                    <!-- <li class="dropdown">
                         <a class="nav-link menu-title {{ prefixActive('/form-controls') }}" href="javascript:void(0)"><i data-feather="sliders"></i><span>Form Controls </span></a>
                         <ul class="nav-submenu menu-content" style="display: {{ prefixBlock('/form-controls') }};">
                             <li><a href="{{ route('form-validation') }}" class="{{routeActive('form-validation')}}">Form Validation</a></li>
@@ -307,7 +315,7 @@
                             <li><a href="{{ route('input-group') }}" class="{{routeActive('input-group')}}">Input Groups</a></li>
                             <li><a href="{{ route('megaoptions') }}" class="{{routeActive('megaoptions')}}">Mega Options </a></li>
                         </ul>
-                    </li> --}}
+                    </li> -->
                     {{-- <li class="dropdown">
                         <a class="nav-link menu-title {{ prefixActive('/form-widgets') }}" href="javascript:void(0)"><i data-feather="package"></i><span>Form Widgets</span></a>
                         <ul class="nav-submenu menu-content" style="display: {{ prefixBlock('/form-widgets') }};">
@@ -333,8 +341,6 @@
                     </li> --}}
 
                     <!-- Admin Panel -->
-
-
 
 
                     {{-- <li class="dropdown">
@@ -733,11 +739,11 @@
                                     class="{{ routeActive('ace-code-editor') }}">ACE code editor</a></li>
                         </ul>
                     </li> -->
-                    <li>
+                    <!-- <li>
                         <a class="nav-link menu-title link-nav {{ routeActive('knowledgebase') }}"
                             href="{{ route('knowledgebase') }}"><i
                                 data-feather="database"></i><span>Knowledgebase</span></a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
             <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>

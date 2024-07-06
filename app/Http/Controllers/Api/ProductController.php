@@ -6,9 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Color;
 use App\Models\Follower;
 use App\Models\Product;
-use App\Models\ProductCategory;
-use App\Models\ProductSize;
 use App\Models\Shop;
+use App\Models\Size;
 use App\Models\SizeColor;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -32,6 +31,7 @@ class ProductController extends Controller
     {
         return $user->role === 'Seller';
     }
+
     public function create(Request $request)
     {
         $user = $request->user();
@@ -51,7 +51,7 @@ class ProductController extends Controller
             'main_category_id' => 'required|exists:main_categories,id',
             'sub_category_id' => 'required|exists:sub_categories,id',
             'sizes' => 'required|array',
-            'sizes.*.size_id' => 'required|exists:sizes,id',
+            'sizes.*.name' => 'required|string',
             'colors' => 'required|array',
             'colors.*.name' => 'required|string',
             'colors.*.stock' => 'required|numeric|min:1',
@@ -95,10 +95,13 @@ class ProductController extends Controller
             $product->subcategories()->sync([$validated['sub_category_id']]);
             Log::info('Subcategory attached: ' . $validated['sub_category_id']);
 
-            // Attach sizes to product
+            // Create and attach sizes to product
+            $sizeIds = [];
             foreach ($validated['sizes'] as $size) {
-                $product->sizes()->attach($size['size_id']);
-                Log::info('Size attached: ' . json_encode($size['size_id']));
+                $sizeModel = Size::create(['name' => $size['name']]);
+                $sizeIds[] = $sizeModel->id;
+                $product->sizes()->attach($sizeModel->id);
+                Log::info('Size created and attached: ' . json_encode($sizeModel->id));
             }
 
             // Attach styles to product
@@ -108,12 +111,12 @@ class ProductController extends Controller
             // Attach colors to sizes in the size_color table
             foreach ($validated['colors'] as $color) {
                 $colorModel = Color::firstOrCreate(['name' => $color['name']]);
-                foreach ($validated['sizes'] as $size) {
+                foreach ($sizeIds as $sizeId) {
                     SizeColor::updateOrCreate(
-                        ['size_id' => $size['size_id'], 'color_id' => $colorModel->id],
+                        ['size_id' => $sizeId, 'color_id' => $colorModel->id],
                         ['stock' => $color['stock']]
                     );
-                    Log::info('SizeColor attached: ' . json_encode(['size_id' => $size['size_id'], 'color_id' => $colorModel->id, 'stock' => $color['stock']]));
+                    Log::info('SizeColor attached: ' . json_encode(['size_id' => $sizeId, 'color_id' => $colorModel->id, 'stock' => $color['stock']]));
                 }
             }
 
@@ -147,57 +150,66 @@ class ProductController extends Controller
         }
     }
 
-
     public function read(Request $request)
     {
         $user = $request->user();
-
-        // Initialize an empty array for products
-        $products = [];
+        $products = collect();
 
         try {
-            // Check if the user is an Admin
             if ($user->role == 'Admin') {
-                // Admin can see all products
                 $products = Product::with([
                     'subcategories.mainCategory',
-                    'sizes',
+                    'sizes.colors' => function ($query) {
+                        $query->withPivot('stock');
+                    },
                     'styles',
-                    'sizes.colors'
+                    'shops'
                 ])->get();
-            } else {
-                // Non-admin users can only see products from their own shop
+            } elseif ($user->role == 'Seller') {
                 $shop = Shop::where('user_id', $user->id)->first();
 
                 if ($shop) {
                     $products = Product::where('shop_id', $shop->id)
                         ->with([
                             'subcategories.mainCategory',
-                            'sizes',
+                            'sizes.colors' => function ($query) {
+                                $query->withPivot('stock');
+                            },
                             'styles',
-                            'sizes.colors'
+                            'shops'
                         ])
                         ->get();
                 }
+            } else {
+                // Retrieve user preferences
+                $userPreferences = $this->getUserPreferences($user);
+
+                // Retrieve preferred products based on user preferences
+                $preferredProducts = $this->getPreferredProducts($userPreferences)->shuffle();
+
+                // Retrieve all other products
+                $allProducts = Product::whereDoesntHave('styles', function ($query) use ($userPreferences) {
+                    $query->whereIn('style_id', $userPreferences);
+                })
+                    ->with([
+                        'subcategories.mainCategory',
+                        'sizes.colors' => function ($query) {
+                            $query->withPivot('stock');
+                        },
+                        'styles',
+                        'shops'
+                    ])->get()->shuffle();
+
+                // Merge preferred products and all products
+                $products = $preferredProducts->merge($allProducts);
             }
         } catch (\Exception $e) {
             Log::error('Error fetching products: ' . $e->getMessage(), ['exception' => $e]);
             return response()->json(['message' => 'Gagal mengambil data produk', 'error' => $e->getMessage()], 500);
         }
 
-        // Add logic for user preferences and recommendations based on followed users
-
-        // // 1. Retrieve user preferences
-        // $userPreferences = $this->getUserPreferences($user);
-
-        // // 2. Retrieve products based on user preferences
-        // $preferredProducts = $this->getPreferredProducts($userPreferences);
-
-        // // 3. Retrieve products based on followed users' preferences
-        // $recommendedProducts = $this->getRecommendedProducts($user);
-
-        // // Merge products from different sources (e.g., own shop, preferred, recommended)
-        // $products = $products->merge($preferredProducts)->merge($recommendedProducts);
+        // Load the shop relationship for each product
+        $products->load('shops');
 
         return response()->json([
             'message' => 'Data Produk',
@@ -214,24 +226,51 @@ class ProductController extends Controller
     private function getPreferredProducts($userPreferences)
     {
         // Retrieve products based on style_id from Product_Style table matching user preferences
-        return Product::whereIn('style_id', $userPreferences)->get();
+        return Product::whereHas('styles', function ($query) use ($userPreferences) {
+            $query->whereIn('style_id', $userPreferences);
+        })->with([
+                    'subcategories.mainCategory',
+                    'sizes.colors' => function ($query) {
+                        $query->withPivot('stock');
+                    },
+                    'styles',
+                    'shops'
+                ])->get();
     }
 
-    private function getRecommendedProducts(User $user)
+
+    public function readById(Request $request, $id)
     {
-        // Retrieve products based on style_id from preferences of users followed by $user
-        $followedUsers = $user->follows()->pluck('id');
-        $recommendedProducts = User::whereIn('id', $followedUsers)
-            ->with('preferences.products') // Assuming preferences relationship with products
-            ->get()
-            ->flatMap(function ($user) {
-                return $user->preferences->flatMap(function ($preference) {
-                    return $preference->products;
-                });
-            });
+        $user = $request->user();
 
-        return $recommendedProducts;
+        try {
+            // Retrieve the product with its relationships
+            $product = Product::with([
+                'subcategories.mainCategory',
+                'sizes.colors' => function ($query) {
+                    $query->withPivot('stock');
+                },
+                'styles',
+                'shops'
+            ])->find($id);
+
+            if (!$product) {
+                return response()->json(['message' => 'Data produk dengan ID: ' . $id . ' tidak ditemukan'], 404);
+            }
+
+            // Return product data for all users
+            return response()->json([
+                'message' => 'Data Produk',
+                'data' => $product
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Error fetching product by ID: ' . $e->getMessage(), ['exception' => $e]);
+            return response()->json(['message' => 'Gagal mengambil data produk', 'error' => $e->getMessage()], 500);
+        }
     }
+
+
+
 
     public function update(Request $request, $id)
     {
@@ -393,6 +432,4 @@ class ProductController extends Controller
             return response()->json(['message' => 'Gagal menghapus produk'], 500);
         }
     }
-
-
 }

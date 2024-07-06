@@ -26,6 +26,8 @@ use App\Listeners\SendRefundRequestedNotification;
 use App\Listeners\SendReviewCreatedNotification;
 use App\Listeners\UpdateOrderStatus;
 use App\Listeners\UpdateProductRating;
+use App\Models\Checkout;
+use App\Notifications\OrderNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -85,6 +87,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         NewFollower::class => [
             SendNewFollowerNotification::class,
+        ],
+        Checkout::class => [
+            OrderNotification::class
         ],
     ];
 

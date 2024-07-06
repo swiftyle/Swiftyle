@@ -48,9 +48,9 @@ class Product extends Model
         return $this->belongsTo(Shop::class,'shop_id');
     }
 
-    public function cart()
+    public function cartItems()
     {
-        return $this->belongsToMany(Cart::class, 'cart_item');
+        return $this->hasMany(CartItem::class);
     }
 
     public function wishlist()
@@ -71,5 +71,10 @@ class Product extends Model
     public function sizeColors()
     {
         return $this->hasMany(SizeColor::class);
+    }
+
+    public function checkouts()
+    {
+        return $this->belongsToMany(Checkout::class, 'checkout_product');
     }
 }

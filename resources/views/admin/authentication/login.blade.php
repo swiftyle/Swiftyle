@@ -54,13 +54,13 @@
                                     <div class="show-hide"><span onclick="togglePassword()"></span></div>
                                 </div>
                             </div>
-                            <div class="form-group">
+                             <div class="form-group">
                                 <div class="checkbox">
                                     <input id="checkbox1" type="checkbox" />
-                                    <label class="text-muted" for="checkbox1">Remember Username</label>
+                                    <!-- <label class="text-muted" for="checkbox1">Remember Username</label> -->
                                 </div>
-                                <a class="link" href="{{ route('forget.password') }}">Forgot password?</a>
-                            </div>
+                                <a class="link" href="{{ route('forgot-password') }}">Forgot password?</a>
+                            </div> 
                             <div class="form-group">
                                 <button class="btn btn-primary btn-full-width" type="submit">Sign in</button>
                             </div>
@@ -69,7 +69,7 @@
                             </div>
                             <div class="form-group">
                                 <ul class="login-social">
-                                    <li>
+                                    <!-- <li>
                                         <a href="https://www.linkedin.com/login" target="_blank"><i
                                                 data-feather="linkedin"></i></a>
                                     </li>
@@ -84,7 +84,7 @@
                                     <li>
                                         <a href="https://www.instagram.com/login" target="_blank"><i
                                                 data-feather="instagram"> </i></a>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <a href="auth/google/redirect" target="_blank">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="0.98em" height="1em"
@@ -103,7 +103,7 @@
 
                                 </ul>
                             </div>
-                            <p>Don't have account?<a class="ms-2" href="{{ route('sign-up') }}">Create Account</a></p>
+                            <p>Don't have account?<a class="ms-2" href="{{ route('show.register') }}">Create Account</a></p>
                         </form>
                     </div>
                 </div>

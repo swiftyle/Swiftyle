@@ -1,189 +1,189 @@
 <?php
-
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Web\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Cart;
 use App\Models\User;
-use App\Models\Wishlist;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
-use Exception;
-use Firebase\JWT\ExpiredException;
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
-
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\EmailOtp;
+use App\Mail\ResetPassword;
 class AuthenticationController extends Controller
 {
-    public function register(Request $request)
+    public function showLoginForm()
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8',
-            'phone_number' => 'required|string|min:10',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->messages()], 422);
-        }
-
-        $validated = $validator->validate();
-
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'phone_number' =>$validated['phone_number'],
-            'role' => 'customer', // Set a default role, adjust as necessary
-            'phone_verified' => 'No',
-            'gender' => 'Other',
-            'status' => 'Active',
-        ]);
-
-        // Generate JWT token
-        $token = $this->generateToken($user);
-
-        return response()->json([
-            'message' => 'User successfully registered',
-            'user' => $user,
-            'token' => $token
-        ], 201);
+        return view('admin.authentication.login');
     }
 
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required|string'
-        ]);
+        $credentials = $request->only('email', 'password');
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->messages()], 422);
-        }
-
-        $credentials = $validator->validated();
-
-        try {
-            if (!Auth::attempt($credentials)) {
-                return response()->json(["error" => "Credentials not found"], 422);
-            }
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
 
             $user = Auth::user();
 
-            // Generate JWT token
-            $token = $this->generateToken($user);
+            Session::put('name', $user->name);
+            Session::put('username', $user->username);
+            Session::put('email', $user->email);
+            Session::put('phone', $user->phone);
+            Session::put('gender', $user->gender);
+            Session::put('password', $user->password);
+            Session::put('role', $user->role);
+            Session::put('avatar', $user->avatar);
 
-            // Create or update cart for Customer role
-            if (strtolower($user->role) === 'customer') {
-                $this->createOrUpdateCart($user);
-                $this->createOrUpdateWishlist($user);
-            }
-
-            return response()->json([
-                'id' => $user->id,
-                'name' => $user->name,
-                'role' => $user->role,
-                'bearer' => $token
-            ], 200);
-
-        } catch (Exception $e) {
-            return response()->json(['error' => 'Authentication error: ' . $e->getMessage()], 500);
+            return redirect()->intended('/dashboard');
         }
+
+        throw ValidationException::withMessages([
+            'email' => ['The provided credentials are incorrect.'],
+        ]);
     }
 
-    protected function createOrUpdateCart($user)
+    public function showRegistrationForm()
     {
-        // Find existing cart or create new if not exists
-        $cart = Cart::where('user_id', $user->id)->first();
-
-        if (!$cart) {
-            Cart::create([
-                'user_id' => $user->id,
-                'app_coupon_id' => null,
-                'total_discount' => 0,
-                'total_price' => 0,
-            ]);
-        }
+        return view('admin.authentication.sign-up');
     }
 
-    protected function createOrUpdateWishlist($user)
+    public function register(Request $request)
     {
-        // Find existing wishlist or create new if not exists
-        $wishlist = Wishlist::where('user_id', $user->id)->first();
-
-        if (!$wishlist) {
-            Wishlist::create([
-                'user_id' => $user->id,
-            ]);
-        }
-    }
-
-    public function refresh(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'refresh_token' => 'required|string'
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:5',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['error' => 'Invalid refresh token'], 422);
-        }
+        $otp = rand(100000, 999999); // Generate a 6-digit OTP
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => 'admin',
+            'password' => Hash::make($request->password),
+            'email_otp' => $otp,
+            'email_verified'=>'No'
+        ]);
 
-        $refreshToken = $request->refresh_token;
+        Mail::to($user->email)->send(new EmailOtp($otp));
 
-        try {
-            // Decode refresh token
-            $decoded = JWT::decode($refreshToken, new Key(env('JWT_SECRET_KEY'), 'HS256'));
-
-            // Validate the token
-            if ($decoded->exp < time()) {
-                return response()->json(['error' => 'Refresh token expired'], 401);
-            }
-
-            // Find the user based on token data
-            $user = User::find($decoded->sub);
-
-            if (!$user) {
-                return response()->json(['error' => 'User not found'], 404);
-            }
-
-            // Generate new access token
-            $accessToken = $this->generateToken($user);
-
-            return response()->json([
-                'access_token' => $accessToken,
-                'token_type' => 'bearer',
-                'expires_in' => Carbon::now()->addHours(1)->timestamp // Adjust as needed
-            ], 200);
-
-        } catch (ExpiredException $e) {
-            return response()->json(['error' => 'Refresh token expired'], 401);
-        } catch (Exception $e) {
-            return response()->json(['error' => 'Invalid token'], 401);
-        }
+        return redirect()->route('verify.email.otp.form')->with('success', 'Registration successful. Please check your email for the OTP.');
     }
 
+    public function showVerifyOtpForm()
+    {
+        return view('admin.authentication.verify-otp');
+    }
+
+    public function verifyOtp(Request $request)
+    {
+        $request->validate([
+            'otp' => 'required|digits:6',
+        ]);
+
+        $user = User::where('email_otp', $request->otp)->first();
+
+        if ($user) {
+            $user->email_verified = true;
+            $user->email_verified_at = now();
+            $user->email_otp = null;
+            $user->email_verified ='Yes';
+            $user->save();
+
+            return redirect()->route('login')->with('success', 'Email verified successfully. Please login.');
+        } else {
+            return back()->withErrors(['error' => 'Invalid OTP or email.']);
+        }
+    }
+    
+
+
+    public function showForgetPasswordForm()
+    {
+        $data['title'] = 'Forget Password';
+        return view('admin.authentication.forget-password', $data);
+    }
+
+    /**
+     * Handle forget password request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function forgetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return back()->withErrors(['email' => 'Email not found.']);
+        }
+
+        // Generate a random 6-digit OTP
+        $otp = rand(100000, 999999);
+
+        // Update user's email_otp field
+        $user->email_otp = $otp;
+        $user->save();
+
+        // Send email with OTP
+        Mail::to($user->email)->send(new ResetPassword($otp));
+
+        return redirect()->route('reset-password')->with('success', 'An OTP has been sent to your email for password reset.');
+    }
+
+
+    /**
+     * Show the reset password form.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showResetPasswordForm()
+    {
+        $data['title'] = 'Reset Password';
+        return view('admin.authentication.reset-password', $data);
+    }
+
+    /**
+     * Handle reset password request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'otp' => 'required|digits:6',
+            'password' => 'required|string|min:5|confirmed',
+        ]);
+
+        $user = User::where('email_otp', $request->otp)->first();
+
+        if (!$user) {
+            return back()->withErrors(['otp' => 'Invalid OTP.']);
+        }
+
+        // Reset password
+        $user->password = Hash::make($request->password);
+        $user->email_otp = null; // Clear OTP after reset
+        $user->save();
+
+        return redirect()->route('login')->with('success', 'Password reset successfully. Please login with your new password.');
+    }
     public function logout(Request $request)
     {
-        // Invalidate the token and log out the user
         Auth::logout();
 
-        return response()->json(['message' => 'Logged out successfully'], 200);
-    }
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-    protected function generateToken($user)
-    {
-        $payload = [
-            'sub' => $user->id,
-            'name' => $user->name,
-            'role' => $user->role,
-            'iat' => Carbon::now()->timestamp,
-            'exp' => Carbon::now()->addHours(1)->timestamp // Access token expiration time
-        ];
-
-        return JWT::encode($payload, env('JWT_SECRET_KEY'), 'HS256');
+        return redirect('/');
     }
 }

@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Shop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ShopsExport;
 
 class ShopController extends Controller
 {
@@ -15,19 +19,22 @@ class ShopController extends Controller
      * @return \Illuminate\View\View
      */
     
-    public function index()
-    {
-        $shops = Shop::paginate(10);
-        $totalShops = Shop::count();
-        $activeShops = Shop::whereNotNull('deleted_at')->count();
-        $inactiveShops = Shop::whereNull('deleted_at')->count();
-
-        return view('admin.seller.data-shop', [
-            'shops' => $shops,
-            'totalShops' => $totalShops,
-            'activeShops' => $activeShops,
-            'inactiveShops' => $inactiveShops,
-        ]);
+     public function index(Request $request)
+     {
+         $pageSize = $request->input('size', 10); // Default to 10 items per page
+         $shops = Shop::paginate($pageSize);
+ 
+         // Additional data you may want to pass to the view
+         $totalShops = Shop::count();
+         $activeShops = Shop::whereNotNull('deleted_at')->count();
+         $inactiveShops = Shop::whereNull('deleted_at')->count();
+ 
+         return view('admin.seller.data-shop', [
+             'shops' => $shops,
+             'totalShops' => $totalShops,
+             'activeShops' => $activeShops,
+             'inactiveShops' => $inactiveShops,
+         ]);
     }
 
     /**
@@ -132,5 +139,28 @@ class ShopController extends Controller
         $shop->delete();
 
         return redirect()->route('shops.index')->with('success', 'Shop deleted successfully.');
+    }
+
+    public function printShop()
+    {
+        $shops = Shop::all();
+        return view('admin.seller.print-shop', compact('shops'));
+    }
+
+    public function exportexcel() 
+    {
+        return Excel::download(new ShopsExport, 'shops.xlsx');
+    }
+
+    public function exportshop()
+    {
+        $shops = Shop::all();
+        return view('admin.seller.export-data-shop', compact('shops'));
+    }
+
+    public function addshop()
+    {
+        $shops = Shop::all();
+        return view('admin.seller.add-shop', compact('shops'));
     }
 }
